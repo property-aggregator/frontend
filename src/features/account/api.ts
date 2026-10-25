@@ -9,17 +9,17 @@ export type AcceptConsentsRequest = components["schemas"]["AcceptConsentsRequest
 
 /** Deduplicated per request, so layouts and pages can all call it. */
 export const getCurrentUser = cache(async (): Promise<CurrentUser> => {
-  const api = await authedApi();
-  return unwrap(await api.GET("/api/me"));
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/me"));
 });
 
 /** Throws ApiError with code terms_must_be_accepted (400) when acceptTerms is false. */
 export async function acceptConsents(body: AcceptConsentsRequest): Promise<void> {
-  const api = await authedApi();
-  unwrap(await api.POST("/api/me/consents", { body }));
+	const api = await authedApi();
+	unwrap(await api.POST("/api/me/consents", { body }));
 }
 
 export async function setMarketingConsent(granted: boolean): Promise<void> {
-  const api = await authedApi();
-  unwrap(await api.PUT("/api/me/consents/marketing", { body: { granted } }));
+	const api = await authedApi();
+	unwrap(await api.PUT("/api/me/consents/marketing", { body: { granted } }));
 }

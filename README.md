@@ -11,8 +11,8 @@ the browser holds an encrypted session cookie and never sees the access token.
 - Node.js 20+
 - The backend running on `http://localhost:5209` (only for `npm run api:types` and for pages that call the API)
 - An Auth0 **Regular Web Application** with:
-  - Allowed Callback URLs: `http://localhost:3000/auth/callback`
-  - Allowed Logout URLs: `http://localhost:3000`
+    - Allowed Callback URLs: `http://localhost:3000/auth/callback`
+    - Allowed Logout URLs: `http://localhost:3000`
 
 ## Running locally
 

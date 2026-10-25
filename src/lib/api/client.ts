@@ -11,22 +11,23 @@ import type { paths } from "./schema";
 export const publicApi = createClient<paths>({ baseUrl: env.API_BASE_URL });
 
 async function getAccessToken(): Promise<string> {
-  try {
-    const { token } = await auth0.getAccessToken();
-    return token;
-  } catch (error) {
-    if (error instanceof AccessTokenError) {
-      redirect(routes.login);
-    }
-    throw error;
-  }
+	try {
+		const { token } = await auth0.getAccessToken();
+		return token;
+	} catch (error) {
+		if (error instanceof AccessTokenError) {
+			redirect(routes.login);
+		}
+
+		throw error;
+	}
 }
 
 /** For endpoints that require sign-in. Reads the session, so never call it inside "use cache". */
 export async function authedApi() {
-  const token = await getAccessToken();
-  return createClient<paths>({
-    baseUrl: env.API_BASE_URL,
-    headers: { Authorization: `Bearer ${token}` },
-  });
+	const token = await getAccessToken();
+	return createClient<paths>({
+		baseUrl: env.API_BASE_URL,
+		headers: { Authorization: `Bearer ${token}` },
+	});
 }
