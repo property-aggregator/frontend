@@ -1,6 +1,7 @@
 import { ArrowRight, HousePlus, TrendingDown } from "lucide-react";
 import processPhoto from "@/assets/landing/process.webp";
 import { Icon } from "@/components/icon";
+import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { BackgroundPhoto } from "./background-photo";
 
@@ -29,7 +30,7 @@ export function Process() {
 						Od publikacji ogłoszenia do powiadomienia na Twoim telefonie mija mniej niż pół minuty. Oto, co
 						dzieje się po drodze.
 					</p>
-					<a href="#cennik" className="btn btn-ghost mt-8">
+					<a href={routes.signupPage} className="btn btn-ghost mt-8">
 						Wypróbuj za 0 zł <Icon icon={ArrowRight} className="text-[18px]" />
 					</a>
 				</div>

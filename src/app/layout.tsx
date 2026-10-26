@@ -19,9 +19,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+	// Browser extensions add attributes to <body> before hydration; suppressHydrationWarning covers only that element.
 	return (
 		<html lang="pl" data-scroll-behavior="smooth" className={`${figtree.variable} scroll-smooth antialiased`}>
-			<body className="bg-white">{children}</body>
+			<body className="bg-white" suppressHydrationWarning>
+				{children}
+			</body>
 		</html>
 	);
 }

@@ -1,5 +1,6 @@
 import heroPhoto from "@/assets/landing/hero.webp";
 import { BrandName } from "@/components/logo";
+import { routes } from "@/lib/routes";
 import { site } from "@/lib/site";
 import { BackgroundPhoto } from "./background-photo";
 import { WordRotator } from "./word-rotator";
@@ -23,7 +24,7 @@ export function Hero() {
 						alertem o okazji w mniej niż 10 minut.
 					</p>
 					<div className="mt-8 flex flex-wrap gap-3">
-						<a href="#cennik" className="btn btn-slate hover:bg-white hover:text-ink">
+						<a href={routes.signupPage} className="btn btn-slate hover:bg-white hover:text-ink">
 							Wypróbuj za darmo
 						</a>
 						<a href="#porownanie" className="btn btn-ghost">

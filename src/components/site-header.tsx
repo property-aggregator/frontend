@@ -79,13 +79,13 @@ export function SiteHeader() {
 						))}
 					</nav>
 					<div className="hidden items-center gap-2 sm:flex">
-						{/* Plain <a>: /auth/* is handled by the Auth0 middleware, not by a page. */}
-						<a href={routes.login} className="btn btn-sm btn-soft">
+						{/* Plain <a>: these two paths are redirecting route handlers, not pages, so Link must not prefetch them. */}
+						<a href={routes.loginPage} className="btn btn-sm btn-soft">
 							Zaloguj się
 						</a>
-						<Link href="/#cennik" className="btn btn-sm btn-primary">
+						<a href={routes.signupPage} className="btn btn-sm btn-primary">
 							Zacznij za 0 zł
-						</Link>
+						</a>
 					</div>
 					<button
 						type="button"
@@ -113,12 +113,12 @@ export function SiteHeader() {
 						</Link>
 					))}
 					<div className="grid grid-cols-2 gap-2 py-2">
-						<a href={routes.login} className="btn btn-sm btn-soft">
+						<a href={routes.loginPage} className="btn btn-sm btn-soft">
 							Zaloguj się
 						</a>
-						<Link href="/#cennik" className="btn btn-sm btn-primary" onClick={() => setMenuOpen(false)}>
+						<a href={routes.signupPage} className="btn btn-sm btn-primary">
 							Zacznij za 0 zł
-						</Link>
+						</a>
 					</div>
 				</div>
 			</header>
