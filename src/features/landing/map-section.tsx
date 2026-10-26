@@ -1,3 +1,4 @@
+import { Check } from "lucide-react";
 import { Icon } from "@/components/icon";
 
 const benefits = ["Jeden pulpit bez duplikatów", "Pełna oś czasu zmian cen", "Okazje poniżej średniej RCN"];
@@ -15,7 +16,7 @@ export function MapSection() {
 					<ul className="mt-6 space-y-3 text-ink">
 						{benefits.map((benefit) => (
 							<li key={benefit} className="flex gap-3">
-								<Icon name="check" className="text-ink" />
+								<Icon icon={Check} className="text-ink" />
 								{benefit}
 							</li>
 						))}

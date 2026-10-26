@@ -1,5 +1,6 @@
 "use client";
 
+import { Check } from "lucide-react";
 import { useState } from "react";
 import { Icon } from "@/components/icon";
 import { cn } from "@/lib/utils";
@@ -102,7 +103,7 @@ export function Pricing() {
 								<ul className="space-y-2.5">
 									{plan.features.map((feature) => (
 										<li key={feature} className="flex gap-2.5">
-											<Icon name="check" className="text-[20px] text-brand" />
+											<Icon icon={Check} className="text-[20px] text-brand" />
 											<span className="text-ink">{feature}</span>
 										</li>
 									))}

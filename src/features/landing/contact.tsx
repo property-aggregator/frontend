@@ -1,3 +1,4 @@
+import { ChevronDown } from "lucide-react";
 import { Icon } from "@/components/icon";
 import { ContactForm } from "./contact-form";
 
@@ -35,7 +36,7 @@ export function Contact() {
 							<details key={question} className="group rounded-xl bg-white px-5 py-4">
 								<summary className="head flex items-center justify-between text-[15px] text-ink">
 									{question}
-									<Icon name="expand_more" className="transition-transform group-open:rotate-180" />
+									<Icon icon={ChevronDown} className="transition-transform group-open:rotate-180" />
 								</summary>
 								<p className="mt-2">{answer}</p>
 							</details>
