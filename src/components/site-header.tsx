@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
 import { BrandName, LogoMark } from "@/components/logo";
@@ -42,7 +44,8 @@ function useActiveSection(): string {
 }
 
 export function SiteHeader() {
-	const active = useActiveSection();
+	const section = useActiveSection();
+	const active = usePathname() === routes.home ? section : null;
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	return (
@@ -58,7 +61,7 @@ export function SiteHeader() {
 
 			<header className="sticky top-0 z-50 border-b border-line bg-white">
 				<div className="mx-auto flex h-[76px] max-w-[1170px] items-center justify-between px-6">
-					<a href="#top" className="flex items-center gap-2.5">
+					<Link href="/#top" className="flex items-center gap-2.5">
 						<LogoMark />
 						<span className="head leading-none">
 							<span className="block text-[17px] font-semibold text-ink">
@@ -66,12 +69,12 @@ export function SiteHeader() {
 							</span>
 							<span className="mt-1 block text-[10px] tracking-[.2em]">Agregator ofert</span>
 						</span>
-					</a>
+					</Link>
 					<nav className="hidden items-center gap-8 lg:flex">
 						{navItems.map(({ id, label }) => (
-							<a key={id} className="nav-link" href={`#${id}`} aria-current={active === id}>
+							<Link key={id} className="nav-link" href={`/#${id}`} aria-current={active === id}>
 								{label}
-							</a>
+							</Link>
 						))}
 					</nav>
 					<div className="hidden items-center gap-2 sm:flex">
@@ -79,9 +82,9 @@ export function SiteHeader() {
 						<a href={routes.login} className="btn btn-sm btn-soft">
 							Zaloguj się
 						</a>
-						<a href="#cennik" className="btn btn-sm btn-primary">
+						<Link href="/#cennik" className="btn btn-sm btn-primary">
 							Zacznij za 0 zł
-						</a>
+						</Link>
 					</div>
 					<button
 						type="button"
@@ -99,22 +102,22 @@ export function SiteHeader() {
 					className={cn(menuOpen ? "flex" : "hidden", "flex-col border-t border-line px-6 py-2 lg:hidden")}
 				>
 					{navItems.map(({ id, label }) => (
-						<a
+						<Link
 							key={id}
 							className="head py-2.5 text-[13px] text-ink uppercase"
-							href={`#${id}`}
+							href={`/#${id}`}
 							onClick={() => setMenuOpen(false)}
 						>
 							{label}
-						</a>
+						</Link>
 					))}
 					<div className="grid grid-cols-2 gap-2 py-2">
 						<a href={routes.login} className="btn btn-sm btn-soft">
 							Zaloguj się
 						</a>
-						<a href="#cennik" className="btn btn-sm btn-primary" onClick={() => setMenuOpen(false)}>
+						<Link href="/#cennik" className="btn btn-sm btn-primary" onClick={() => setMenuOpen(false)}>
 							Zacznij za 0 zł
-						</a>
+						</Link>
 					</div>
 				</div>
 			</header>

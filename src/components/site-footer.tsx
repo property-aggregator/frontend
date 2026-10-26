@@ -19,15 +19,15 @@ export function SiteFooter() {
 				<div>
 					<h4 className="text-[15px] font-medium text-white">Serwis</h4>
 					<div className="mt-4 grid gap-1.5">
-						<a className="hover:text-white" href="#oferty">
+						<Link className="hover:text-white" href="/#oferty">
 							Oferty
-						</a>
-						<a className="hover:text-white" href="#mapa">
+						</Link>
+						<Link className="hover:text-white" href="/#mapa">
 							Mapa
-						</a>
-						<a className="hover:text-white" href="#cennik">
+						</Link>
+						<Link className="hover:text-white" href="/#cennik">
 							Cennik
-						</a>
+						</Link>
 					</div>
 				</div>
 				<div>
