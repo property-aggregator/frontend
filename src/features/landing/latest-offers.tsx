@@ -1,3 +1,4 @@
+import { BedDouble, House, MapPin, Ruler } from "lucide-react";
 import { io } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
@@ -83,7 +84,7 @@ function OfferCard({ offer }: { offer: Property }) {
 					<Image className="object-cover" src={offer.mainImageUrl} alt={offer.title} fill unoptimized />
 				) : (
 					<div className="grid h-full place-items-center text-line">
-						<Icon name="home" className="text-[64px]" />
+						<Icon icon={House} className="text-[64px]" />
 					</div>
 				)}
 				<span className="head absolute right-0 bottom-0 bg-ink px-4 py-2 text-[15px] text-white">
@@ -97,7 +98,7 @@ function OfferCard({ offer }: { offer: Property }) {
 				<div className="flex h-5 items-center gap-1 text-[13px]">
 					{location && (
 						<>
-							<Icon name="location_on" className="text-[16px] text-muted" />
+							<Icon icon={MapPin} className="text-[16px] text-muted" />
 							<span className="truncate">{location}</span>
 						</>
 					)}
@@ -106,13 +107,13 @@ function OfferCard({ offer }: { offer: Property }) {
 			<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-[13px]">
 				{offer.areaM2 !== null && (
 					<span className="flex items-center gap-1">
-						<Icon name="square_foot" className="text-[18px]" />
+						<Icon icon={Ruler} className="text-[18px]" />
 						{offer.areaM2} m²
 					</span>
 				)}
 				{offer.rooms !== null && (
 					<span className="flex items-center gap-1">
-						<Icon name="bed" className="text-[18px]" />
+						<Icon icon={BedDouble} className="text-[18px]" />
 						{offer.rooms} pok.
 					</span>
 				)}

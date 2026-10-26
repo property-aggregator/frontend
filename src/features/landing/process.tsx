@@ -1,3 +1,4 @@
+import { ArrowRight, HousePlus, TrendingDown } from "lucide-react";
 import processPhoto from "@/assets/landing/process.webp";
 import { Icon } from "@/components/icon";
 import { cn } from "@/lib/utils";
@@ -29,7 +30,7 @@ export function Process() {
 						dzieje się po drodze.
 					</p>
 					<a href="#cennik" className="btn btn-ghost mt-8">
-						Wypróbuj za 0 zł <Icon name="arrow_right_alt" className="text-[18px]" />
+						Wypróbuj za 0 zł <Icon icon={ArrowRight} className="text-[18px]" />
 					</a>
 				</div>
 
@@ -78,7 +79,7 @@ function PhoneMockup() {
 				<div className="space-y-1.5 px-2.5">
 					<div className="flex items-center gap-1.5 bg-white p-2">
 						<span className="grid h-6 w-6 place-items-center bg-tint text-brand">
-							<Icon name="trending_down" className="text-[14px]" />
+							<Icon icon={TrendingDown} className="text-[14px]" />
 						</span>
 						<div className="text-[8px] leading-tight">
 							<b className="head text-[9px] font-medium">−85 000 zł · Wola</b>
@@ -95,7 +96,7 @@ function PhoneMockup() {
 					</div>
 					<div className="flex items-center gap-1.5 bg-white p-2">
 						<span className="grid h-6 w-6 place-items-center bg-ink text-white">
-							<Icon name="add_home" className="text-[14px]" />
+							<Icon icon={HousePlus} className="text-[14px]" />
 						</span>
 						<div className="text-[8px] leading-tight">
 							<b className="head text-[9px] font-medium">Nowa · Ochota</b>
