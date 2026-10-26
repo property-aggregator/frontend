@@ -1,4 +1,4 @@
-import { BedDouble, House, MapPin, Ruler } from "lucide-react";
+import { BedDouble, House, MapPin, Scaling } from "lucide-react";
 import { io } from "next/cache";
 import Image from "next/image";
 import Link from "next/link";
@@ -107,7 +107,7 @@ function OfferCard({ offer }: { offer: Property }) {
 			<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-[13px]">
 				{offer.areaM2 !== null && (
 					<span className="flex items-center gap-1">
-						<Icon icon={Ruler} className="text-[18px]" />
+						<Icon icon={Scaling} className="text-[18px]" />
 						{offer.areaM2} m²
 					</span>
 				)}
