@@ -7,14 +7,11 @@ import { MapSection } from "@/features/landing/map-section";
 import { Pricing } from "@/features/landing/pricing";
 import { Process } from "@/features/landing/process";
 import { RevealOnScroll } from "@/features/landing/reveal-on-scroll";
-import { SiteFooter } from "@/features/landing/site-footer";
-import { SiteHeader } from "@/features/landing/site-header";
 import { Stats } from "@/features/landing/stats";
 
 export default function HomePage() {
 	return (
 		<>
-			<SiteHeader />
 			<main>
 				<Hero />
 				<Portals />
@@ -27,7 +24,6 @@ export default function HomePage() {
 				<Pricing />
 				<Contact />
 			</main>
-			<SiteFooter />
 			<RevealOnScroll />
 		</>
 	);

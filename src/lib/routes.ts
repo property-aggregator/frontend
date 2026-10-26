@@ -14,8 +14,8 @@ export const routes = {
 } as const;
 
 // Everything else requires a session. Keep this an allowlist, so a new page is private by default.
-const publicPaths: string[] = [routes.home, routes.latest, routes.terms, routes.privacy];
-const publicPrefixes: string[] = [routes.articles];
+const publicPaths: string[] = [routes.home, routes.latest];
+const publicPrefixes: string[] = [routes.articles, routes.terms, routes.privacy];
 
 export function isPublicPath(pathname: string): boolean {
 	return (
