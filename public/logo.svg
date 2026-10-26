@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none" stroke-linecap="round" stroke-linejoin="round">
+  <title>homvia</title>
+  <g transform="translate(0 -14)" stroke-width="22">
+    <g stroke="#17262E">
+      <path d="M 56 252 L 256 84 L 456 252"/>
+      <path d="M 96 222 V 424 H 322"/>
+      <path d="M 416 218 V 396"/>
+    </g>
+    <g stroke="#576696">
+      <circle cx="248" cy="304" r="72"/>
+      <line x1="299" y1="355" x2="396" y2="452"/>
+    </g>
+  </g>
+</svg>

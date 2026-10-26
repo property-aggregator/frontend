@@ -1,5 +1,6 @@
 import { Check } from "lucide-react";
 import { Icon } from "@/components/icon";
+import { routes } from "@/lib/routes";
 
 const benefits = ["Jeden pulpit bez duplikatów", "Pełna oś czasu zmian cen", "Okazje poniżej średniej RCN"];
 
@@ -21,7 +22,7 @@ export function MapSection() {
 							</li>
 						))}
 					</ul>
-					<a href="#cennik" className="btn btn-slate mt-8">
+					<a href={routes.signupPage} className="btn btn-slate mt-8">
 						Zapisz obszar i włącz alerty
 					</a>
 				</div>
