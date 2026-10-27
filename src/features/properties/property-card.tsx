@@ -1,6 +1,7 @@
 import { BedDouble, House, Layers, MapPin, Scaling } from "lucide-react";
 import Image from "next/image";
 import { Icon } from "@/components/icon";
+import { FavoriteButton } from "@/features/favorites/favorite-button";
 import type { Property } from "@/features/properties/api";
 import { cn } from "@/lib/utils";
 
@@ -129,17 +130,12 @@ function floorText(floor: string): string {
 	return floor.startsWith(">") ? `powyżej ${floor.slice(1)} piętra` : floor;
 }
 
-export function PropertyListItem({ property }: { property: Property }) {
+export function PropertyListItem({ property, favorite }: { property: Property; favorite?: boolean }) {
 	const address = [property.street, property.district, property.city, property.province].filter(Boolean).join(", ");
 	const badge = property.archivedAt ? "Archiwalna" : isNew(property) ? "Nowość" : null;
 
 	return (
-		<a
-			href={property.sourceUrl}
-			target="_blank"
-			rel="noopener noreferrer"
-			className="flex flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-slate sm:flex-row"
-		>
+		<article className="relative flex flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-slate sm:flex-row">
 			<div className="relative aspect-[4/3] shrink-0 bg-mist sm:w-[340px]">
 				{property.mainImageUrl ? (
 					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
@@ -174,7 +170,14 @@ export function PropertyListItem({ property }: { property: Property }) {
 					</span>
 				</div>
 				<h3 className="mt-1.5 line-clamp-2 text-[18px] leading-snug font-medium" title={property.title}>
-					{property.title}
+					<a
+						href={property.sourceUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="after:absolute after:inset-0"
+					>
+						{property.title}
+					</a>
 				</h3>
 				{address && <p className="mt-2 truncate text-[14px]">{address}</p>}
 				<div className="head mt-4 flex flex-wrap gap-x-7 gap-y-1 text-[15px] font-semibold">
@@ -197,19 +200,28 @@ export function PropertyListItem({ property }: { property: Property }) {
 						</span>
 					)}
 				</div>
-				<div className="mt-auto border-t border-line py-3 text-[13px] text-muted">
-					{property.sellerType && <p>{sellerLabels[property.sellerType]}</p>}
-					<p className="flex flex-wrap gap-x-4 text-body">
-						<TimeAgo label="Dodano" date={property.firstSeenAt} />
-						{property.archivedAt ? (
-							<TimeAgo label="Wygasło" date={property.archivedAt} />
-						) : (
-							wasUpdated(property) && <TimeAgo label="Zaktualizowano" date={property.updatedAt} />
-						)}
-					</p>
+				<div className="mt-auto flex items-center justify-between gap-3 border-t border-line py-3 text-[13px] text-muted">
+					<div>
+						{property.sellerType && <p>{sellerLabels[property.sellerType]}</p>}
+						<p className="flex flex-wrap gap-x-4 text-body">
+							<TimeAgo label="Dodano" date={property.firstSeenAt} />
+							{property.archivedAt ? (
+								<TimeAgo label="Wygasło" date={property.archivedAt} />
+							) : (
+								wasUpdated(property) && <TimeAgo label="Zaktualizowano" date={property.updatedAt} />
+							)}
+						</p>
+					</div>
+					{favorite !== undefined && (
+						<FavoriteButton
+							propertyId={property.id}
+							initialFavorite={favorite}
+							className="z-10 -mr-2 shrink-0"
+						/>
+					)}
 				</div>
 			</div>
-		</a>
+		</article>
 	);
 }
 
