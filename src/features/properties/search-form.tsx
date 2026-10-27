@@ -199,7 +199,7 @@ export function SortSelect({ filters }: { filters: SearchFilters }) {
 					<>
 						<span className="flex items-center gap-1.5 text-[15px] lg:hidden">
 							<Icon icon={ArrowUpDown} className="text-[18px]" />
-							Sortowanie
+							{selectedLabel}
 						</span>
 						<span className="hidden items-center gap-2 lg:flex">
 							{selectedLabel}

@@ -1,6 +1,6 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -95,7 +95,7 @@ export function SiteHeader() {
 						aria-expanded={menuOpen}
 						aria-controls="mobile-menu"
 					>
-						<Icon icon={Menu} />
+						<Icon icon={menuOpen ? X : Menu} />
 					</button>
 				</div>
 				<div

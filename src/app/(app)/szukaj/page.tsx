@@ -119,7 +119,7 @@ async function Results({ filters }: { filters: SearchFilters }) {
 			<div className="mb-4 flex items-start justify-between gap-3 lg:mb-6 lg:items-center">
 				<div>
 					<h1 className="title text-[18px] lg:text-[24px]">
-						<span className="lg:hidden">{mobileHeading(result)}</span>
+						<span className="text-[15px] font-normal text-body lg:hidden">{mobileHeading(result)}</span>
 						<span className="hidden lg:inline">
 							Znaleziono {totalCount.toLocaleString("pl-PL")} {offersWord(totalCount)}
 						</span>
