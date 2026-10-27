@@ -6,6 +6,7 @@ export const routes = {
 	privacy: "/polityka-prywatnosci",
 	consents: "/zgody",
 	properties: "/oferty",
+	search: "/szukaj",
 	favorites: "/ulubione",
 	account: "/konto",
 	loginPage: "/logowanie",
