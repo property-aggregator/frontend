@@ -5,6 +5,7 @@ import { useEffect, useState, useTransition } from "react";
 import { Icon } from "@/components/icon";
 import { cn } from "@/lib/utils";
 import { setFavorite } from "./actions";
+import { useAdjustFavoritesCount } from "./favorites-count";
 
 type FavoriteButtonProps = { propertyId: string; initialFavorite: boolean; className?: string };
 
@@ -12,6 +13,7 @@ export function FavoriteButton({ propertyId, initialFavorite, className }: Favor
 	const [favorite, setSavedFavorite] = useState(initialFavorite);
 	const [pending, startTransition] = useTransition();
 	const [error, setError] = useState<string | null>(null);
+	const adjustCount = useAdjustFavoritesCount();
 
 	useEffect(() => {
 		if (!error) {
@@ -31,6 +33,7 @@ export function FavoriteButton({ propertyId, initialFavorite, className }: Favor
 					setError(result.error);
 				} else {
 					setSavedFavorite(next);
+					adjustCount(next ? 1 : -1);
 				}
 			});
 		});

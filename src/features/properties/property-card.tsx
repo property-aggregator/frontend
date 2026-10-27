@@ -7,8 +7,12 @@ import { cn } from "@/lib/utils";
 
 const priceFormat = new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN", maximumFractionDigits: 0 });
 
+function fullAddress(property: Property): string {
+	return [property.street, property.district, property.city, property.province].filter(Boolean).join(", ");
+}
+
 export function PropertyCard({ property, className }: { property: Property; className?: string }) {
-	const location = [property.district, property.city].filter(Boolean).join(", ");
+	const location = fullAddress(property);
 
 	return (
 		<a
@@ -33,7 +37,7 @@ export function PropertyCard({ property, className }: { property: Property; clas
 					{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
 				</span>
 			</div>
-			<div className="p-5">
+			<div className="px-5 pt-5 pb-3">
 				<h4 className="truncate text-[17px] font-medium" title={property.title}>
 					{property.title}
 				</h4>
@@ -41,10 +45,15 @@ export function PropertyCard({ property, className }: { property: Property; clas
 					{location && (
 						<>
 							<Icon icon={MapPin} className="text-[16px] text-muted" />
-							<span className="truncate">{location}</span>
+							<span className="truncate" title={location}>
+								{location}
+							</span>
 						</>
 					)}
 				</div>
+				<p className="mt-1.5 text-[12px] text-body">
+					<TimeAgo label="Dodano" date={property.firstSeenAt} />
+				</p>
 			</div>
 			<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-[13px]">
 				{property.areaM2 !== null && (
@@ -131,7 +140,7 @@ function floorText(floor: string): string {
 }
 
 export function PropertyListItem({ property, favorite }: { property: Property; favorite?: boolean }) {
-	const address = [property.street, property.district, property.city, property.province].filter(Boolean).join(", ");
+	const address = fullAddress(property);
 	const badge = property.archivedAt ? "Archiwalna" : isNew(property) ? "Nowość" : null;
 
 	return (
@@ -239,7 +248,7 @@ export function PropertyGridSkeleton({ count = 6, className }: { count?: number;
 	return (
 		<div className={cn("grid gap-7 sm:grid-cols-2 lg:grid-cols-3", className)} aria-hidden="true">
 			{Array.from({ length: count }, (_, index) => (
-				<div key={index} className="h-[330px] animate-pulse rounded-xl bg-white" />
+				<div key={index} className="h-[347px] animate-pulse rounded-xl bg-white" />
 			))}
 		</div>
 	);
