@@ -2,7 +2,7 @@ import heroPhoto from "@/assets/landing/hero.webp";
 import { BrandName } from "@/components/logo";
 import { routes } from "@/lib/routes";
 import { site } from "@/lib/site";
-import { BackgroundPhoto } from "./background-photo";
+import { BackgroundPhoto } from "@/components/background-photo";
 import { WordRotator } from "./word-rotator";
 
 export function Hero() {
