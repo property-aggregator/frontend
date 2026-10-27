@@ -1,17 +1,22 @@
 "use client";
 
-import { LogOut, UserRound } from "lucide-react";
+import { Heart, LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/icon";
 import { BrandName, LogoMark } from "@/components/logo";
+import { FavoritesCountBadge } from "@/features/favorites/favorites-count";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 const navItems = [
 	{ href: routes.properties, label: "Start", className: "hidden sm:block" },
 	{ href: routes.search, label: "Szukaj" },
-	{ href: routes.favorites, label: "Ulubione" },
+];
+
+const iconLinks = [
+	{ href: routes.favorites, label: "Ulubione", icon: Heart },
+	{ href: routes.account, label: "Konto", icon: UserRound },
 ];
 
 export function AppHeader() {
@@ -39,15 +44,19 @@ export function AppHeader() {
 					))}
 				</nav>
 				<div className="flex items-center gap-2">
-					<Link
-						href={routes.account}
-						className="btn btn-sm btn-soft px-3"
-						aria-label="Konto"
-						title="Konto"
-						aria-current={pathname === routes.account ? "page" : undefined}
-					>
-						<Icon icon={UserRound} className="text-[18px]" />
-					</Link>
+					{iconLinks.map(({ href, label, icon }) => (
+						<Link
+							key={href}
+							href={href}
+							className="btn btn-sm btn-soft relative px-3"
+							aria-label={label}
+							title={label}
+							aria-current={pathname === href ? "page" : undefined}
+						>
+							<Icon icon={icon} className="text-[18px]" />
+							{href === routes.favorites && <FavoritesCountBadge />}
+						</Link>
+					))}
 					{/* Plain <a>: logout is an Auth0 route handler, so Link must not prefetch it. */}
 					<a href={routes.logout} className="btn btn-sm btn-soft" aria-label="Wyloguj się">
 						<Icon icon={LogOut} className="text-[18px]" />
