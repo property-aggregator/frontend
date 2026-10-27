@@ -4,6 +4,7 @@ import Link from "next/link";
 import { unstable_rethrow } from "next/navigation";
 import { Suspense } from "react";
 import { Icon } from "@/components/icon";
+import { getFavoriteIds } from "@/features/favorites/api";
 import { searchProperties, type PagedProperties } from "@/features/properties/api";
 import { PropertyListItem, PropertyListSkeleton } from "@/features/properties/property-card";
 import { FiltersPanel } from "@/features/properties/filters-panel";
@@ -86,21 +87,31 @@ function ResultsSkeleton() {
 	);
 }
 
-async function Results({ filters }: { filters: SearchFilters }) {
-	let result: PagedProperties | null = null;
-	let failure: string | null = null;
+async function loadFavoriteIds(): Promise<Set<string> | null> {
 	try {
-		result = await searchProperties(toApiQuery(filters));
+		return await getFavoriteIds();
+	} catch (error) {
+		unstable_rethrow(error);
+		console.error("Failed to load the favorite ids", error);
+		return null;
+	}
+}
+
+async function search(filters: SearchFilters): Promise<{ result: PagedProperties | null; failure: string | null }> {
+	try {
+		return { result: await searchProperties(toApiQuery(filters)), failure: null };
 	} catch (error) {
 		unstable_rethrow(error);
 		if (error instanceof ApiError && error.status === 400) {
-			failure = "Sprawdź filtry – np. wartość „do” nie może być mniejsza niż „od”.";
-		} else {
-			console.error("Failed to search properties", error);
-			failure = "Nie udało się pobrać ofert. Spróbuj ponownie za chwilę.";
+			return { result: null, failure: "Sprawdź filtry – np. wartość „do” nie może być mniejsza niż „od”." };
 		}
+		console.error("Failed to search properties", error);
+		return { result: null, failure: "Nie udało się pobrać ofert. Spróbuj ponownie za chwilę." };
 	}
+}
 
+async function Results({ filters }: { filters: SearchFilters }) {
+	const [{ result, failure }, favoriteIds] = await Promise.all([search(filters), loadFavoriteIds()]);
 	const totalCount = result?.totalCount ?? 0;
 
 	return (
@@ -139,7 +150,11 @@ async function Results({ filters }: { filters: SearchFilters }) {
 			) : (
 				<div className="grid gap-4">
 					{result.items.map((property) => (
-						<PropertyListItem key={property.id} property={property} />
+						<PropertyListItem
+							key={property.id}
+							property={property}
+							favorite={favoriteIds?.has(property.id)}
+						/>
 					))}
 				</div>
 			)}
