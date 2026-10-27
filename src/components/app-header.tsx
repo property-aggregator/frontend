@@ -1,6 +1,6 @@
 "use client";
 
-import { LogOut } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Icon } from "@/components/icon";
@@ -38,11 +38,22 @@ export function AppHeader() {
 						</Link>
 					))}
 				</nav>
-				{/* Plain <a>: logout is an Auth0 route handler, so Link must not prefetch it. */}
-				<a href={routes.logout} className="btn btn-sm btn-soft" aria-label="Wyloguj się">
-					<Icon icon={LogOut} className="text-[18px]" />
-					<span className="hidden md:inline">Wyloguj</span>
-				</a>
+				<div className="flex items-center gap-2">
+					<Link
+						href={routes.account}
+						className="btn btn-sm btn-soft px-3"
+						aria-label="Konto"
+						title="Konto"
+						aria-current={pathname === routes.account ? "page" : undefined}
+					>
+						<Icon icon={UserRound} className="text-[18px]" />
+					</Link>
+					{/* Plain <a>: logout is an Auth0 route handler, so Link must not prefetch it. */}
+					<a href={routes.logout} className="btn btn-sm btn-soft" aria-label="Wyloguj się">
+						<Icon icon={LogOut} className="text-[18px]" />
+						<span className="hidden md:inline">Wyloguj</span>
+					</a>
+				</div>
 			</div>
 		</header>
 	);
