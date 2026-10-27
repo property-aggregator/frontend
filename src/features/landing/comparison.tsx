@@ -14,7 +14,7 @@ import {
 import photo from "@/assets/landing/comparison.webp";
 import { Icon } from "@/components/icon";
 import { BrandName } from "@/components/logo";
-import { BackgroundPhoto } from "./background-photo";
+import { BackgroundPhoto } from "@/components/background-photo";
 
 type Item = { icon: LucideIcon; title: string; text: string };
 
