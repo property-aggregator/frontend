@@ -3,7 +3,7 @@ import processPhoto from "@/assets/landing/process.webp";
 import { Icon } from "@/components/icon";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { BackgroundPhoto } from "./background-photo";
+import { BackgroundPhoto } from "@/components/background-photo";
 
 const steps = [
 	"Ustawiasz kryteria: lokalizację, metraż i budżet.",

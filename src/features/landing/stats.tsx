@@ -1,5 +1,5 @@
 import statsPhoto from "@/assets/landing/stats.webp";
-import { BackgroundPhoto } from "./background-photo";
+import { BackgroundPhoto } from "@/components/background-photo";
 import { CountUp } from "./count-up";
 
 const stats = [
