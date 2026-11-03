@@ -14,7 +14,7 @@ export const propertyTypeLabels: Record<Schemas["PropertyType"], string> = {
 };
 export const marketLabels: Record<Schemas["MarketType"], string> = { primary: "Pierwotny", secondary: "Wtórny" };
 export const statusLabels = { active: "Aktywne", archived: "Archiwalne" } as const;
-export const sortLabels: Record<NonNullable<Schemas["PropertySort"]>, string> = {
+export const sortLabels: Record<Schemas["PropertySort"], string> = {
 	newest: "Najnowsze",
 	priceAscending: "Cena: od najniższej",
 	priceDescending: "Cena: od najwyższej",

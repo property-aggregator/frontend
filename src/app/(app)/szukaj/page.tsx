@@ -158,7 +158,13 @@ async function Results({ filters }: { filters: SearchFilters }) {
 					))}
 				</div>
 			)}
-			{result && <Pagination filters={filters} page={result.page} totalPages={result.totalPages} />}
+			{result && (
+				<Pagination
+					filters={filters}
+					page={result.page}
+					totalPages={result.totalPages ?? Math.ceil(result.totalCount / result.pageSize)}
+				/>
+			)}
 		</>
 	);
 }
