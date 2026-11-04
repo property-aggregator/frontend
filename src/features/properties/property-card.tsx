@@ -1,4 +1,4 @@
-import { BedDouble, House, Layers, MapPin, Scaling } from "lucide-react";
+import { BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import { Icon } from "@/components/icon";
 import { FavoriteButton } from "@/features/favorites/favorite-button";
@@ -20,7 +20,7 @@ export function PropertyCard({ property, className }: { property: Property; clas
 			target="_blank"
 			rel="noopener noreferrer"
 			className={cn(
-				"flex h-full flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-slate",
+				"flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-md",
 				className,
 			)}
 		>
@@ -38,9 +38,7 @@ export function PropertyCard({ property, className }: { property: Property; clas
 				</span>
 			</div>
 			<div className="px-5 pt-5 pb-3">
-				<h4 className="truncate text-[17px] font-medium" title={property.title}>
-					{property.title}
-				</h4>
+				<h4 className="truncate text-[17px] font-medium">{property.title}</h4>
 				<div className="flex h-5 items-center gap-1 text-[13px]">
 					{location && (
 						<>
@@ -144,7 +142,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 	const badge = property.archivedAt ? "Archiwalna" : isNew(property) ? "Nowość" : null;
 
 	return (
-		<article className="relative flex flex-col overflow-hidden rounded-xl border border-line bg-white transition-colors hover:border-slate sm:flex-row">
+		<article className="relative flex flex-col overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-md sm:flex-row">
 			<div className="relative aspect-[4/3] shrink-0 bg-mist sm:w-[340px]">
 				{property.mainImageUrl ? (
 					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
@@ -174,11 +172,18 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 							<span className="text-[13px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
 					</p>
-					<span className="head mt-1.5 shrink-0 rounded border border-line bg-mist px-2 py-0.5 text-[12px] font-semibold">
+					<a
+						href={property.sourceUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						title={`Otwórz ogłoszenie w serwisie ${property.sourcePortal}`}
+						className="head relative z-10 mt-1.5 flex shrink-0 items-center gap-1 rounded bg-mist px-2 py-0.5 text-[12px] font-semibold transition-colors hover:bg-line"
+					>
 						{property.sourcePortal}
-					</span>
+						<Icon icon={SquareArrowOutUpRight} className="text-[16px]" />
+					</a>
 				</div>
-				<h3 className="mt-1.5 line-clamp-2 text-[18px] leading-snug font-medium" title={property.title}>
+				<h3 className="mt-1.5 line-clamp-2 text-[18px] leading-snug font-medium">
 					<a
 						href={property.sourceUrl}
 						target="_blank"

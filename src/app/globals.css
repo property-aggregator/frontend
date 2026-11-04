@@ -108,7 +108,7 @@
 	}
 
 	.btn-soft:hover {
-		box-shadow: inset 0 0 0 1px var(--color-ink);
+		background: var(--color-line);
 	}
 
 	.btn-light {
@@ -172,7 +172,8 @@
 		outline: none;
 	}
 
-	.field:focus {
+	.field:focus,
+	.field[aria-expanded="true"] {
 		border-color: var(--color-slate);
 		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-slate) 20%, transparent);
 	}

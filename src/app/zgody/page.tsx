@@ -14,7 +14,7 @@ type ConsentsPageProps = { searchParams: Promise<{ returnTo?: string | string[] 
 export default function ConsentsPage({ searchParams }: ConsentsPageProps) {
 	return (
 		<main className="grid min-h-screen place-items-center bg-mist px-6 py-12">
-			<div className="w-full max-w-[520px] rounded-xl border border-line bg-white p-8 md:p-10">
+			<div className="w-full max-w-[520px] rounded-xl bg-white p-8 md:p-10">
 				<LogoMark />
 				<h1 className="title mt-6 text-[28px]">Zanim zaczniesz</h1>
 				<p className="mt-3">

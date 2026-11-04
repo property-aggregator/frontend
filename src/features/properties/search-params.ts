@@ -13,12 +13,19 @@ export const propertyTypeLabels: Record<Schemas["PropertyType"], string> = {
 	plot: "Działka",
 };
 export const marketLabels: Record<Schemas["MarketType"], string> = { primary: "Pierwotny", secondary: "Wtórny" };
-export const statusLabels = { active: "Aktywne", archived: "Archiwalne" } as const;
-export const sortLabels: Record<NonNullable<Schemas["PropertySort"]>, string> = {
+export const statusLabels = { active: "Aktywne", archived: "Archiwalne", all: "Wszystkie" } as const;
+export const sortLabels: Record<Schemas["PropertySort"], string> = {
 	newest: "Najnowsze",
 	priceAscending: "Cena: od najniższej",
 	priceDescending: "Cena: od najwyższej",
 };
+
+// Left out of the URL and not counted as active filters.
+export const defaultFilters = { status: "active", sort: "newest" } as const;
+
+export function isDefaultFilter(key: string, value: unknown): boolean {
+	return defaultFilters[key as keyof typeof defaultFilters] === value;
+}
 
 function keys<T extends string>(labels: Record<T, string>) {
 	return Object.keys(labels) as [T, ...T[]];
@@ -35,20 +42,22 @@ const amount = z.preprocess(blankToUndefined, z.coerce.number().nonnegative().op
 const count = z.preprocess(blankToUndefined, z.coerce.number().int().nonnegative().optional()).catch(undefined);
 const oneOf = <T extends string>(labels: Record<T, string>) =>
 	z.preprocess(blankToUndefined, z.enum(keys(labels)).optional()).catch(undefined);
+const oneOfWithDefault = <T extends string>(labels: Record<T, string>, fallback: NoInfer<T>) =>
+	oneOf(labels).transform((value) => value ?? fallback);
 
 const searchFiltersSchema = z.object({
 	location: text,
 	transaction: oneOf(transactionLabels),
 	type: oneOf(propertyTypeLabels),
 	market: oneOf(marketLabels),
-	status: oneOf(statusLabels),
+	status: oneOfWithDefault(statusLabels, defaultFilters.status),
 	minPrice: amount,
 	maxPrice: amount,
 	minArea: amount,
 	maxArea: amount,
 	minRooms: count,
 	maxRooms: count,
-	sort: oneOf(sortLabels),
+	sort: oneOfWithDefault(sortLabels, defaultFilters.sort),
 	page: z.preprocess(blankToUndefined, z.coerce.number().int().min(1).optional()).catch(undefined),
 });
 
@@ -70,7 +79,7 @@ export function toApiQuery(filters: SearchFilters): PropertySearchQuery {
 		TransactionType: enumValue(filters.transaction),
 		PropertyType: enumValue(filters.type),
 		MarketType: enumValue(filters.market),
-		IsArchived: filters.status === undefined ? undefined : filters.status === "archived",
+		IsArchived: filters.status === "all" ? undefined : filters.status === "archived",
 		MinPrice: filters.minPrice,
 		MaxPrice: filters.maxPrice,
 		MinAreaM2: filters.minArea,
@@ -86,7 +95,7 @@ export function toApiQuery(filters: SearchFilters): PropertySearchQuery {
 export function toSearchParams(filters: SearchFilters): URLSearchParams {
 	const params = new URLSearchParams();
 	for (const [key, value] of Object.entries(filters)) {
-		if (value !== undefined) {
+		if (value !== undefined && !isDefaultFilter(key, value)) {
 			params.set(key, String(value));
 		}
 	}

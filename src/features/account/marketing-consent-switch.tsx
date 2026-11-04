@@ -44,7 +44,7 @@ export function MarketingConsentSwitch({ initialGranted }: { initialGranted: boo
 					onClick={toggle}
 					disabled={pending}
 					className={cn(
-						"relative mt-1 h-7 w-12 shrink-0 cursor-pointer rounded-full transition-colors disabled:cursor-default disabled:opacity-50",
+						"relative mt-1 h-7 w-12 shrink-0 cursor-pointer rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50",
 						granted ? "bg-slate" : "bg-line",
 					)}
 				>

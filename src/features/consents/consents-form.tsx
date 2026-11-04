@@ -51,7 +51,11 @@ export function ConsentsForm({ returnTo }: { returnTo: string }) {
 				</p>
 			)}
 
-			<button type="submit" disabled={pending} className="btn btn-primary w-full disabled:opacity-60">
+			<button
+				type="submit"
+				disabled={pending}
+				className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
+			>
 				Zapisz i przejdź dalej
 			</button>
 		</form>

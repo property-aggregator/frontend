@@ -246,7 +246,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["AcceptConsentsRequest"];
+                    "application/json": components["schemas"]["AcceptConsentsCommand"];
                 };
             };
             responses: {
@@ -263,7 +263,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
                     };
                 };
                 /** @description Missing, invalid or expired access token. */
@@ -300,7 +300,7 @@ export interface paths {
             };
             requestBody: {
                 content: {
-                    "application/json": components["schemas"]["SetMarketingConsentRequest"];
+                    "application/json": components["schemas"]["SetMarketingConsentCommand"];
                 };
             };
             responses: {
@@ -559,7 +559,7 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
-        AcceptConsentsRequest: {
+        AcceptConsentsCommand: {
             acceptTerms: boolean;
             marketingConsent: boolean;
         };
@@ -581,13 +581,13 @@ export interface components {
             instance?: null | string;
             /** @description Field name (camelCase) mapped to the error codes found for that field. */
             errors?: {
-                [key: string]: ("out_of_range" | "too_long" | "invalid_value" | "max_less_than_min")[];
+                [key: string]: ("out_of_range" | "too_long" | "invalid_value" | "max_less_than_min" | "terms_must_be_accepted")[];
             };
             /**
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.
              * @enum {string}
              */
-            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_must_be_accepted" | "terms_not_accepted";
+            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted";
             /** @description Correlation id of the request; quote it when reporting a problem. */
             traceId: string;
         };
@@ -602,7 +602,7 @@ export interface components {
             /** Format: int32 */
             totalCount: number;
             /** Format: int32 */
-            totalPages: number;
+            totalPages?: number;
         };
         ProblemDetails: {
             type?: null | string;
@@ -615,7 +615,7 @@ export interface components {
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.
              * @enum {string}
              */
-            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_must_be_accepted" | "terms_not_accepted";
+            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted";
             /** @description Correlation id of the request; quote it when reporting a problem. */
             traceId: string;
         };
@@ -657,12 +657,12 @@ export interface components {
             archivedAt: null | string;
         };
         /** @enum {unknown} */
-        PropertySort: "newest" | "priceAscending" | "priceDescending" | null;
+        PropertySort: "newest" | "priceAscending" | "priceDescending";
         /** @enum {unknown} */
         PropertyType: "apartment" | "house" | "plot";
         /** @enum {unknown} */
         SellerType: "agency" | "private" | "developer" | null;
-        SetMarketingConsentRequest: {
+        SetMarketingConsentCommand: {
             granted: boolean;
         };
         /** @enum {unknown} */

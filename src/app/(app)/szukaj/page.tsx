@@ -10,6 +10,7 @@ import { PropertyListItem, PropertyListSkeleton } from "@/features/properties/pr
 import { FiltersPanel } from "@/features/properties/filters-panel";
 import { FiltersForm, SortSelect } from "@/features/properties/search-form";
 import {
+	isDefaultFilter,
 	parseSearchFilters,
 	toApiQuery,
 	toSearchParams,
@@ -47,7 +48,7 @@ async function SearchView({ searchParams }: SearchPageProps) {
 	const filters = parseSearchFilters(await searchParams);
 	const query = toSearchParams(filters).toString();
 	const activeCount = Object.entries(filters).filter(
-		([key, value]) => key !== "sort" && key !== "page" && value !== undefined,
+		([key, value]) => key !== "sort" && key !== "page" && value !== undefined && !isDefaultFilter(key, value),
 	).length;
 
 	return (
@@ -158,7 +159,13 @@ async function Results({ filters }: { filters: SearchFilters }) {
 					))}
 				</div>
 			)}
-			{result && <Pagination filters={filters} page={result.page} totalPages={result.totalPages} />}
+			{result && (
+				<Pagination
+					filters={filters}
+					page={result.page}
+					totalPages={result.totalPages ?? Math.ceil(result.totalCount / result.pageSize)}
+				/>
+			)}
 		</>
 	);
 }
@@ -203,8 +210,8 @@ type PageLinkProps = {
 function PageLink({ filters, page, current, disabled, label, children }: PageLinkProps) {
 	const className = cn(
 		"head grid h-10 min-w-10 place-items-center rounded-md border px-2 text-[14px] font-semibold",
-		current ? "border-slate bg-slate text-white" : "border-line bg-white hover:border-ink",
-		disabled && "pointer-events-none opacity-40",
+		current ? "border-slate bg-slate text-white" : "border-line bg-white",
+		disabled ? "cursor-not-allowed opacity-40" : !current && "hover:bg-line",
 	);
 
 	if (disabled) {
