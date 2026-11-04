@@ -11,6 +11,8 @@ import { cn } from "@/lib/utils";
 import {
 	marketLabels,
 	propertyTypeLabels,
+	defaultFilters,
+	isDefaultFilter,
 	sortLabels,
 	statusLabels,
 	toSearchParams,
@@ -26,7 +28,7 @@ function useSubmitSearch() {
 		event.preventDefault();
 		const params = new URLSearchParams();
 		for (const [key, value] of new FormData(event.currentTarget)) {
-			if (typeof value === "string" && value.trim() !== "") {
+			if (typeof value === "string" && value.trim() !== "" && !isDefaultFilter(key, value)) {
 				params.set(key, value.trim());
 			}
 		}
@@ -69,17 +71,11 @@ export function HeroSearchForm() {
 			</Field>
 			<Field label="Status oferty">
 				{(labelId) => (
-					<Select
-						labelId={labelId}
-						name="status"
-						options={statusLabels}
-						placeholder="Wszystkie"
-						value="active"
-					/>
+					<Select labelId={labelId} name="status" options={statusLabels} value={defaultFilters.status} />
 				)}
 			</Field>
 			<Field label="Sortowanie">
-				{(labelId) => <Select labelId={labelId} name="sort" options={sortLabels} placeholder="Domyślne" />}
+				{(labelId) => <Select labelId={labelId} name="sort" options={sortLabels} value={defaultFilters.sort} />}
 			</Field>
 			<button type="submit" className="btn btn-slate self-end md:col-span-2">
 				<Icon icon={Search} className="text-[18px]" />
@@ -132,15 +128,7 @@ export function FiltersForm({ filters }: { filters: SearchFilters }) {
 				)}
 			</Field>
 			<Field label="Status oferty">
-				{(labelId) => (
-					<Select
-						labelId={labelId}
-						name="status"
-						options={statusLabels}
-						placeholder="Wszystkie"
-						value={filters.status}
-					/>
-				)}
+				{(labelId) => <Select labelId={labelId} name="status" options={statusLabels} value={filters.status} />}
 			</Field>
 			<Range
 				label="Cena (zł)"
@@ -189,10 +177,10 @@ export function SortSelect({ filters }: { filters: SearchFilters }) {
 				labelId={labelId}
 				variant="inline"
 				align="right"
-				options={toOptions(sortLabels, "Domyślnie")}
+				options={toOptions(sortLabels)}
 				defaultValue={filters.sort}
 				onChange={(value) => {
-					const sort = (value || undefined) as SearchFilters["sort"];
+					const sort = value as SearchFilters["sort"];
 					router.push(`${routes.search}?${toSearchParams({ ...filters, sort, page: undefined })}`);
 				}}
 				trigger={(selectedLabel, open) => (
@@ -242,15 +230,16 @@ function Field({ label, className, children }: FieldProps) {
 	);
 }
 
-function toOptions(labels: Record<string, string>, placeholder: string): DropdownOption[] {
-	return [{ value: "", label: placeholder }, ...Object.entries(labels).map(([value, label]) => ({ value, label }))];
+function toOptions(labels: Record<string, string>, placeholder?: string): DropdownOption[] {
+	const options = Object.entries(labels).map(([value, label]) => ({ value, label }));
+	return placeholder === undefined ? options : [{ value: "", label: placeholder }, ...options];
 }
 
 type SelectProps = {
 	labelId: string;
 	name: string;
 	options: Record<string, string>;
-	placeholder: string;
+	placeholder?: string;
 	value?: string;
 };
 

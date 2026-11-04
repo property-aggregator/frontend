@@ -10,6 +10,7 @@ import { PropertyListItem, PropertyListSkeleton } from "@/features/properties/pr
 import { FiltersPanel } from "@/features/properties/filters-panel";
 import { FiltersForm, SortSelect } from "@/features/properties/search-form";
 import {
+	isDefaultFilter,
 	parseSearchFilters,
 	toApiQuery,
 	toSearchParams,
@@ -47,7 +48,7 @@ async function SearchView({ searchParams }: SearchPageProps) {
 	const filters = parseSearchFilters(await searchParams);
 	const query = toSearchParams(filters).toString();
 	const activeCount = Object.entries(filters).filter(
-		([key, value]) => key !== "sort" && key !== "page" && value !== undefined,
+		([key, value]) => key !== "sort" && key !== "page" && value !== undefined && !isDefaultFilter(key, value),
 	).length;
 
 	return (
