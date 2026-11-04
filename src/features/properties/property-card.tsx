@@ -1,4 +1,4 @@
-import { BedDouble, House, Layers, MapPin, Scaling } from "lucide-react";
+import { BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import { Icon } from "@/components/icon";
 import { FavoriteButton } from "@/features/favorites/favorite-button";
@@ -174,9 +174,16 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 							<span className="text-[13px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
 					</p>
-					<span className="head mt-1.5 shrink-0 rounded border border-line bg-mist px-2 py-0.5 text-[12px] font-semibold">
+					<a
+						href={property.sourceUrl}
+						target="_blank"
+						rel="noopener noreferrer"
+						title={`Otwórz ogłoszenie w serwisie ${property.sourcePortal}`}
+						className="head relative z-10 mt-1.5 flex shrink-0 items-center gap-1 rounded border border-line bg-mist px-2 py-0.5 text-[12px] font-semibold transition-colors hover:border-slate"
+					>
 						{property.sourcePortal}
-					</span>
+						<Icon icon={SquareArrowOutUpRight} className="text-[16px]" />
+					</a>
 				</div>
 				<h3 className="mt-1.5 line-clamp-2 text-[18px] leading-snug font-medium" title={property.title}>
 					<a
