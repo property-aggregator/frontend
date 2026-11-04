@@ -58,7 +58,7 @@ export function FiltersPanel({ activeCount = 0, variant = "card", button = "filt
 				className={cn(
 					open ? "fixed inset-0 z-[60] flex flex-col bg-white" : "hidden",
 					"lg:static lg:z-auto lg:block",
-					card && "lg:rounded-xl lg:border lg:border-line lg:bg-white lg:p-5",
+					card && "lg:rounded-xl lg:bg-white lg:p-5",
 				)}
 			>
 				<div

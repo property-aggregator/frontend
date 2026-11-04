@@ -12,7 +12,7 @@ export default function AccountPage() {
 		<main>
 			<div className="mx-auto max-w-[1000px] px-6 py-10">
 				<h1 className="title text-[24px] lg:text-[28px]">Konto</h1>
-				<section className="mt-6 rounded-xl border border-line bg-white p-6 md:p-8">
+				<section className="mt-6 rounded-xl bg-white p-6 md:p-8">
 					<h2 className="head text-[20px] font-semibold">Zgody</h2>
 					<div className="mt-5 border-t border-line pt-5">
 						<Suspense fallback={<div className="h-24 animate-pulse rounded-lg bg-mist" />}>

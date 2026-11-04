@@ -49,7 +49,7 @@ export function FavoriteButton({ propertyId, initialFavorite, className }: Favor
 				aria-pressed={favorite}
 				aria-label={favorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
 				title={favorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
-				className="grid h-11 w-11 cursor-pointer place-items-center text-ink transition-colors hover:text-pastel-red disabled:cursor-default disabled:opacity-50"
+				className="grid h-11 w-11 cursor-pointer place-items-center text-ink transition-colors hover:text-pastel-red disabled:cursor-not-allowed disabled:opacity-50"
 			>
 				<Icon icon={Heart} className={cn("text-[28px]", favorite && "fill-current text-pastel-red")} />
 			</button>

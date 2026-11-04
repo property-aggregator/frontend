@@ -75,7 +75,7 @@ export function Comparison() {
 					</p>
 				</div>
 				<div className="mt-12 grid gap-7 md:grid-cols-2">
-					<div className="reveal rounded-xl border border-line bg-white p-8 md:p-10">
+					<div className="reveal rounded-xl bg-white p-8 md:p-10">
 						<div className="flex items-center gap-4">
 							<span className="grid h-12 w-12 place-items-center rounded-xl bg-mist text-body">
 								<Icon icon={X} />
