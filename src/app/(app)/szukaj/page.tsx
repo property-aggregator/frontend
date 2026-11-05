@@ -67,7 +67,7 @@ async function Filters({ filters, query }: { filters: SearchFilters; query: stri
 	const activeCount =
 		Object.entries(filters).filter(
 			([key, value]) =>
-				!["sort", "page", "locationId", "district"].includes(key) &&
+				!["sort", "page", "locationId", "district", "radius"].includes(key) &&
 				value !== undefined &&
 				!isDefaultFilter(key, value),
 		).length + (filters.locationId ? 1 : 0);
