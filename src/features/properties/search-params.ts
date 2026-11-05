@@ -5,6 +5,17 @@ import type { PropertySearchQuery } from "./api";
 type Schemas = components["schemas"];
 
 export const PAGE_SIZE = 20;
+export const LOCATION_QUERY_MIN_LENGTH = 2;
+export const LOCATION_QUERY_MAX_LENGTH = 100;
+export const MAX_DISTRICTS = 25;
+
+export const locationTypeLabels: Record<Schemas["LocationType"], string> = {
+	voivodeship: "województwo",
+	county: "powiat",
+	municipality: "gmina",
+	locality: "miejscowość",
+	district: "dzielnica",
+};
 
 export const transactionLabels: Record<Schemas["TransactionType"], string> = { sale: "Sprzedaż", rent: "Wynajem" };
 export const propertyTypeLabels: Record<Schemas["PropertyType"], string> = {
@@ -37,7 +48,8 @@ const blankToUndefined = (value: unknown) => {
 	const single = first(value);
 	return typeof single === "string" && single.trim() === "" ? undefined : single;
 };
-const text = z.preprocess(blankToUndefined, z.string().trim().max(100).optional()).catch(undefined);
+const uuid = z.preprocess(blankToUndefined, z.uuid().optional()).catch(undefined);
+const uuids = (max: number) => z.preprocess((value) => [value ?? []].flat(), z.array(z.uuid()).max(max)).catch([]);
 const amount = z.preprocess(blankToUndefined, z.coerce.number().nonnegative().optional()).catch(undefined);
 const count = z.preprocess(blankToUndefined, z.coerce.number().int().nonnegative().optional()).catch(undefined);
 const oneOf = <T extends string>(labels: Record<T, string>) =>
@@ -46,7 +58,8 @@ const oneOfWithDefault = <T extends string>(labels: Record<T, string>, fallback:
 	oneOf(labels).transform((value) => value ?? fallback);
 
 const searchFiltersSchema = z.object({
-	location: text,
+	locationId: uuid,
+	district: uuids(MAX_DISTRICTS),
 	transaction: oneOf(transactionLabels),
 	type: oneOf(propertyTypeLabels),
 	market: oneOf(marketLabels),
@@ -75,7 +88,7 @@ function enumValue<T extends string>(value: T | undefined): T | undefined {
 
 export function toApiQuery(filters: SearchFilters): PropertySearchQuery {
 	return {
-		Location: filters.location,
+		LocationIds: locationIds(filters),
 		TransactionType: enumValue(filters.transaction),
 		PropertyType: enumValue(filters.type),
 		MarketType: enumValue(filters.market),
@@ -92,11 +105,21 @@ export function toApiQuery(filters: SearchFilters): PropertySearchQuery {
 	};
 }
 
+// The API matches any of the ids, so the locality itself would cancel out its districts.
+function locationIds({ locationId, district }: SearchFilters): string[] | undefined {
+	if (district.length > 0) {
+		return district;
+	}
+	return locationId ? [locationId] : undefined;
+}
+
 export function toSearchParams(filters: SearchFilters): URLSearchParams {
 	const params = new URLSearchParams();
 	for (const [key, value] of Object.entries(filters)) {
-		if (value !== undefined && !isDefaultFilter(key, value)) {
-			params.set(key, String(value));
+		for (const item of [value].flat()) {
+			if (item !== undefined && !isDefaultFilter(key, item)) {
+				params.append(key, String(item));
+			}
 		}
 	}
 	return params;

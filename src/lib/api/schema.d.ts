@@ -18,7 +18,7 @@ export interface paths {
                     TransactionType?: components["schemas"]["TransactionType"];
                     MarketType?: components["schemas"]["MarketType"];
                     IsArchived?: boolean;
-                    Location?: string;
+                    LocationIds?: string[];
                     MinPrice?: number;
                     MaxPrice?: number;
                     MinAreaM2?: number;
@@ -555,6 +555,202 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/locations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Locations by id
+         * @description Up to 26 locations, e.g. the locationIds of a search. Unknown ids are left out.
+         */
+        get: {
+            parameters: {
+                query: {
+                    Ids: string[];
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LocationResponse"][];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/locations/suggest": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Location suggestions
+         * @description Voivodeships, counties, municipalities, localities and districts matching the query. Localities come with their districts. Pass the returned ids as locationIds to /api/properties.
+         */
+        get: {
+            parameters: {
+                query: {
+                    Query: string;
+                    Limit?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LocationSuggestionResponse"][];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/locations/{id}/districts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Districts of a locality
+         * @description Sorted by name. Empty when the id is not a locality or the locality has no districts.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["LocationResponse"][];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -581,7 +777,7 @@ export interface components {
             instance?: null | string;
             /** @description Field name (camelCase) mapped to the error codes found for that field. */
             errors?: {
-                [key: string]: ("out_of_range" | "too_long" | "invalid_value" | "max_less_than_min" | "terms_must_be_accepted")[];
+                [key: string]: ("out_of_range" | "too_short" | "too_long" | "invalid_value" | "max_less_than_min" | "terms_must_be_accepted")[];
             };
             /**
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.
@@ -591,6 +787,27 @@ export interface components {
             /** @description Correlation id of the request; quote it when reporting a problem. */
             traceId: string;
         };
+        LocationResponse: {
+            /** Format: uuid */
+            id: string;
+            type: components["schemas"]["LocationType"];
+            name: string;
+            label: string;
+            /** Format: int32 */
+            offerCount: number;
+        };
+        LocationSuggestionResponse: {
+            /** Format: uuid */
+            id: string;
+            type: components["schemas"]["LocationType"];
+            name: string;
+            label: string;
+            /** Format: int32 */
+            offerCount: number;
+            districts: components["schemas"]["LocationResponse"][];
+        };
+        /** @enum {unknown} */
+        LocationType: "voivodeship" | "county" | "municipality" | "locality" | "district";
         /** @enum {unknown} */
         MarketType: "secondary" | "primary";
         PagedResponseOfPropertyResponse: {

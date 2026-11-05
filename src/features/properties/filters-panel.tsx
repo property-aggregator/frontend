@@ -38,7 +38,7 @@ export function FiltersPanel({ activeCount = 0, variant = "card", button = "filt
 			<button
 				type="button"
 				onClick={() => setOpen(true)}
-				className="head flex w-full cursor-pointer items-center justify-center gap-2 rounded-full border border-line bg-white py-2.5 text-[15px] font-semibold text-ink lg:hidden"
+				className="head flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-white py-2.5 text-[15px] font-semibold text-ink lg:hidden"
 			>
 				<Icon icon={button === "search" ? Search : SlidersHorizontal} className="text-[18px]" />
 				{button === "search" ? "Szukaj" : "Filtry"}
