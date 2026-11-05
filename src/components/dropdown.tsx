@@ -151,7 +151,7 @@ export function Dropdown({
 					aria-activedescendant={`${listId}-${active}`}
 					onKeyDown={onListKeyDown}
 					className={cn(
-						"scroll-thin absolute z-30 mt-1.5 max-h-72 min-w-full overflow-auto rounded-lg border border-line bg-white shadow-lg outline-none",
+						"scroll-thin absolute z-30 mt-1.5 max-h-72 min-w-full overflow-auto rounded border border-line bg-white shadow-lg outline-none",
 						align === "right" ? "right-0" : "left-0",
 					)}
 				>
@@ -166,7 +166,6 @@ export function Dropdown({
 							className={cn(
 								"flex cursor-pointer items-center justify-between gap-4 px-3.5 py-2.5 whitespace-nowrap text-ink",
 								index === active && "bg-mist",
-								index === selectedIndex && "font-semibold text-slate",
 							)}
 						>
 							{option.label}

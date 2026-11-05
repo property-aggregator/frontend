@@ -382,7 +382,7 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 						role="listbox"
 						aria-multiselectable="true"
 						aria-labelledby={labelId}
-						className="scroll-thin absolute top-full left-0 z-30 mt-1.5 max-h-80 w-full overflow-auto rounded-lg border border-line bg-white shadow-lg"
+						className="scroll-thin absolute top-full left-0 z-30 mt-1.5 max-h-80 w-full overflow-auto rounded border border-line bg-white shadow-lg"
 					>
 						{rows.map((row, index) => {
 							const { suggestion, district } = row;
@@ -436,7 +436,6 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 					</ul>
 				)}
 			</span>
-			{/* Voivodeships, counties and municipalities are too large for a radius to make sense. */}
 			{picked?.type === "locality" && (
 				<div className="w-[104px] shrink-0">
 					<span id={radiusLabelId} className="sr-only">
