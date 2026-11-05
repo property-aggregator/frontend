@@ -19,6 +19,7 @@ export interface paths {
                     MarketType?: components["schemas"]["MarketType"];
                     IsArchived?: boolean;
                     LocationIds?: string[];
+                    RadiusKm?: number;
                     MinPrice?: number;
                     MaxPrice?: number;
                     MinAreaM2?: number;
@@ -777,7 +778,7 @@ export interface components {
             instance?: null | string;
             /** @description Field name (camelCase) mapped to the error codes found for that field. */
             errors?: {
-                [key: string]: ("out_of_range" | "too_short" | "too_long" | "invalid_value" | "max_less_than_min" | "terms_must_be_accepted")[];
+                [key: string]: ("out_of_range" | "too_short" | "too_long" | "invalid_value" | "max_less_than_min" | "radius_requires_location" | "terms_must_be_accepted")[];
             };
             /**
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.

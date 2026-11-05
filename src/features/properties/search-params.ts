@@ -8,6 +8,8 @@ export const PAGE_SIZE = 20;
 export const LOCATION_QUERY_MIN_LENGTH = 2;
 export const LOCATION_QUERY_MAX_LENGTH = 100;
 export const MAX_DISTRICTS = 25;
+export const MAX_RADIUS_KM = 100;
+export const radiusOptions = [5, 10, 15, 25, 50, 75, MAX_RADIUS_KM];
 
 export const locationTypeLabels: Record<Schemas["LocationType"], string> = {
 	voivodeship: "województwo",
@@ -60,6 +62,9 @@ const oneOfWithDefault = <T extends string>(labels: Record<T, string>, fallback:
 const searchFiltersSchema = z.object({
 	locationId: uuid,
 	district: uuids(MAX_DISTRICTS),
+	radius: z
+		.preprocess(blankToUndefined, z.coerce.number().int().min(1).max(MAX_RADIUS_KM).optional())
+		.catch(undefined),
 	transaction: oneOf(transactionLabels),
 	type: oneOf(propertyTypeLabels),
 	market: oneOf(marketLabels),
@@ -89,6 +94,8 @@ function enumValue<T extends string>(value: T | undefined): T | undefined {
 export function toApiQuery(filters: SearchFilters): PropertySearchQuery {
 	return {
 		LocationIds: locationIds(filters),
+		// The API rejects a radius without a location.
+		RadiusKm: filters.locationId ? filters.radius : undefined,
 		TransactionType: enumValue(filters.transaction),
 		PropertyType: enumValue(filters.type),
 		MarketType: enumValue(filters.market),

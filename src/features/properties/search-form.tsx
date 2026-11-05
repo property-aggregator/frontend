@@ -16,6 +16,7 @@ import {
 	locationTypeLabels,
 	marketLabels,
 	propertyTypeLabels,
+	radiusOptions,
 	defaultFilters,
 	isDefaultFilter,
 	sortLabels,
@@ -104,6 +105,7 @@ export function FiltersForm({ filters, location }: FiltersFormProps) {
 						labelId={labelId}
 						selection={location}
 						selectedDistricts={filters.district}
+						radius={filters.radius}
 					/>
 				)}
 			</Field>
@@ -220,13 +222,15 @@ type LocationInputProps = {
 	labelId: string;
 	selection?: LocationSuggestion;
 	selectedDistricts?: string[];
+	radius?: number;
 };
 
 type Row = { suggestion: LocationSuggestion; district?: SearchLocation };
 
 /** Only a picked suggestion is searched for; text typed without picking one is ignored. */
-function LocationInput({ labelId, selection, selectedDistricts = [] }: LocationInputProps) {
+function LocationInput({ labelId, selection, selectedDistricts = [], radius }: LocationInputProps) {
 	const listId = useId();
+	const radiusLabelId = useId();
 	const [text, setText] = useState(selection ? describe(selection, selectedDistricts) : "");
 	const [picked, setPicked] = useState(selection);
 	const [checked, setChecked] = useState(selectedDistricts);
@@ -344,93 +348,114 @@ function LocationInput({ labelId, selection, selectedDistricts = [] }: LocationI
 	}
 
 	return (
-		<span className="relative block">
-			<input type="hidden" name="locationId" value={picked?.id ?? ""} />
-			{checked.map((id) => (
-				<input key={id} type="hidden" name="district" value={id} />
-			))}
-			<Icon icon={MapPin} className="absolute top-1/2 left-3.5 -translate-y-1/2 text-[18px] text-muted" />
-			<input
-				value={text}
-				onChange={(event) => onChange(event.target.value)}
-				onKeyDown={onKeyDown}
-				onFocus={(event) => {
-					setOpen(true);
-					if (picked) {
-						event.target.select();
-					}
-				}}
-				onBlur={() => setOpen(false)}
-				placeholder="Miasto, dzielnica lub gmina"
-				autoComplete="off"
-				role="combobox"
-				aria-autocomplete="list"
-				aria-expanded={expanded}
-				aria-controls={listId}
-				aria-activedescendant={expanded && active >= 0 ? `${listId}-${active}` : undefined}
-				aria-labelledby={labelId}
-				className="field truncate pl-10"
-			/>
-			{expanded && (
-				<ul
-					id={listId}
-					role="listbox"
-					aria-multiselectable="true"
+		<div className="flex gap-2">
+			<span className="relative block min-w-0 flex-1">
+				<input type="hidden" name="locationId" value={picked?.id ?? ""} />
+				{checked.map((id) => (
+					<input key={id} type="hidden" name="district" value={id} />
+				))}
+				<Icon icon={MapPin} className="absolute top-1/2 left-3.5 -translate-y-1/2 text-[18px] text-muted" />
+				<input
+					value={text}
+					onChange={(event) => onChange(event.target.value)}
+					onKeyDown={onKeyDown}
+					onFocus={(event) => {
+						setOpen(true);
+						if (picked) {
+							event.target.select();
+						}
+					}}
+					onBlur={() => setOpen(false)}
+					placeholder="Miasto, dzielnica lub gmina"
+					autoComplete="off"
+					role="combobox"
+					aria-autocomplete="list"
+					aria-expanded={expanded}
+					aria-controls={listId}
+					aria-activedescendant={expanded && active >= 0 ? `${listId}-${active}` : undefined}
 					aria-labelledby={labelId}
-					className="scroll-thin absolute top-full left-0 z-30 mt-1.5 max-h-80 w-full overflow-auto rounded-lg border border-line bg-white shadow-lg"
-				>
-					{rows.map((row, index) => {
-						const { suggestion, district } = row;
-						const location = district ?? suggestion;
-						const selected = isChecked(row);
-						const partly = !district && picked?.id === suggestion.id && checked.length > 0;
-						return (
-							<li
-								key={`${suggestion.id}-${district?.id ?? ""}`}
-								id={`${listId}-${index}`}
-								role="option"
-								aria-selected={selected}
-								// Keeps the focus in the input, so its blur does not close the list before the click.
-								onPointerDown={(event) => event.preventDefault()}
-								onClick={() => toggle(row)}
-								onPointerMove={() => setActive(index)}
-								className={cn(
-									"flex cursor-pointer items-center gap-3 py-2 pr-3.5 text-ink",
-									district ? "pl-10" : "pl-3.5",
-									index === active && "bg-mist",
-								)}
-							>
-								<span
+					className="field truncate pl-10"
+				/>
+				{expanded && (
+					<ul
+						id={listId}
+						role="listbox"
+						aria-multiselectable="true"
+						aria-labelledby={labelId}
+						className="scroll-thin absolute top-full left-0 z-30 mt-1.5 max-h-80 w-full overflow-auto rounded border border-line bg-white shadow-lg"
+					>
+						{rows.map((row, index) => {
+							const { suggestion, district } = row;
+							const location = district ?? suggestion;
+							const selected = isChecked(row);
+							const partly = !district && picked?.id === suggestion.id && checked.length > 0;
+							return (
+								<li
+									key={`${suggestion.id}-${district?.id ?? ""}`}
+									id={`${listId}-${index}`}
+									role="option"
+									aria-selected={selected}
+									// Keeps the focus in the input, so its blur does not close the list before the click.
+									onPointerDown={(event) => event.preventDefault()}
+									onClick={() => toggle(row)}
+									onPointerMove={() => setActive(index)}
 									className={cn(
-										"grid h-[18px] w-[18px] shrink-0 place-items-center rounded border",
-										selected || partly
-											? "border-slate bg-slate text-white"
-											: "border-line bg-white",
+										"flex cursor-pointer items-center gap-3 py-2 pr-3.5 text-ink",
+										district ? "pl-10" : "pl-3.5",
+										index === active && "bg-mist",
 									)}
 								>
-									{(selected || partly) && (
-										<Icon icon={partly ? Minus : Check} className="text-[14px]" />
-									)}
-								</span>
-								<span className="min-w-0 flex-1">
-									<span className={cn("block truncate", !district && "font-medium")}>
-										{district ? district.name : suggestion.label}
+									<span
+										className={cn(
+											"grid h-[18px] w-[18px] shrink-0 place-items-center rounded border",
+											selected || partly
+												? "border-slate bg-slate text-white"
+												: "border-line bg-white",
+										)}
+									>
+										{(selected || partly) && (
+											<Icon icon={partly ? Minus : Check} className="text-[14px]" />
+										)}
 									</span>
-									{!district && (
-										<span className="block text-[12px] text-muted">
-											{locationTypeLabels[suggestion.type]}
+									<span className="min-w-0 flex-1">
+										<span className={cn("block truncate", !district && "font-medium")}>
+											{district ? district.name : suggestion.label}
 										</span>
-									)}
-								</span>
-								<span className="shrink-0 text-[12px] text-muted tabular-nums">
-									{location.offerCount.toLocaleString("pl-PL")}
-								</span>
-							</li>
-						);
-					})}
-				</ul>
+										{!district && (
+											<span className="block text-[12px] text-muted">
+												{locationTypeLabels[suggestion.type]}
+											</span>
+										)}
+									</span>
+									<span className="shrink-0 text-[12px] text-muted tabular-nums">
+										{location.offerCount.toLocaleString("pl-PL")}
+									</span>
+								</li>
+							);
+						})}
+					</ul>
+				)}
+			</span>
+			{picked?.type === "locality" && (
+				<div className="w-[104px] shrink-0">
+					<span id={radiusLabelId} className="sr-only">
+						Promień
+					</span>
+					<Dropdown
+						// Another locality starts without a radius.
+						key={picked.id}
+						labelId={radiusLabelId}
+						name="radius"
+						align="right"
+						options={[
+							{ value: "", label: "+0 km" },
+							...radiusOptions.map((km) => ({ value: String(km), label: `+${km} km` })),
+						]}
+						defaultValue={picked.id === selection?.id && radius ? String(radius) : ""}
+					/>
+				</div>
 			)}
-		</span>
+		</div>
 	);
 }
 
