@@ -86,7 +86,7 @@ function FiltersSkeleton() {
 
 function SearchLayout({ aside, children }: { aside: React.ReactNode; children?: React.ReactNode }) {
 	return (
-		<div className="grid items-start gap-5 lg:grid-cols-[1fr_360px] lg:gap-8">
+		<div className="grid items-start gap-5 lg:grid-cols-[1fr_380px] lg:gap-3">
 			{/* Scrolls on its own when taller than the screen; a sticky element would otherwise hide its bottom. */}
 			<aside className="lg:sticky lg:top-[100px] lg:order-last lg:max-h-[calc(100vh-120px)] lg:overflow-y-auto">
 				{aside}
