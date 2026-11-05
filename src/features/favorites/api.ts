@@ -8,7 +8,6 @@ export async function getFavorites(): Promise<Property[]> {
 	return unwrap(await api.GET("/api/favorites"));
 }
 
-/** Lightweight list for marking favorites on property cards. */
 export async function getFavoriteIds(): Promise<Set<string>> {
 	const api = await authedApi();
 	return new Set(unwrap(await api.GET("/api/favorites/ids")));
