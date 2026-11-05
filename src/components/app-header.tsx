@@ -25,7 +25,7 @@ export function AppHeader() {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	return (
-		<header className="sticky top-0 z-50 border-b border-line bg-white">
+		<header className="sticky top-0 z-50 bg-white shadow-[0_2px_12px_rgb(23_38_46/0.1)]">
 			<div className="mx-auto flex h-[76px] max-w-[1360px] items-center justify-between gap-4 px-6 sm:gap-6">
 				<Link href={routes.properties} className="flex items-center gap-2.5">
 					<LogoMark />

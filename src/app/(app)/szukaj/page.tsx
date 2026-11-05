@@ -250,8 +250,8 @@ type PageLinkProps = {
 
 function PageLink({ filters, page, current, disabled, label, children }: PageLinkProps) {
 	const className = cn(
-		"head grid h-10 min-w-10 place-items-center rounded-md border px-2 text-[14px] font-semibold",
-		current ? "border-slate bg-slate text-white" : "border-line bg-white",
+		"head grid h-10 min-w-10 place-items-center rounded-md px-2 text-[14px] font-semibold",
+		current ? "bg-slate text-white" : "bg-white",
 		disabled ? "cursor-not-allowed opacity-40" : !current && "hover:bg-line",
 	);
 
