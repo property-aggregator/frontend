@@ -5,7 +5,13 @@ import { unstable_rethrow } from "next/navigation";
 import { Suspense } from "react";
 import { Icon } from "@/components/icon";
 import { getFavoriteIds } from "@/features/favorites/api";
-import { searchProperties, type PagedProperties } from "@/features/properties/api";
+import {
+	getDistricts,
+	getLocations,
+	searchProperties,
+	type LocationSuggestion,
+	type PagedProperties,
+} from "@/features/properties/api";
 import { PropertyListItem, PropertyListSkeleton } from "@/features/properties/property-card";
 import { FiltersPanel } from "@/features/properties/filters-panel";
 import { FiltersForm, SortSelect } from "@/features/properties/search-form";
@@ -28,15 +34,7 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
 	return (
 		<main>
 			<div className="mx-auto max-w-[1360px] px-6 py-10">
-				<Suspense
-					fallback={
-						<SearchLayout
-							aside={
-								<div className="h-11 animate-pulse rounded-full bg-white lg:h-[640px] lg:rounded-xl" />
-							}
-						/>
-					}
-				>
+				<Suspense fallback={<SearchLayout aside={<FiltersSkeleton />} />}>
 					<SearchView searchParams={searchParams} />
 				</Suspense>
 			</div>
@@ -47,17 +45,13 @@ export default function SearchPage({ searchParams }: SearchPageProps) {
 async function SearchView({ searchParams }: SearchPageProps) {
 	const filters = parseSearchFilters(await searchParams);
 	const query = toSearchParams(filters).toString();
-	const activeCount = Object.entries(filters).filter(
-		([key, value]) => key !== "sort" && key !== "page" && value !== undefined && !isDefaultFilter(key, value),
-	).length;
 
 	return (
 		<SearchLayout
 			aside={
-				// Keyed by the query, so the uncontrolled fields reset after navigating, e.g. "Wyczyść".
-				<FiltersPanel key={query} activeCount={activeCount}>
-					<FiltersForm filters={filters} />
-				</FiltersPanel>
+				<Suspense fallback={<FiltersSkeleton />}>
+					<Filters filters={filters} query={query} />
+				</Suspense>
 			}
 		>
 			<Suspense key={query} fallback={<ResultsSkeleton />}>
@@ -65,6 +59,29 @@ async function SearchView({ searchParams }: SearchPageProps) {
 			</Suspense>
 		</SearchLayout>
 	);
+}
+
+/** Apart from the results, so loading the picked location does not hold up the search. */
+async function Filters({ filters, query }: { filters: SearchFilters; query: string }) {
+	const location = await loadLocation(filters);
+	const activeCount =
+		Object.entries(filters).filter(
+			([key, value]) =>
+				!["sort", "page", "locationId", "district"].includes(key) &&
+				value !== undefined &&
+				!isDefaultFilter(key, value),
+		).length + (filters.locationId ? 1 : 0);
+
+	return (
+		// Keyed by the query, so the uncontrolled fields reset after navigating, e.g. "Wyczyść".
+		<FiltersPanel key={query} activeCount={activeCount}>
+			<FiltersForm filters={filters} location={location} />
+		</FiltersPanel>
+	);
+}
+
+function FiltersSkeleton() {
+	return <div className="h-11 animate-pulse rounded-full bg-white lg:h-[640px] lg:rounded-xl" />;
 }
 
 function SearchLayout({ aside, children }: { aside: React.ReactNode; children?: React.ReactNode }) {
@@ -86,6 +103,30 @@ function ResultsSkeleton() {
 			<PropertyListSkeleton />
 		</>
 	);
+}
+
+/** The picked location with its districts; districts picked earlier stay listed even when no longer offered. */
+async function loadLocation({ locationId, district }: SearchFilters): Promise<LocationSuggestion | undefined> {
+	if (!locationId) {
+		return undefined;
+	}
+
+	try {
+		const [found, districts] = await Promise.all([
+			getLocations([locationId, ...district]),
+			getDistricts(locationId),
+		]);
+		const location = found.find(({ id }) => id === locationId);
+		if (!location) {
+			return undefined;
+		}
+		const missing = found.filter(({ id }) => id !== locationId && !districts.some((offered) => offered.id === id));
+		return { ...location, districts: [...districts, ...missing] };
+	} catch (error) {
+		unstable_rethrow(error);
+		console.error("Failed to load the search location", error);
+		return undefined;
+	}
 }
 
 async function loadFavoriteIds(): Promise<Set<string> | null> {
