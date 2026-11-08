@@ -82,12 +82,17 @@ export function PropertyCard({ property, className }: { property: Property; clas
 						<Icon icon={House} className="text-[64px]" />
 					</div>
 				)}
-				<span className="head absolute right-0 bottom-0 bg-ink px-4 py-2 text-[15px] text-white">
-					{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
-				</span>
 			</div>
-			<div className="px-5 pt-5 pb-3">
-				<h4 className="truncate text-[17px] font-medium">{property.title}</h4>
+			<div className="px-5 pt-4 pb-3">
+				<p className="flex flex-wrap items-baseline gap-x-2.5">
+					<span className="head text-[22px] font-bold">
+						{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
+					</span>
+					{property.pricePerM2 !== null && (
+						<span className="text-[13px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
+					)}
+				</p>
+				<h4 className="mt-1 truncate text-[17px] font-medium">{property.title}</h4>
 				<div className="flex h-5 items-center gap-1 text-[13px]">
 					{location && (
 						<>
@@ -350,7 +355,7 @@ export function PropertyGridSkeleton({ count = 6, className }: { count?: number;
 	return (
 		<div className={cn("grid gap-7 sm:grid-cols-2 lg:grid-cols-3", className)} aria-hidden="true">
 			{Array.from({ length: count }, (_, index) => (
-				<div key={index} className="h-[347px] animate-pulse rounded-xl bg-white" />
+				<div key={index} className="h-[380px] animate-pulse rounded-xl bg-white" />
 			))}
 		</div>
 	);
