@@ -8,11 +8,11 @@ export function LatestOffers() {
 			<div className="mx-auto max-w-[1170px] px-6">
 				<div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
 					<h2 className="title">Najnowsze oferty</h2>
-					<Link href={routes.properties} className="btn btn-soft self-start sm:self-auto">
+					<Link href={routes.properties} className="btn btn-slate self-start sm:self-auto">
 						Wszystkie oferty
 					</Link>
 				</div>
-				<LatestProperties className="mt-10" cardClassName="reveal" />
+				<LatestProperties className="reveal mt-10" />
 			</div>
 		</section>
 	);

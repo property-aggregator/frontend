@@ -389,6 +389,74 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/properties/{id}/price-history": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Price history
+         * @description Returns every price of the property, oldest first. `changeAmount` and `changePercent` compare an entry with the previous one; they are null for the first price and when the price appears or disappears.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PriceChangeResponse"][];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/me": {
         parameters: {
             query?: never;
@@ -1026,6 +1094,16 @@ export interface components {
             /** Format: int32 */
             totalPages?: number;
         };
+        PriceChangeResponse: {
+            /** Format: double */
+            price: null | number;
+            /** Format: double */
+            changeAmount: null | number;
+            /** Format: double */
+            changePercent: null | number;
+            /** Format: date-time */
+            changedAt: string;
+        };
         ProblemDetails: {
             type?: null | string;
             title?: null | string;
@@ -1057,6 +1135,10 @@ export interface components {
             areaM2: null | number;
             /** Format: double */
             pricePerM2: null | number;
+            /** Format: double */
+            priceChangeAmount: null | number;
+            /** Format: double */
+            priceChangePercent: null | number;
             /** Format: int32 */
             rooms: null | number;
             floor: null | string;

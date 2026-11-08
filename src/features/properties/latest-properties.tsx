@@ -1,7 +1,8 @@
 import { io } from "next/cache";
 import { Suspense } from "react";
+import { Carousel, CarouselSkeleton } from "@/components/carousel";
 import { getLatestProperties, type Property } from "@/features/properties/api";
-import { PropertyCard, PropertyGridSkeleton } from "@/features/properties/property-card";
+import { PropertyCard } from "@/features/properties/property-card";
 import { cn } from "@/lib/utils";
 
 async function loadLatest(): Promise<Property[] | null> {
@@ -13,17 +14,23 @@ async function loadLatest(): Promise<Property[] | null> {
 	}
 }
 
-type LatestPropertiesProps = { className?: string; cardClassName?: string };
+type LatestPropertiesProps = { className?: string };
 
 export function LatestProperties(props: LatestPropertiesProps) {
 	return (
-		<Suspense fallback={<PropertyGridSkeleton className={props.className} />}>
+		<Suspense
+			fallback={
+				<div className={props.className}>
+					<CarouselSkeleton height="h-[380px]" />
+				</div>
+			}
+		>
 			<LatestList {...props} />
 		</Suspense>
 	);
 }
 
-async function LatestList({ className, cardClassName }: LatestPropertiesProps) {
+async function LatestList({ className }: LatestPropertiesProps) {
 	// io() keeps the API call out of the build, so the page builds without the backend running.
 	await io();
 	const properties = await loadLatest();
@@ -39,10 +46,12 @@ async function LatestList({ className, cardClassName }: LatestPropertiesProps) {
 	}
 
 	return (
-		<div className={cn("grid gap-7 sm:grid-cols-2 lg:grid-cols-3", className)}>
-			{properties.map((property) => (
-				<PropertyCard key={property.id} property={property} className={cardClassName} />
-			))}
+		<div className={className}>
+			<Carousel label="Najnowsze oferty">
+				{properties.map((property) => (
+					<PropertyCard key={property.id} property={property} />
+				))}
+			</Carousel>
 		</div>
 	);
 }

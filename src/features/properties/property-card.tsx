@@ -1,4 +1,4 @@
-import { BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
+import { ArrowDown, ArrowUp, BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
@@ -12,6 +12,51 @@ export const priceFormat = new Intl.NumberFormat("pl-PL", {
 	currency: "PLN",
 	maximumFractionDigits: 0,
 });
+
+const changeAmountFormat = new Intl.NumberFormat("pl-PL", {
+	style: "currency",
+	currency: "PLN",
+	maximumFractionDigits: 0,
+	signDisplay: "exceptZero",
+});
+const changePercentFormat = new Intl.NumberFormat("pl-PL", {
+	style: "percent",
+	maximumFractionDigits: 2,
+	signDisplay: "exceptZero",
+});
+
+/** `percent` is 0–100 as sent by the API. `stacked` puts the percent under the amount on phones. */
+export function PriceChangeText({
+	amount,
+	percent,
+	stacked,
+	className,
+}: {
+	amount: number | null;
+	percent: number | null;
+	stacked?: boolean;
+	className?: string;
+}) {
+	if (amount === null || amount === 0) {
+		return null;
+	}
+
+	return (
+		<span
+			className={cn(
+				"inline-flex items-baseline gap-1 text-[13px] font-semibold",
+				amount < 0 ? "text-brand" : "text-pastel-red",
+				className,
+			)}
+		>
+			<Icon icon={amount < 0 ? ArrowDown : ArrowUp} className="shrink-0 self-center text-[16px]" />
+			<span className={cn("flex gap-1", stacked && "max-sm:flex-col max-sm:gap-0")}>
+				<span>{changeAmountFormat.format(amount)}</span>
+				{percent !== null && <span>({changePercentFormat.format(percent / 100)})</span>}
+			</span>
+		</span>
+	);
+}
 
 export function fullAddress(property: Property): string {
 	return [property.street, property.district, property.city, property.province].filter(Boolean).join(", ");
@@ -37,12 +82,17 @@ export function PropertyCard({ property, className }: { property: Property; clas
 						<Icon icon={House} className="text-[64px]" />
 					</div>
 				)}
-				<span className="head absolute right-0 bottom-0 bg-ink px-4 py-2 text-[15px] text-white">
-					{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
-				</span>
 			</div>
-			<div className="px-5 pt-5 pb-3">
-				<h4 className="truncate text-[17px] font-medium">{property.title}</h4>
+			<div className="px-5 pt-4 pb-3">
+				<p className="flex flex-wrap items-baseline gap-x-2.5">
+					<span className="head text-[22px] font-bold">
+						{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
+					</span>
+					{property.pricePerM2 !== null && (
+						<span className="text-[13px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
+					)}
+				</p>
+				<h4 className="mt-1 truncate text-[17px] font-medium">{property.title}</h4>
 				<div className="flex h-5 items-center gap-1 text-[13px]">
 					{location && (
 						<>
@@ -227,6 +277,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 						{property.pricePerM2 !== null && (
 							<span className="text-[13px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
+						<PriceChangeText amount={property.priceChangeAmount} percent={property.priceChangePercent} />
 					</p>
 					<a
 						href={property.sourceUrl}
@@ -295,16 +346,6 @@ export function PropertyListSkeleton({ count = 4 }: { count?: number }) {
 		<div className="grid gap-4" aria-hidden="true">
 			{Array.from({ length: count }, (_, index) => (
 				<div key={index} className="h-[257px] animate-pulse rounded-xl bg-white" />
-			))}
-		</div>
-	);
-}
-
-export function PropertyGridSkeleton({ count = 6, className }: { count?: number; className?: string }) {
-	return (
-		<div className={cn("grid gap-7 sm:grid-cols-2 lg:grid-cols-3", className)} aria-hidden="true">
-			{Array.from({ length: count }, (_, index) => (
-				<div key={index} className="h-[347px] animate-pulse rounded-xl bg-white" />
 			))}
 		</div>
 	);

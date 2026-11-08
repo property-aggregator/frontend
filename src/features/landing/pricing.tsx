@@ -15,6 +15,7 @@ const plans = [
 		cta: "Wypróbuj za darmo",
 		features: ["3 wybrane miasta", "Deduplikacja z 300+ portali", "Alerty e-mail do 5 min", "Historia korekt cen"],
 		tile: "bg-pastel-blue",
+		button: "bg-pastel-blue-deep text-ink hover:bg-ink hover:text-white",
 		featured: false,
 	},
 	{
@@ -30,6 +31,7 @@ const plans = [
 			"Rysowanie obszarów na mapie",
 		],
 		tile: "bg-pastel-violet",
+		button: "btn-slate",
 		featured: true,
 	},
 	{
@@ -40,6 +42,7 @@ const plans = [
 		intro: "Wszystko z Inwestora PRO, a także:",
 		features: ["Do 10 stanowisk agentów", "Integracja z CRM", "Eksport do CSV i PDF", "Opiekun i SLA 99,9%"],
 		tile: "bg-pastel-peach",
+		button: "bg-pastel-peach-deep text-ink hover:bg-ink hover:text-white",
 		featured: false,
 	},
 ];
@@ -91,10 +94,7 @@ export function Pricing() {
 								{billing === "annual" ? `płatne rocznie: ${plan.monthly * 10} zł` : "płatne co miesiąc"}
 							</div>
 
-							<a
-								href="#kontakt"
-								className={cn("btn mt-6 w-full", plan.featured ? "btn-slate" : "btn-soft")}
-							>
+							<a href="#kontakt" className={cn("btn mt-6 w-full", plan.button)}>
 								{plan.cta}
 							</a>
 

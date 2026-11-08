@@ -201,7 +201,7 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 			<ul
 				ref={list}
 				{...listHandlers}
-				className="scroll-thin relative order-last max-lg:-mx-3 max-lg:flex max-lg:snap-x max-lg:snap-mandatory max-lg:scroll-px-3 max-lg:[scrollbar-width:none] max-lg:gap-4 max-lg:overflow-x-auto max-lg:p-3 lg:-my-2.5 lg:-ml-3 lg:grid lg:max-h-[580px] lg:content-start lg:gap-3 lg:overflow-y-auto lg:pt-2.5 lg:pr-1.5 lg:pb-2.5 lg:pl-3 max-lg:[&::-webkit-scrollbar]:hidden lg:[&::-webkit-scrollbar-track]:[margin-block:10px]"
+				className="scroll-thin relative order-last max-lg:-mx-3 max-lg:flex max-lg:snap-x max-lg:snap-mandatory max-lg:scroll-px-3 max-lg:[scrollbar-width:none] max-lg:gap-4 max-lg:overflow-x-auto max-lg:p-3 lg:-my-2.5 lg:-ml-3 lg:grid lg:max-h-[580px] lg:grid-cols-[minmax(0,1fr)] lg:content-start lg:gap-3 lg:overflow-y-auto lg:pt-2.5 lg:pr-1.5 lg:pb-2.5 lg:pl-3 max-lg:[&::-webkit-scrollbar]:hidden lg:[&::-webkit-scrollbar-track]:[margin-block:10px]"
 			>
 				{transactions.map((transaction) => {
 					const details = [

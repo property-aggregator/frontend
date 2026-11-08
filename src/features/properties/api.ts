@@ -11,6 +11,7 @@ export type SearchLocation = components["schemas"]["LocationResponse"];
 export type LocationSuggestion = components["schemas"]["LocationSuggestionResponse"];
 export type PropertyTransactions = components["schemas"]["PropertyTransactionsResponse"];
 export type Transaction = components["schemas"]["TransactionResponse"];
+export type PriceChange = components["schemas"]["PriceChangeResponse"];
 
 /** Public: the 6 newest active properties. */
 export async function getLatestProperties(): Promise<Property[]> {
@@ -55,6 +56,11 @@ export async function getProperty(id: string): Promise<Property | null> {
 export async function getPropertyTransactions(id: string): Promise<PropertyTransactions> {
 	const api = await authedApi();
 	return unwrap(await api.GET("/api/properties/{id}/transactions", { params: { path: { id } } }));
+}
+
+export async function getPriceHistory(id: string): Promise<PriceChange[]> {
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/properties/{id}/price-history", { params: { path: { id } } }));
 }
 
 export async function getPropertyDuplicates(id: string): Promise<Property[]> {
