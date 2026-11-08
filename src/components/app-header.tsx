@@ -3,7 +3,7 @@
 import { Heart, LogOut, Menu, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { type ComponentProps, Suspense, useState } from "react";
 import { Icon } from "@/components/icon";
 import { BrandName, LogoMark } from "@/components/logo";
 import { FavoritesCountBadge } from "@/features/favorites/favorites-count";
@@ -20,8 +20,23 @@ const iconLinks = [
 	{ href: routes.account, label: "Konto", icon: UserRound },
 ];
 
-export function AppHeader() {
+type NavLinkProps = ComponentProps<typeof Link> & { href: string; current: "true" | "page" };
+
+/** Reading the pathname blocks prerendering of dynamic routes, so it streams in behind a plain link. */
+function NavLink({ current, ...props }: NavLinkProps) {
+	return (
+		<Suspense fallback={<Link {...props} />}>
+			<CurrentAwareLink current={current} {...props} />
+		</Suspense>
+	);
+}
+
+function CurrentAwareLink({ current, ...props }: NavLinkProps) {
 	const pathname = usePathname();
+	return <Link {...props} aria-current={pathname === props.href ? current : undefined} />;
+}
+
+export function AppHeader() {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	return (
@@ -35,25 +50,25 @@ export function AppHeader() {
 				</Link>
 				<nav className="hidden items-center gap-8 md:flex">
 					{navItems.map(({ href, label }) => (
-						<Link key={href} className="nav-link" href={href} aria-current={pathname === href}>
+						<NavLink key={href} className="nav-link" href={href} current="true">
 							{label}
-						</Link>
+						</NavLink>
 					))}
 				</nav>
 				<div className="flex items-center gap-2">
 					{iconLinks.map(({ href, label, icon }) => (
-						<Link
+						<NavLink
 							key={href}
 							href={href}
 							onClick={() => setMenuOpen(false)}
 							className="btn btn-sm btn-soft relative px-3"
 							aria-label={label}
 							title={label}
-							aria-current={pathname === href ? "page" : undefined}
+							current="page"
 						>
 							<Icon icon={icon} className="text-[18px]" />
 							{href === routes.favorites && <FavoritesCountBadge />}
-						</Link>
+						</NavLink>
 					))}
 					{/* Plain <a>: logout is an Auth0 route handler, so Link must not prefetch it. */}
 					<a href={routes.logout} className="btn btn-sm btn-soft hidden md:inline-flex">
@@ -77,15 +92,15 @@ export function AppHeader() {
 				className={cn(menuOpen ? "flex" : "hidden", "flex-col border-t border-line px-6 py-2 md:hidden")}
 			>
 				{navItems.map(({ href, label }) => (
-					<Link
+					<NavLink
 						key={href}
 						href={href}
 						onClick={() => setMenuOpen(false)}
-						aria-current={pathname === href ? "page" : undefined}
+						current="page"
 						className="head py-2.5 text-[13px] text-ink uppercase"
 					>
 						{label}
-					</Link>
+					</NavLink>
 				))}
 				<div className="py-2">
 					<a href={routes.logout} className="btn btn-sm btn-soft w-full">
