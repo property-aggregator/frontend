@@ -185,6 +185,210 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/properties/{id}/transactions": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Similar transactions
+         * @description Returns up to 100 sale transactions from the price register similar to the property, those of its market type first. `scope` is `nearby` (nearest transactions of a similar area) when the property is located to its street or district, otherwise `city` (transactions in its city of a similar area and price). Properties for rent get an empty list.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PropertyTransactionsResponse"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/properties/{id}/duplicates": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Potential duplicates
+         * @description Returns up to 20 active offers that are probably the same property, e.g. posted on another portal, the most similar first.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PropertyResponse"][];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/properties/{id}/similar-archived": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Similar archived properties
+         * @description Returns up to 20 archived offers of a similar area and price near the property, or in its city when only the city is known, the most similar first. Properties without an area or a price get an empty list.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PropertyResponse"][];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/me": {
         parameters: {
             query?: never;
@@ -876,6 +1080,10 @@ export interface components {
         };
         /** @enum {unknown} */
         PropertySort: "newest" | "priceAscending" | "priceDescending";
+        PropertyTransactionsResponse: {
+            scope: components["schemas"]["TransactionSearchScope"];
+            transactions: components["schemas"]["TransactionResponse"][];
+        };
         /** @enum {unknown} */
         PropertyType: "apartment" | "house" | "plot";
         /** @enum {unknown} */
@@ -883,6 +1091,31 @@ export interface components {
         SetMarketingConsentCommand: {
             granted: boolean;
         };
+        TransactionResponse: {
+            transactionId: string;
+            /** Format: date */
+            date: null | string;
+            marketType: null | components["schemas"]["MarketType"];
+            /** Format: double */
+            price: number;
+            /** Format: double */
+            areaM2: null | number;
+            /** Format: double */
+            pricePerM2: null | number;
+            /** Format: int32 */
+            rooms: null | number;
+            /** Format: int32 */
+            floor: null | number;
+            address: null | string;
+            /** Format: double */
+            latitude: number;
+            /** Format: double */
+            longitude: number;
+            /** Format: int32 */
+            distanceMeters: null | number;
+        };
+        /** @enum {unknown} */
+        TransactionSearchScope: "nearby" | "city";
         /** @enum {unknown} */
         TransactionType: "sale" | "rent";
     };
