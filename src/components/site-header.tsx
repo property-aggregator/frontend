@@ -51,7 +51,7 @@ export function SiteHeader() {
 
 	return (
 		<>
-			<div className="border-b border-line bg-mist text-[13px] text-ink">
+			<div className="bg-mist text-[13px] text-ink">
 				<div className="mx-auto flex max-w-[1170px] items-center justify-center gap-2 px-6 py-2 text-center">
 					<span>
 						<b className="font-medium">Aplikacja jest w fazie rozwoju.</b> Część funkcji może jeszcze nie
@@ -79,12 +79,9 @@ export function SiteHeader() {
 						))}
 					</nav>
 					<div className="hidden items-center gap-2 sm:flex">
-						{/* Plain <a>: these two paths are redirecting route handlers, not pages, so Link must not prefetch them. */}
+						{/* Plain <a>: this path is a redirecting route handler, not a page, so Link must not prefetch it. */}
 						<a href={routes.loginPage} className="btn btn-sm btn-soft">
 							Zaloguj się
-						</a>
-						<a href={routes.signupPage} className="btn btn-sm btn-primary">
-							Zacznij za 0 zł
 						</a>
 					</div>
 					<button
@@ -112,12 +109,9 @@ export function SiteHeader() {
 							{label}
 						</Link>
 					))}
-					<div className="grid grid-cols-2 gap-2 py-2">
+					<div className="grid py-2">
 						<a href={routes.loginPage} className="btn btn-sm btn-soft">
 							Zaloguj się
-						</a>
-						<a href={routes.signupPage} className="btn btn-sm btn-primary">
-							Zacznij za 0 zł
 						</a>
 					</div>
 				</div>

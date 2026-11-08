@@ -6,7 +6,7 @@
 }
 
 @theme {
-	--color-brand: #30a871;
+	--color-brand: #3fb37c;
 	--color-ink: #17262e;
 	--color-body: #4a4a4a;
 	--color-muted: #7d8c94;
@@ -15,8 +15,10 @@
 	--color-line: #d6dee0;
 	--color-slate: #576696;
 	--color-pastel-blue: #f0f5fa;
+	--color-pastel-blue-deep: #dde7f2;
 	--color-pastel-violet: #f2f2fc;
 	--color-pastel-peach: #f7ede8;
+	--color-pastel-peach-deep: #efdacf;
 	--color-pastel-plum: #faf2fa;
 	--color-pastel-red: #e17676;
 }

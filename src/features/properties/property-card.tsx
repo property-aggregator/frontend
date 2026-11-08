@@ -350,13 +350,3 @@ export function PropertyListSkeleton({ count = 4 }: { count?: number }) {
 		</div>
 	);
 }
-
-export function PropertyGridSkeleton({ count = 6, className }: { count?: number; className?: string }) {
-	return (
-		<div className={cn("grid gap-7 sm:grid-cols-2 lg:grid-cols-3", className)} aria-hidden="true">
-			{Array.from({ length: count }, (_, index) => (
-				<div key={index} className="h-[380px] animate-pulse rounded-xl bg-white" />
-			))}
-		</div>
-	);
-}
