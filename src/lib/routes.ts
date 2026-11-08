@@ -27,6 +27,10 @@ export function isPublicPath(pathname: string): boolean {
 	);
 }
 
+export function propertyUrl(id: string): string {
+	return `${routes.properties}/${id}`;
+}
+
 export function loginUrl(returnTo?: string): string {
 	return returnTo ? `${routes.login}?returnTo=${encodeURIComponent(returnTo)}` : routes.login;
 }

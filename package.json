@@ -15,6 +15,7 @@
 		"@auth0/nextjs-auth0": "^4.33.0",
 		"clsx": "^2.1.1",
 		"lucide-react": "^1.61.0",
+		"maplibre-gl": "^6.16.0",
 		"next": "16.4.3",
 		"openapi-fetch": "^0.17.0",
 		"react": "19.3.0",

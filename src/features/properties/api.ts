@@ -9,6 +9,8 @@ export type PagedProperties = components["schemas"]["PagedResponseOfPropertyResp
 export type PropertySearchQuery = NonNullable<paths["/api/properties"]["get"]["parameters"]["query"]>;
 export type SearchLocation = components["schemas"]["LocationResponse"];
 export type LocationSuggestion = components["schemas"]["LocationSuggestionResponse"];
+export type PropertyTransactions = components["schemas"]["PropertyTransactionsResponse"];
+export type Transaction = components["schemas"]["TransactionResponse"];
 
 /** Public: the 6 newest active properties. */
 export async function getLatestProperties(): Promise<Property[]> {
@@ -48,4 +50,19 @@ export async function getProperty(id: string): Promise<Property | null> {
 	}
 
 	return unwrap(result);
+}
+
+export async function getPropertyTransactions(id: string): Promise<PropertyTransactions> {
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/properties/{id}/transactions", { params: { path: { id } } }));
+}
+
+export async function getPropertyDuplicates(id: string): Promise<Property[]> {
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/properties/{id}/duplicates", { params: { path: { id } } }));
+}
+
+export async function getSimilarArchived(id: string): Promise<Property[]> {
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/properties/{id}/similar-archived", { params: { path: { id } } }));
 }

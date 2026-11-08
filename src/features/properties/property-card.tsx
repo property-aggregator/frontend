@@ -1,13 +1,19 @@
 import { BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Icon } from "@/components/icon";
 import { FavoriteButton } from "@/features/favorites/favorite-button";
 import type { Property } from "@/features/properties/api";
+import { propertyUrl } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
-const priceFormat = new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN", maximumFractionDigits: 0 });
+export const priceFormat = new Intl.NumberFormat("pl-PL", {
+	style: "currency",
+	currency: "PLN",
+	maximumFractionDigits: 0,
+});
 
-function fullAddress(property: Property): string {
+export function fullAddress(property: Property): string {
 	return [property.street, property.district, property.city, property.province].filter(Boolean).join(", ");
 }
 
@@ -15,10 +21,8 @@ export function PropertyCard({ property, className }: { property: Property; clas
 	const location = fullAddress(property);
 
 	return (
-		<a
-			href={property.sourceUrl}
-			target="_blank"
-			rel="noopener noreferrer"
+		<Link
+			href={propertyUrl(property.id)}
 			className={cn(
 				"flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-md",
 				className,
@@ -67,17 +71,69 @@ export function PropertyCard({ property, className }: { property: Property; clas
 					</span>
 				)}
 			</div>
-		</a>
+		</Link>
+	);
+}
+
+export function PropertyTile({ property, showPortal }: { property: Property; showPortal?: boolean }) {
+	const details = [
+		property.rooms === null ? null : roomsText(property.rooms),
+		property.areaM2 === null ? null : `${areaFormat.format(property.areaM2)} m²`,
+		property.pricePerM2 === null ? null : `${priceFormat.format(property.pricePerM2)}/m²`,
+	].filter(Boolean);
+	const address = fullAddress(property);
+
+	return (
+		<Link
+			href={propertyUrl(property.id)}
+			className="flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-md"
+		>
+			<div className="relative aspect-[16/9] bg-mist">
+				{property.mainImageUrl ? (
+					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
+				) : (
+					<div className="grid h-full place-items-center text-line">
+						<Icon icon={House} className="text-[48px]" />
+					</div>
+				)}
+				<div className="absolute top-3 left-3 flex gap-2">
+					{showPortal && (
+						<span className="head rounded bg-white px-2 py-0.5 text-[12px] font-semibold">
+							{property.sourcePortal}
+						</span>
+					)}
+					{property.archivedAt && (
+						<span className="head rounded bg-white px-2 py-1 text-[10px] font-bold tracking-wider uppercase">
+							Archiwalna
+						</span>
+					)}
+				</div>
+			</div>
+			<div className="px-4 py-4">
+				<p className="head text-[20px] font-bold">
+					{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
+				</p>
+				<p className="mt-1 truncate text-[14px]" title={address || property.title}>
+					{address || property.title}
+				</p>
+				{details.length > 0 && <p className="mt-0.5 truncate text-[14px]">{details.join(" • ")}</p>}
+				{property.archivedAt && (
+					<p className="mt-1.5 text-[12px] text-body">
+						<TimeAgo label="Wygasło" date={property.archivedAt} />
+					</p>
+				)}
+			</div>
+		</Link>
 	);
 }
 
 const NEW_FOR_MS = 24 * 60 * 60 * 1000;
 
-function isNew(property: Property): boolean {
+export function isNew(property: Property): boolean {
 	return Date.now() - new Date(property.firstSeenAt).getTime() < NEW_FOR_MS;
 }
 
-const areaFormat = new Intl.NumberFormat("pl-PL", { maximumFractionDigits: 2 });
+export const areaFormat = new Intl.NumberFormat("pl-PL", { maximumFractionDigits: 2 });
 const relativeFormat = new Intl.RelativeTimeFormat("pl", { numeric: "always" });
 const dateFormat = new Intl.DateTimeFormat("pl-PL", {
 	dateStyle: "long",
@@ -102,11 +158,11 @@ function timeAgo(date: string): string {
 	return "przed chwilą";
 }
 
-function wasUpdated(property: Property): boolean {
+export function wasUpdated(property: Property): boolean {
 	return new Date(property.updatedAt).getTime() - new Date(property.firstSeenAt).getTime() >= 60 * 1000;
 }
 
-function TimeAgo({ label, date }: { label: string; date: string }) {
+export function TimeAgo({ label, date }: { label: string; date: string }) {
 	return (
 		<time dateTime={date} title={dateFormat.format(new Date(date))}>
 			{label} {timeAgo(date)}
@@ -114,13 +170,13 @@ function TimeAgo({ label, date }: { label: string; date: string }) {
 	);
 }
 
-const sellerLabels: Record<NonNullable<Property["sellerType"]>, string> = {
+export const sellerLabels: Record<NonNullable<Property["sellerType"]>, string> = {
 	private: "Oferta prywatna",
 	agency: "Biuro nieruchomości",
 	developer: "Deweloper",
 };
 
-function roomsText(rooms: number): string {
+export function roomsText(rooms: number): string {
 	const lastDigit = rooms % 10;
 	const lastTwo = rooms % 100;
 	if (rooms === 1) {
@@ -130,7 +186,7 @@ function roomsText(rooms: number): string {
 }
 
 /** The scraper sends a number, ">10", or a word such as "parter" or "poddasze". */
-function floorText(floor: string): string {
+export function floorText(floor: string): string {
 	if (/^\d+$/.test(floor)) {
 		return `${floor} piętro`;
 	}
@@ -184,14 +240,9 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 					</a>
 				</div>
 				<h3 className="mt-1.5 line-clamp-2 text-[18px] leading-snug font-medium">
-					<a
-						href={property.sourceUrl}
-						target="_blank"
-						rel="noopener noreferrer"
-						className="after:absolute after:inset-0"
-					>
+					<Link href={propertyUrl(property.id)} className="after:absolute after:inset-0">
 						{property.title}
-					</a>
+					</Link>
 				</h3>
 				{address && <p className="mt-2 truncate text-[14px]">{address}</p>}
 				<div className="head mt-4 flex flex-wrap gap-x-7 gap-y-1 text-[15px] font-semibold">
