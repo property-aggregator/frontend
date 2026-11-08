@@ -49,6 +49,10 @@
 	details summary::-webkit-details-marker {
 		display: none;
 	}
+
+	[data-dragging] * {
+		pointer-events: none;
+	}
 }
 
 @layer components {
@@ -178,9 +182,8 @@
 		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-slate) 20%, transparent);
 	}
 
-	/* A slim pill kept clear of the rounded corners of its container. */
 	.scroll-thin::-webkit-scrollbar {
-		width: 12px;
+		width: 14px;
 	}
 
 	.scroll-thin::-webkit-scrollbar-track {
@@ -190,8 +193,9 @@
 
 	.scroll-thin::-webkit-scrollbar-thumb {
 		background: var(--color-line) padding-box;
-		border: 4px solid transparent;
+		border: 3px solid transparent;
 		border-radius: 999px;
+		min-height: 110px;
 	}
 
 	.scroll-thin::-webkit-scrollbar-thumb:hover {
