@@ -20,6 +20,7 @@ import { BackToSearchLink } from "@/components/navigation-history";
 import { FavoriteButton } from "@/features/favorites/favorite-button";
 import { getFavoriteIds } from "@/features/favorites/api";
 import {
+	getPriceHistory,
 	getProperty,
 	getPropertyDuplicates,
 	getPropertyTransactions,
@@ -36,6 +37,7 @@ import {
 	roomsText,
 	sellerLabels,
 } from "@/features/properties/property-card";
+import { PriceHistory } from "@/features/properties/price-history";
 import { marketLabels } from "@/features/properties/search-params";
 import { TransactionsMap } from "@/features/properties/transactions-map";
 import { cn } from "@/lib/utils";
@@ -85,6 +87,11 @@ async function PropertyView({ id }: { id: string }) {
 	return (
 		<>
 			<Details property={property} favorite={favorite} />
+			<Section title="Historia zmian ceny">
+				<Suspense fallback={<BlockSkeleton height="h-[160px]" />}>
+					<PriceHistorySection property={property} />
+				</Suspense>
+			</Section>
 			{property.transactionType === "sale" && (
 				<Section
 					title="Transakcje z okolicy"
@@ -236,6 +243,18 @@ async function load<T>(fetcher: () => Promise<T>, what: string): Promise<T | nul
 		console.error(`Failed to load the ${what}`, error);
 		return null;
 	}
+}
+
+async function PriceHistorySection({ property }: { property: Property }) {
+	const changes = await load(() => getPriceHistory(property.id), "price history");
+	if (!changes) {
+		return <Notice>Nie udało się pobrać historii cen. Spróbuj ponownie za chwilę.</Notice>;
+	}
+	if (changes.length === 0) {
+		return <Notice>Brak historii cen dla tej oferty.</Notice>;
+	}
+
+	return <PriceHistory changes={changes} lastSeenAt={property.lastSeenAt} />;
 }
 
 async function Transactions({ property }: { property: Property }) {
