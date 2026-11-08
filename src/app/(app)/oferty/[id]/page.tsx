@@ -32,6 +32,7 @@ import {
 	floorText,
 	fullAddress,
 	isNew,
+	PriceChangeText,
 	priceFormat,
 	PropertyTile,
 	roomsText,
@@ -163,6 +164,11 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 						{property.pricePerM2 !== null && (
 							<span className="text-[14px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
+						<PriceChangeText
+							amount={property.priceChangeAmount}
+							percent={property.priceChangePercent}
+							className="text-[14px]"
+						/>
 					</p>
 					<SourceLink property={property} className="shrink-0 max-md:hidden" />
 				</div>
