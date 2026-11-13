@@ -28,6 +28,9 @@ export function SiteFooter() {
 						<Link className="hover:text-white" href="/#cennik">
 							Cennik
 						</Link>
+						<Link className="hover:text-white" href={routes.articles}>
+							Artykuły
+						</Link>
 					</div>
 				</div>
 				<div>
