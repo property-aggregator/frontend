@@ -22,7 +22,7 @@ export async function setFavorite(propertyId: string, favorite: boolean): Promis
 			throw error;
 		}
 		if (error.code === "favorites_limit_reached") {
-			const { favoritesLimit } = await getCurrentUser();
+			const { favoritesLimit } = (await getCurrentUser()).entitlements;
 			return { error: `Możesz mieć najwyżej ${favoritesLimit} ulubionych ofert. Usuń którąś, aby dodać nową.` };
 		}
 		if (error.code === "property_not_found") {
