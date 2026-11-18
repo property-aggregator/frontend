@@ -1,6 +1,5 @@
 export const routes = {
 	home: "/",
-	latest: "/najnowsze",
 	articles: "/artykuly",
 	terms: "/regulamin",
 	privacy: "/polityka-prywatnosci",
@@ -17,7 +16,7 @@ export const routes = {
 } as const;
 
 // Everything else requires a session. Keep this an allowlist, so a new page is private by default.
-const publicPaths: string[] = [routes.home, routes.latest, routes.loginPage, routes.signupPage];
+const publicPaths: string[] = [routes.home, routes.loginPage, routes.signupPage];
 const publicPrefixes: string[] = [routes.articles, routes.terms, routes.privacy];
 
 export function isPublicPath(pathname: string): boolean {
