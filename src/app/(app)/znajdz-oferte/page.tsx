@@ -6,7 +6,7 @@ export const metadata: Metadata = { title: "Znajdź ofertę po linku", robots: {
 export default function FindByUrlPage() {
 	return (
 		<main>
-			<div className="mx-auto max-w-[1360px] px-6 py-10">
+			<div className="mx-auto max-w-[1000px] px-6 py-10">
 				<div className="rounded-xl bg-white p-8 md:p-10">
 					<h1 className="title text-3xl">Znajdź ofertę po linku</h1>
 					<p className="mt-3">
