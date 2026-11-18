@@ -40,7 +40,7 @@ export function AppHeader() {
 	const [menuOpen, setMenuOpen] = useState(false);
 
 	return (
-		<header className="sticky top-0 z-50 bg-white shadow-[0_2px_12px_rgb(23_38_46/0.1)]">
+		<header className="sticky top-0 z-50 border-b border-ink/[0.06] bg-white">
 			<div className="mx-auto flex h-[76px] max-w-[1360px] items-center justify-between gap-4 px-6 sm:gap-6">
 				<Link href={routes.properties} className="flex items-center gap-2.5">
 					<LogoMark />
@@ -66,13 +66,13 @@ export function AppHeader() {
 							title={label}
 							current="page"
 						>
-							<Icon icon={icon} className="text-[18px]" />
+							<Icon icon={icon} className="text-xl" />
 							{href === routes.favorites && <FavoritesCountBadge />}
 						</NavLink>
 					))}
 					{/* Plain <a>: logout is an Auth0 route handler, so Link must not prefetch it. */}
 					<a href={routes.logout} className="btn btn-sm btn-soft hidden md:inline-flex">
-						<Icon icon={LogOut} className="text-[18px]" />
+						<Icon icon={LogOut} className="text-xl" />
 						Wyloguj
 					</a>
 					<button
@@ -97,14 +97,14 @@ export function AppHeader() {
 						href={href}
 						onClick={() => setMenuOpen(false)}
 						current="page"
-						className="head py-2.5 text-[13px] text-ink uppercase"
+						className="head py-2.5 text-sm text-ink uppercase"
 					>
 						{label}
 					</NavLink>
 				))}
 				<div className="py-2">
 					<a href={routes.logout} className="btn btn-sm btn-soft w-full">
-						<Icon icon={LogOut} className="text-[18px]" />
+						<Icon icon={LogOut} className="text-xl" />
 						Wyloguj
 					</a>
 				</div>

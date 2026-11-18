@@ -9,7 +9,7 @@
 	--color-brand: #3fb37c;
 	--color-ink: #17262e;
 	--color-body: #4a4a4a;
-	--color-muted: #7d8c94;
+	--color-muted: #627077;
 	--color-mist: #edf2f5;
 	--color-tint: #ebfaf2;
 	--color-line: #d6dee0;
@@ -21,6 +21,25 @@
 	--color-pastel-peach-deep: #efdacf;
 	--color-pastel-plum: #faf2fa;
 	--color-pastel-red: #e17676;
+	/* Darker than brand and pastel-red, so small text passes WCAG AA (4.5:1) on white. */
+	--color-price-down: #2e845b;
+	--color-price-up: #d54040;
+
+	--shadow-card: 0 8px 24px rgb(23 38 46 / 0.08);
+
+	/* Font size only: line height is inherited, as with the arbitrary text-[…px] values these replace. */
+	--text-*: initial;
+	--text-2xs: 11px;
+	--text-xs: 12px;
+	--text-sm: 13px;
+	--text-base: 14px;
+	--text-md: 15px;
+	--text-lg: 16px;
+	--text-xl: 18px;
+	--text-2xl: 20px;
+	--text-3xl: 24px;
+	--text-4xl: 28px;
+	--text-5xl: 30px;
 }
 
 @layer base {
@@ -104,13 +123,12 @@
 	}
 
 	.btn-slate:hover {
-		background: var(--color-ink);
+		background: color-mix(in srgb, var(--color-slate) 85%, #000);
 	}
 
 	.btn-soft {
-		background: #fff;
+		background: var(--color-mist);
 		color: var(--color-ink);
-		box-shadow: inset 0 0 0 1px var(--color-line);
 	}
 
 	.btn-soft:hover {

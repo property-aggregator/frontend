@@ -169,7 +169,7 @@ export function Dropdown({
 							)}
 						>
 							{option.label}
-							{index === selectedIndex && <Icon icon={Check} className="text-[16px]" />}
+							{index === selectedIndex && <Icon icon={Check} className="text-lg" />}
 						</li>
 					))}
 				</ul>
@@ -179,7 +179,5 @@ export function Dropdown({
 }
 
 export function Chevron({ open }: { open: boolean }) {
-	return (
-		<Icon icon={ChevronDown} className={cn("text-[18px] text-muted transition-transform", open && "rotate-180")} />
-	);
+	return <Icon icon={ChevronDown} className={cn("text-xl text-muted transition-transform", open && "rotate-180")} />;
 }

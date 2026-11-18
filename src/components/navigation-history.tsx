@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect } from "react";
+import { restoreScrollOnNextNavigation } from "@/components/scroll-restoration";
 import { routes } from "@/lib/routes";
 
 const CURRENT_KEY = "navigation:current";
@@ -41,7 +42,7 @@ export function NavigationTracker() {
 
 /**
  * Goes back in history when the previous page was the search, so its filters and scroll position come back;
- * otherwise opens the last search of this tab, or an empty one.
+ * otherwise opens the last search of this tab at the position the user left it, or an empty one.
  */
 export function BackToSearchLink({ className, children }: { className?: string; children: React.ReactNode }) {
 	const router = useRouter();
@@ -59,6 +60,7 @@ export function BackToSearchLink({ className, children }: { className?: string; 
 		const lastSearch = sessionStorage.getItem(LAST_SEARCH_KEY);
 		if (lastSearch) {
 			event.preventDefault();
+			restoreScrollOnNextNavigation();
 			router.push(lastSearch);
 		}
 	}

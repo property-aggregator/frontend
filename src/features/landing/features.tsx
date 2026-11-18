@@ -34,7 +34,7 @@ const features: { icon: LucideIcon; title: string; text: string; tile: string }[
 export function Portals() {
 	return (
 		<div className="mt-14 overflow-hidden" aria-label="Przeszukiwane portale">
-			<div className="head mx-auto flex max-w-[1170px] flex-wrap justify-center gap-x-14 gap-y-3 px-6 text-[20px] font-bold text-[#b9c2c7]">
+			<div className="head mx-auto flex max-w-[1170px] flex-wrap justify-center gap-x-14 gap-y-3 px-6 text-2xl font-bold text-[#b9c2c7]">
 				{portals.map((portal) => (
 					<span key={portal}>{portal}</span>
 				))}
@@ -52,7 +52,7 @@ export function Features() {
 					{features.map(({ icon, title, text, tile }) => (
 						<article key={title} className={cn("reveal rounded-xl p-7", tile)}>
 							<span className="grid h-14 w-14 place-items-center rounded-lg bg-white">
-								<Icon icon={icon} className="text-[30px] text-ink" />
+								<Icon icon={icon} className="text-5xl text-ink" />
 							</span>
 							<h4 className="mt-5 text-[17px] font-bold">{title}</h4>
 							<p className="mt-2">{text}</p>

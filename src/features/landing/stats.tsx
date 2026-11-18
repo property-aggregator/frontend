@@ -21,7 +21,7 @@ export function Stats() {
 							<CountUp to={value} />
 							{suffix}
 						</div>
-						<div className="mt-2 text-[12px] tracking-wider text-white/70 uppercase">{label}</div>
+						<div className="mt-2 text-xs tracking-wider text-white/70 uppercase">{label}</div>
 					</div>
 				))}
 			</div>

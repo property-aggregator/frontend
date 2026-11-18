@@ -160,8 +160,8 @@ async function Results({ filters }: { filters: SearchFilters }) {
 		<>
 			<div className="mb-4 flex items-start justify-between gap-3 lg:mb-6 lg:items-center">
 				<div>
-					<h1 className="title text-[18px] lg:text-[24px]">
-						<span className="text-[15px] font-normal text-body lg:hidden">{mobileHeading(result)}</span>
+					<h1 className="title text-xl lg:text-2xl">
+						<span className="text-md font-normal text-body lg:hidden">{mobileHeading(result)}</span>
 						<span className="hidden lg:inline">
 							Znaleziono {totalCount.toLocaleString("pl-PL")} {offersWord(totalCount)}
 						</span>
@@ -219,7 +219,7 @@ function Pagination({ filters, page, totalPages }: { filters: SearchFilters; pag
 	return (
 		<nav className="mt-12 flex items-center justify-center gap-2" aria-label="Strony wyników">
 			<PageLink filters={filters} page={page - 1} disabled={page <= 1} label="Poprzednia strona">
-				<Icon icon={ChevronLeft} className="text-[20px]" />
+				<Icon icon={ChevronLeft} className="text-2xl" />
 			</PageLink>
 			{pageNumbers(page, totalPages).map((number, index) =>
 				number === null ? (
@@ -233,7 +233,7 @@ function Pagination({ filters, page, totalPages }: { filters: SearchFilters; pag
 				),
 			)}
 			<PageLink filters={filters} page={page + 1} disabled={page >= totalPages} label="Następna strona">
-				<Icon icon={ChevronRight} className="text-[20px]" />
+				<Icon icon={ChevronRight} className="text-2xl" />
 			</PageLink>
 		</nav>
 	);
@@ -250,7 +250,7 @@ type PageLinkProps = {
 
 function PageLink({ filters, page, current, disabled, label, children }: PageLinkProps) {
 	const className = cn(
-		"head grid h-10 min-w-10 place-items-center rounded-md px-2 text-[14px] font-semibold",
+		"head grid h-10 min-w-10 place-items-center rounded-md px-2 text-base font-semibold",
 		current ? "bg-slate text-white" : "bg-white",
 		disabled ? "cursor-not-allowed opacity-40" : !current && "hover:bg-line",
 	);
@@ -293,7 +293,7 @@ function RangeInfo({ result }: { result: PagedProperties }) {
 	const { from, to } = pageRange(result);
 
 	return (
-		<p className="mt-1 text-[13px] text-muted">
+		<p className="mt-1 text-sm text-muted">
 			{from.toLocaleString("pl-PL")}–{to.toLocaleString("pl-PL")} z {result.totalCount.toLocaleString("pl-PL")}{" "}
 			{result.totalCount === 1 ? "ogłoszenia" : "ogłoszeń"}
 		</p>

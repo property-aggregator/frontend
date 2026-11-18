@@ -38,12 +38,12 @@ export function FiltersPanel({ activeCount = 0, variant = "card", button = "filt
 			<button
 				type="button"
 				onClick={() => setOpen(true)}
-				className="head flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-white py-2.5 text-[15px] font-semibold text-ink lg:hidden"
+				className="head flex w-full cursor-pointer items-center justify-center gap-2 rounded-full bg-white py-2.5 text-md font-semibold text-ink lg:hidden"
 			>
-				<Icon icon={button === "search" ? Search : SlidersHorizontal} className="text-[18px]" />
+				<Icon icon={button === "search" ? Search : SlidersHorizontal} className="text-xl" />
 				{button === "search" ? "Szukaj" : "Filtry"}
 				{activeCount > 0 && (
-					<span className="grid h-5 min-w-5 place-items-center rounded-full bg-slate px-1.5 text-[11px] text-white">
+					<span className="grid h-5 min-w-5 place-items-center rounded-full bg-slate px-1.5 text-2xs text-white">
 						{activeCount}
 					</span>
 				)}
@@ -67,7 +67,7 @@ export function FiltersPanel({ activeCount = 0, variant = "card", button = "filt
 						card ? "lg:border-0 lg:p-0" : "lg:hidden",
 					)}
 				>
-					<h2 className="head text-[20px] font-semibold">Filtry</h2>
+					<h2 className="head text-2xl font-semibold">Filtry</h2>
 					<button
 						type="button"
 						onClick={() => setOpen(false)}

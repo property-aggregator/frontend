@@ -51,7 +51,7 @@ export function SiteHeader() {
 
 	return (
 		<>
-			<div className="bg-mist text-[13px] text-ink">
+			<div className="bg-mist text-sm text-ink">
 				<div className="mx-auto flex max-w-[1170px] items-center justify-center gap-2 px-6 py-2 text-center">
 					<span>
 						<b className="font-medium">Aplikacja jest w fazie rozwoju.</b> Część funkcji może jeszcze nie
@@ -60,7 +60,7 @@ export function SiteHeader() {
 				</div>
 			</div>
 
-			<header className="sticky top-0 z-50 bg-white shadow-[0_2px_12px_rgb(23_38_46/0.1)]">
+			<header className="sticky top-0 z-50 border-b border-ink/[0.06] bg-white">
 				<div className="mx-auto flex h-[76px] max-w-[1170px] items-center justify-between px-6">
 					<Link href="/#top" className="flex items-center gap-2.5">
 						<LogoMark />
@@ -102,7 +102,7 @@ export function SiteHeader() {
 					{navItems.map(({ id, label }) => (
 						<Link
 							key={id}
-							className="head py-2.5 text-[13px] text-ink uppercase"
+							className="head py-2.5 text-sm text-ink uppercase"
 							href={`/#${id}`}
 							onClick={() => setMenuOpen(false)}
 						>

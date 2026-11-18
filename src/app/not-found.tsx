@@ -25,7 +25,7 @@ export default function NotFound() {
 				<h1 className="mt-4 text-[34px] leading-[1.15] font-bold text-white md:text-[50px]">
 					Tej strony nie ma pod tym adresem
 				</h1>
-				<p className="mt-5 max-w-[520px] text-[15px] text-white/85">
+				<p className="mt-5 max-w-[520px] text-md text-white/85">
 					Mogła zostać przeniesiona albo usunięta, a może w adresie wkradła się literówka. Wróć na stronę
 					główną albo poszukaj ofert.
 				</p>

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { Figtree } from "next/font/google";
+import { Suspense } from "react";
+import { ScrollRestoration } from "@/components/scroll-restoration";
+import { env } from "@/lib/env";
 import { site } from "@/lib/site";
 import "./globals.css";
 
@@ -10,6 +13,7 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
+	metadataBase: new URL(env.APP_BASE_URL),
 	title: {
 		default: `${site.domain} – Wszystkie nieruchomości w jednym miejscu`,
 		template: `%s · ${site.domain}`,
@@ -24,6 +28,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
 		<html lang="pl" data-scroll-behavior="smooth" className={`${figtree.variable} scroll-smooth antialiased`}>
 			<body className="bg-white" suppressHydrationWarning>
 				{children}
+				<Suspense>
+					<ScrollRestoration />
+				</Suspense>
 			</body>
 		</html>
 	);

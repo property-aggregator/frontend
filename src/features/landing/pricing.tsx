@@ -15,7 +15,7 @@ const plans = [
 		cta: "Wypróbuj za darmo",
 		features: ["3 wybrane miasta", "Deduplikacja z 300+ portali", "Alerty e-mail do 5 min", "Historia korekt cen"],
 		tile: "bg-pastel-blue",
-		button: "bg-pastel-blue-deep text-ink hover:bg-ink hover:text-white",
+		button: "bg-pastel-blue-deep text-ink hover:bg-[color-mix(in_srgb,var(--color-pastel-blue-deep)_92%,#000)]",
 		featured: false,
 	},
 	{
@@ -42,7 +42,7 @@ const plans = [
 		intro: "Wszystko z Inwestora PRO, a także:",
 		features: ["Do 10 stanowisk agentów", "Integracja z CRM", "Eksport do CSV i PDF", "Opiekun i SLA 99,9%"],
 		tile: "bg-pastel-peach",
-		button: "bg-pastel-peach-deep text-ink hover:bg-ink hover:text-white",
+		button: "bg-pastel-peach-deep text-ink hover:bg-[color-mix(in_srgb,var(--color-pastel-peach-deep)_92%,#000)]",
 		featured: false,
 	},
 ];
@@ -77,7 +77,7 @@ export function Pricing() {
 							)}
 						>
 							{plan.featured && (
-								<span className="head absolute -top-3 left-8 rounded-full bg-slate px-3 py-1 text-[11px] font-semibold tracking-wider text-white uppercase">
+								<span className="head absolute -top-3 left-8 rounded-full bg-slate px-3 py-1 text-2xs font-semibold tracking-wider text-white uppercase">
 									Najczęściej wybierany
 								</span>
 							)}
@@ -88,9 +88,9 @@ export function Pricing() {
 								<span className="head text-[44px] leading-none font-bold">
 									{monthlyPrice(plan.monthly, billing)} zł
 								</span>
-								<span className="pb-1 text-[13px] text-muted">/ miesiąc</span>
+								<span className="pb-1 text-sm text-muted">/ miesiąc</span>
 							</div>
-							<div className="mt-1 text-[13px] text-muted">
+							<div className="mt-1 text-sm text-muted">
 								{billing === "annual" ? `płatne rocznie: ${plan.monthly * 10} zł` : "płatne co miesiąc"}
 							</div>
 
@@ -99,11 +99,11 @@ export function Pricing() {
 							</a>
 
 							<div className="mt-8 border-t border-ink/10 pt-6">
-								{plan.intro && <div className="head mb-3 text-[13px] font-semibold">{plan.intro}</div>}
+								{plan.intro && <div className="head mb-3 text-sm font-semibold">{plan.intro}</div>}
 								<ul className="space-y-2.5">
 									{plan.features.map((feature) => (
 										<li key={feature} className="flex gap-2.5">
-											<Icon icon={Check} className="text-[20px] text-brand" />
+											<Icon icon={Check} className="text-2xl text-brand" />
 											<span className="text-ink">{feature}</span>
 										</li>
 									))}
@@ -134,7 +134,7 @@ function BillingToggle({ value, onChange }: { value: Billing; onChange: (value: 
 						aria-checked={value === option.value}
 						onClick={() => onChange(option.value)}
 						className={cn(
-							"head cursor-pointer rounded-full px-5 py-2 text-[14px] font-semibold transition-colors",
+							"head cursor-pointer rounded-full px-5 py-2 text-base font-semibold transition-colors",
 							value === option.value ? "bg-white text-ink ring-1 ring-line" : "text-muted hover:text-ink",
 						)}
 					>
