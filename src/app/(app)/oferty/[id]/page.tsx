@@ -51,8 +51,8 @@ export default function PropertyPage({ params }: PageProps<"/oferty/[id]">) {
 	return (
 		<main>
 			<div className="mx-auto max-w-[1360px] px-6 py-10">
-				<BackToSearchLink className="head mb-6 inline-flex items-center gap-1 text-[14px] font-semibold hover:text-slate">
-					<Icon icon={ChevronLeft} className="text-[18px]" />
+				<BackToSearchLink className="head mb-6 inline-flex items-center gap-1 text-base font-semibold hover:text-slate">
+					<Icon icon={ChevronLeft} className="text-xl" />
 					Wróć do wyszukiwarki
 				</BackToSearchLink>
 				<Suspense fallback={<DetailsSkeleton />}>
@@ -147,7 +147,7 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 				{badge && (
 					<span
 						className={cn(
-							"head absolute top-4 left-4 rounded px-2.5 py-1 text-[11px] font-bold tracking-wider uppercase",
+							"head absolute top-4 left-4 rounded px-2.5 py-1 text-2xs font-bold tracking-wider uppercase",
 							property.archivedAt ? "bg-white text-ink" : "bg-pastel-violet text-slate",
 						)}
 					>
@@ -158,35 +158,35 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 			<div className="flex flex-col p-6">
 				<div className="flex flex-wrap items-start justify-between gap-3">
 					<p className="flex flex-wrap items-baseline gap-x-2.5">
-						<span className="head text-[30px] font-bold">
+						<span className="head text-3xl font-bold">
 							{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
 						</span>
 						{property.pricePerM2 !== null && (
-							<span className="text-[14px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
+							<span className="text-base text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
 						<PriceChangeText
 							amount={property.priceChangeAmount}
 							percent={property.priceChangePercent}
-							className="text-[14px]"
+							className="text-base"
 						/>
 					</p>
 					<SourceLink property={property} className="shrink-0 max-md:hidden" />
 				</div>
-				<h1 className="mt-1 line-clamp-2 text-[19px] leading-snug font-semibold">{property.title}</h1>
+				<h1 className="mt-1 line-clamp-2 text-lg leading-snug font-semibold">{property.title}</h1>
 				{address && (
-					<p className="mt-1.5 flex items-start gap-1 text-[14px]">
-						<Icon icon={MapPin} className="mt-0.5 text-[18px] text-muted" />
+					<p className="mt-1.5 flex items-start gap-1 text-base">
+						<Icon icon={MapPin} className="mt-0.5 text-xl text-muted" />
 						{address}
 					</p>
 				)}
-				<dl className="mt-5 grid grid-cols-[repeat(2,max-content)] gap-x-12 gap-y-3 border-t border-line pt-5 text-[14px]">
+				<dl className="mt-5 grid grid-cols-[repeat(2,max-content)] gap-x-12 gap-y-3 border-t border-line pt-5 text-base">
 					{facts.map(
 						([label, value, icon]) =>
 							value && (
 								<div key={label}>
-									<dt className="text-[13px] text-muted">{label}</dt>
+									<dt className="text-sm text-muted">{label}</dt>
 									<dd className="head flex items-center gap-1.5 font-semibold">
-										<Icon icon={icon} className="text-[20px] text-muted" />
+										<Icon icon={icon} className="text-2xl text-muted" />
 										{value}
 									</dd>
 								</div>
@@ -194,7 +194,7 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 					)}
 				</dl>
 				<div className="mt-auto flex min-h-11 items-end justify-between gap-3 pt-4">
-					<p className="text-[13px] text-muted">{property.sellerType && sellerLabels[property.sellerType]}</p>
+					<p className="text-sm text-muted">{property.sellerType && sellerLabels[property.sellerType]}</p>
 					{favorite !== undefined && (
 						<FavoriteButton propertyId={property.id} initialFavorite={favorite} className="-mr-2 -mb-2" />
 					)}
@@ -214,7 +214,7 @@ function SourceLink({ property, className }: { property: Property; className?: s
 			className={cn("btn btn-sm btn-slate", className)}
 		>
 			Przejdź do ogłoszenia
-			<Icon icon={SquareArrowOutUpRight} className="text-[18px]" />
+			<Icon icon={SquareArrowOutUpRight} className="text-xl" />
 		</a>
 	);
 }
@@ -222,8 +222,8 @@ function SourceLink({ property, className }: { property: Property; className?: s
 function Section({ title, subtitle, children }: { title: string; subtitle?: string; children: React.ReactNode }) {
 	return (
 		<section className="mt-14">
-			<h2 className={cn("title text-[24px]", !subtitle && "mb-5")}>{title}</h2>
-			{subtitle && <p className="mt-1 mb-5 text-[14px] text-body">{subtitle}</p>}
+			<h2 className={cn("title text-2xl", !subtitle && "mb-5")}>{title}</h2>
+			{subtitle && <p className="mt-1 mb-5 text-base text-body">{subtitle}</p>}
 			{children}
 		</section>
 	);
@@ -260,7 +260,11 @@ async function PriceHistorySection({ property }: { property: Property }) {
 		return <Notice>Brak historii cen dla tej oferty.</Notice>;
 	}
 
-	return <PriceHistory changes={changes} lastSeenAt={property.lastSeenAt} />;
+	return (
+		<div className="rounded-xl bg-white p-5 sm:p-8">
+			<PriceHistory changes={changes} lastSeenAt={property.lastSeenAt} />
+		</div>
+	);
 }
 
 async function Transactions({ property }: { property: Property }) {
@@ -273,12 +277,14 @@ async function Transactions({ property }: { property: Property }) {
 	}
 
 	return (
-		<TransactionsMap
-			transactions={result.transactions}
-			latitude={property.latitude}
-			longitude={property.longitude}
-			showDistance={result.scope === "nearby"}
-		/>
+		<div className="overflow-hidden rounded-xl bg-white">
+			<TransactionsMap
+				transactions={result.transactions}
+				latitude={property.latitude}
+				longitude={property.longitude}
+				showDistance={result.scope === "nearby"}
+			/>
+		</div>
 	);
 }
 

@@ -19,7 +19,7 @@ export function Hero() {
 						<br />
 						zanim zrobią to inni
 					</h1>
-					<p className="mt-5 max-w-[520px] text-[15px] text-white/85">
+					<p className="mt-5 max-w-[520px] text-md text-white/85">
 						Otodom, OLX, Morizon, Gratka i wiele innych portali naraz. Bez duplikatów, z historią cen i
 						alertem o okazji w mniej niż 10 minut.
 					</p>

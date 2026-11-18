@@ -81,8 +81,8 @@ export function Comparison() {
 								<Icon icon={X} />
 							</span>
 							<div>
-								<h3 className="text-[20px] font-bold">Tradycyjne szukanie</h3>
-								<div className="text-[13px]">Chaotycznie i nieefektywnie</div>
+								<h3 className="text-2xl font-bold">Tradycyjne szukanie</h3>
+								<div className="text-sm">Chaotycznie i nieefektywnie</div>
 							</div>
 						</div>
 						<ul className="mt-8 space-y-6">
@@ -90,7 +90,7 @@ export function Comparison() {
 								<li key={title} className="flex gap-4">
 									<Icon icon={icon} className="text-[#c9c3be]" />
 									<div>
-										<h4 className="text-[15px] font-medium">{title}</h4>
+										<h4 className="text-md font-medium">{title}</h4>
 										<p className="mt-1">{text}</p>
 									</div>
 								</li>
@@ -104,10 +104,10 @@ export function Comparison() {
 								<Icon icon={Check} />
 							</span>
 							<div>
-								<h3 className="text-[20px] font-bold text-white">
+								<h3 className="text-2xl font-bold text-white">
 									Z <BrandName />
 								</h3>
-								<div className="text-[13px] text-white/60">Pełna kontrola rynku</div>
+								<div className="text-sm text-white/60">Pełna kontrola rynku</div>
 							</div>
 						</div>
 						<ul className="relative mt-8 space-y-6">
@@ -115,7 +115,7 @@ export function Comparison() {
 								<li key={title} className="flex gap-4">
 									<Icon icon={icon} className="text-white" />
 									<div>
-										<h4 className="text-[15px] font-medium text-white">{title}</h4>
+										<h4 className="text-md font-medium text-white">{title}</h4>
 										<p className="mt-1">{text}</p>
 									</div>
 								</li>

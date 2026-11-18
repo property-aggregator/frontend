@@ -55,16 +55,16 @@ export function MapSection() {
 							strokeDasharray="8 6"
 						/>
 					</svg>
-					<span className="head absolute top-[30%] left-[32%] rounded-sm bg-brand px-3 py-1 text-[12px] text-white">
+					<span className="head absolute top-[30%] left-[32%] rounded-sm bg-brand px-3 py-1 text-xs text-white">
 						649k · −19%
 					</span>
-					<span className="head absolute top-[52%] left-[46%] rounded-sm bg-ink px-3 py-1 text-[12px] text-white">
+					<span className="head absolute top-[52%] left-[46%] rounded-sm bg-ink px-3 py-1 text-xs text-white">
 						410k
 					</span>
-					<span className="head absolute top-[24%] left-[52%] rounded-sm bg-white px-3 py-1 text-[12px] text-ink">
+					<span className="head absolute top-[24%] left-[52%] rounded-sm bg-white px-3 py-1 text-xs text-ink">
 						720k
 					</span>
-					<span className="head absolute top-[66%] left-[36%] rounded-sm bg-white px-3 py-1 text-[12px] text-ink">
+					<span className="head absolute top-[66%] left-[36%] rounded-sm bg-white px-3 py-1 text-xs text-ink">
 						559k
 					</span>
 					<div className="absolute bottom-4 left-4 rounded-md bg-white px-4 py-3 text-ink">

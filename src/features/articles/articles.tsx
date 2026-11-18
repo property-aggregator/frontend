@@ -16,12 +16,12 @@ export type Article = {
 };
 
 function Heading({ children }: { children: React.ReactNode }) {
-	return <h2 className="head mt-10 text-[20px] font-bold">{children}</h2>;
+	return <h2 className="head mt-10 text-2xl font-bold">{children}</h2>;
 }
 
 export function ImageCredit({ source }: { source: string }) {
 	return (
-		<figcaption className="mt-2 text-[13px] text-muted">
+		<figcaption className="mt-2 text-sm text-muted">
 			Obraz z{" "}
 			<a href={source} className="transition-colors hover:text-slate" target="_blank" rel="noopener">
 				magnific.com

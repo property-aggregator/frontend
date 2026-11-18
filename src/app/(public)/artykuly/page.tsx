@@ -19,10 +19,10 @@ export default function ArticlesPage() {
 			<ul className="mt-10 space-y-10">
 				{articles.map((article) => (
 					<li key={article.slug}>
-						<time className="text-[13px] text-muted" dateTime={article.publishedAt}>
+						<time className="text-sm text-muted" dateTime={article.publishedAt}>
 							{dateFormat.format(new Date(article.publishedAt))}
 						</time>
-						<h2 className="head mt-2 text-[20px] font-bold">
+						<h2 className="head mt-2 text-2xl font-bold">
 							<Link
 								href={articlePath(article.slug)}
 								className="text-ink transition-colors hover:text-slate"
@@ -30,7 +30,7 @@ export default function ArticlesPage() {
 								{article.title}
 							</Link>
 						</h2>
-						<p className="mt-2 text-[15px]">{article.description}</p>
+						<p className="mt-2 text-md">{article.description}</p>
 					</li>
 				))}
 			</ul>

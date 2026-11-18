@@ -50,7 +50,7 @@ function transactionMarker(transaction: Transaction, onClick: () => void): HTMLE
 	marker.setAttribute("aria-label", `Transakcja za ${priceFormat.format(transaction.price)}`);
 	marker.innerHTML = `
 		<span class="block size-3.5 rounded-full border-2 border-white bg-slate shadow-[0_1px_4px_rgb(23_38_46/0.4)] transition-transform group-hover:scale-125 group-data-[active=true]:scale-150 group-data-[active=true]:bg-ink"></span>
-		<span class="head absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded bg-ink px-2 py-0.5 text-[12px] font-semibold whitespace-nowrap text-white group-data-[active=true]:block">${compactPriceFormat.format(transaction.price)} zł</span>
+		<span class="head absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded bg-ink px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-white group-data-[active=true]:block">${compactPriceFormat.format(transaction.price)} zł</span>
 	`;
 	marker.addEventListener("click", (event) => {
 		event.stopPropagation();
@@ -70,7 +70,7 @@ function originMarker(): HTMLElement {
 	const marker = document.createElement("div");
 	marker.innerHTML = `
 		<span class="block size-5 rounded-full border-[3px] border-white bg-pastel-red shadow-[0_1px_6px_rgb(23_38_46/0.5)]"></span>
-		<span class="head absolute bottom-full left-1/2 mb-1 -translate-x-1/2 rounded bg-white px-2 py-0.5 text-[12px] font-semibold whitespace-nowrap text-ink shadow">Ta oferta</span>
+		<span class="head absolute bottom-full left-1/2 mb-1 -translate-x-1/2 rounded bg-white px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-ink shadow">Ta oferta</span>
 	`;
 	return marker;
 }
@@ -110,7 +110,7 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 			}
 			// A row of cards on phones, a column next to the map on desktops.
 			if (element.scrollWidth > element.clientWidth) {
-				element.scrollTo({ left: item.offsetLeft - 12, behavior: "smooth" });
+				element.scrollTo({ left: item.offsetLeft - 20, behavior: "smooth" });
 			} else {
 				element.scrollTo({
 					top: item.offsetTop - (element.clientHeight - item.clientHeight) / 2,
@@ -196,17 +196,18 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 	}
 
 	return (
-		<div className="grid gap-1 lg:grid-cols-[1fr_380px] lg:gap-5">
-			{/* The padding keeps the hover shadow of the tiles from being clipped by the scrolling list. */}
+		<div className="grid lg:grid-cols-[1fr_380px]">
 			<ul
 				ref={list}
 				{...listHandlers}
-				className="scroll-thin relative order-last max-lg:-mx-3 max-lg:flex max-lg:snap-x max-lg:snap-mandatory max-lg:scroll-px-3 max-lg:[scrollbar-width:none] max-lg:gap-4 max-lg:overflow-x-auto max-lg:p-3 lg:-my-2.5 lg:-ml-3 lg:grid lg:max-h-[580px] lg:grid-cols-[minmax(0,1fr)] lg:content-start lg:gap-3 lg:overflow-y-auto lg:pt-2.5 lg:pr-1.5 lg:pb-2.5 lg:pl-3 max-lg:[&::-webkit-scrollbar]:hidden lg:[&::-webkit-scrollbar-track]:[margin-block:10px]"
+				className="scroll-thin relative order-last p-5 max-lg:flex max-lg:snap-x max-lg:snap-mandatory max-lg:scroll-px-5 max-lg:[scrollbar-width:none] max-lg:gap-4 max-lg:overflow-x-auto lg:grid lg:max-h-[600px] lg:grid-cols-[minmax(0,1fr)] lg:content-start lg:gap-3 lg:overflow-y-auto lg:pr-2 max-lg:[&::-webkit-scrollbar]:hidden lg:[&::-webkit-scrollbar-track]:[margin-block:12px]"
 			>
 				{transactions.map((transaction) => {
-					const details = [
+					const size = [
 						transaction.areaM2 === null ? null : `${areaFormat.format(transaction.areaM2)} m²`,
 						transaction.rooms === null ? null : roomsText(roomsFromChambers(transaction.rooms)),
+					].filter(Boolean);
+					const building = [
 						transaction.floor === null ? null : floorFromStorey(transaction.floor),
 						transaction.marketType && `rynek ${marketLabels[transaction.marketType].toLowerCase()}`,
 					].filter(Boolean);
@@ -230,12 +231,10 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 							<button
 								type="button"
 								onClick={() => selectFromList(transaction)}
-								onMouseEnter={() => activate(transaction.transactionId)}
 								aria-pressed={activeId === transaction.transactionId}
 								className={cn(
-									"block h-full w-full cursor-pointer rounded-xl bg-white px-5 py-3.5 text-left transition-[background-color,box-shadow] hover:shadow-[0_4px_6px_-1px_rgb(0_0_0/0.1),0_-4px_6px_-1px_rgb(0_0_0/0.1),0_2px_4px_-2px_rgb(0_0_0/0.1),0_-2px_4px_-2px_rgb(0_0_0/0.1)]",
-									activeId === transaction.transactionId &&
-										"bg-mist shadow-[0_4px_6px_-1px_rgb(0_0_0/0.1),0_-4px_6px_-1px_rgb(0_0_0/0.1),0_2px_4px_-2px_rgb(0_0_0/0.1),0_-2px_4px_-2px_rgb(0_0_0/0.1)]",
+									"block h-full w-full cursor-pointer rounded-xl px-5 py-3.5 text-left transition-[background-color,box-shadow] duration-300",
+									activeId === transaction.transactionId ? "bg-white ring-1 ring-ink/10" : "bg-mist",
 								)}
 							>
 								<span className="flex items-baseline justify-between gap-3">
@@ -243,17 +242,25 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 										{priceFormat.format(transaction.price)}
 									</span>
 									{transaction.pricePerM2 !== null && (
-										<span className="text-[13px] text-muted">
+										<span className="text-sm text-muted">
 											{priceFormat.format(transaction.pricePerM2)}/m²
 										</span>
 									)}
 								</span>
-								<span className="block truncate text-[14px]">
+								<span className="block truncate text-base">
 									{transaction.address ?? "Adres nieznany"}
 								</span>
-								{details.length > 0 && <span className="block text-[13px]">{details.join(" • ")}</span>}
+								{(size.length > 0 || building.length > 0) && (
+									<span className="block text-sm">
+										{size.join(" • ")}
+										{size.length > 0 && building.length > 0 && (
+											<span className="max-sm:hidden"> • </span>
+										)}
+										<span className="max-sm:block">{building.join(" • ")}</span>
+									</span>
+								)}
 								{(transaction.date || distance) && (
-									<span className="block text-[12px] text-body">
+									<span className="block text-xs text-body">
 										{transaction.date && (
 											<time dateTime={transaction.date} className="font-semibold text-ink">
 												{dateFormat.format(new Date(transaction.date))}
@@ -268,7 +275,7 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 					);
 				})}
 			</ul>
-			<div className="relative isolate h-[340px] overflow-hidden rounded-xl bg-white lg:h-[560px]">
+			<div className="relative isolate h-[340px] lg:h-[600px]">
 				<div ref={container} className="h-full w-full" />
 				{failed && (
 					<p className="absolute inset-0 grid place-items-center p-6 text-center">

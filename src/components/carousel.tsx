@@ -251,8 +251,8 @@ export function Carousel({ label, children }: { label: string; children: React.R
 			<div
 				ref={track}
 				{...handlers}
-				// The padding keeps the hover shadow of the slides from being clipped by the scroll container.
-				className="-m-3 flex snap-x snap-mandatory scroll-px-3 [scrollbar-width:none] gap-5 overflow-x-auto p-3 [&::-webkit-scrollbar]:hidden"
+				// The padding keeps the hover shadow of the slides from being clipped by the scroll container; it falls downwards.
+				className="-mx-3 -mt-4 -mb-8 flex snap-x snap-mandatory scroll-px-3 [scrollbar-width:none] gap-5 overflow-x-auto px-3 pt-4 pb-8 [&::-webkit-scrollbar]:hidden"
 			>
 				{Children.map(children, (child) => (
 					<div className={slideClassName}>{child}</div>

@@ -44,12 +44,12 @@ export function PriceChangeText({
 	return (
 		<span
 			className={cn(
-				"inline-flex items-baseline gap-1 text-[13px] font-semibold",
-				amount < 0 ? "text-brand" : "text-pastel-red",
+				"inline-flex items-baseline gap-1 text-sm font-semibold",
+				amount < 0 ? "text-price-down" : "text-price-up",
 				className,
 			)}
 		>
-			<Icon icon={amount < 0 ? ArrowDown : ArrowUp} className="shrink-0 self-center text-[16px]" />
+			<Icon icon={amount < 0 ? ArrowDown : ArrowUp} className="shrink-0 self-center text-lg" />
 			<span className={cn("flex gap-1", stacked && "max-sm:flex-col max-sm:gap-0")}>
 				<span>{changeAmountFormat.format(amount)}</span>
 				{percent !== null && <span>({changePercentFormat.format(percent / 100)})</span>}
@@ -69,7 +69,7 @@ export function PropertyCard({ property, className }: { property: Property; clas
 		<Link
 			href={propertyUrl(property.id)}
 			className={cn(
-				"flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-md",
+				"flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow duration-300 hover:shadow-card",
 				className,
 			)}
 		>
@@ -89,34 +89,34 @@ export function PropertyCard({ property, className }: { property: Property; clas
 						{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
 					</span>
 					{property.pricePerM2 !== null && (
-						<span className="text-[13px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
+						<span className="text-sm text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 					)}
 				</p>
-				<h4 className="mt-1 truncate text-[17px] font-medium">{property.title}</h4>
-				<div className="flex h-5 items-center gap-1 text-[13px]">
+				<h4 className="mt-1 truncate text-lg font-medium">{property.title}</h4>
+				<div className="flex h-5 items-center gap-1 text-sm">
 					{location && (
 						<>
-							<Icon icon={MapPin} className="text-[16px] text-muted" />
+							<Icon icon={MapPin} className="text-lg text-muted" />
 							<span className="truncate" title={location}>
 								{location}
 							</span>
 						</>
 					)}
 				</div>
-				<p className="mt-1.5 text-[12px] text-body">
+				<p className="mt-1.5 text-xs text-body">
 					<TimeAgo label="Dodano" date={property.firstSeenAt} />
 				</p>
 			</div>
-			<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-[13px]">
+			<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-sm">
 				{property.areaM2 !== null && (
 					<span className="flex items-center gap-1">
-						<Icon icon={Scaling} className="text-[18px]" />
+						<Icon icon={Scaling} className="text-xl" />
 						{property.areaM2} m²
 					</span>
 				)}
 				{property.rooms !== null && (
 					<span className="flex items-center gap-1">
-						<Icon icon={BedDouble} className="text-[18px]" />
+						<Icon icon={BedDouble} className="text-xl" />
 						{property.rooms} pok.
 					</span>
 				)}
@@ -136,7 +136,7 @@ export function PropertyTile({ property, showPortal }: { property: Property; sho
 	return (
 		<Link
 			href={propertyUrl(property.id)}
-			className="flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-md"
+			className="flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow duration-300 hover:shadow-card"
 		>
 			<div className="relative aspect-[16/9] bg-mist">
 				{property.mainImageUrl ? (
@@ -148,7 +148,7 @@ export function PropertyTile({ property, showPortal }: { property: Property; sho
 				)}
 				<div className="absolute top-3 left-3 flex gap-2">
 					{showPortal && (
-						<span className="head rounded bg-white px-2 py-0.5 text-[12px] font-semibold">
+						<span className="head rounded bg-white px-2 py-0.5 text-xs font-semibold">
 							{property.sourcePortal}
 						</span>
 					)}
@@ -160,15 +160,15 @@ export function PropertyTile({ property, showPortal }: { property: Property; sho
 				</div>
 			</div>
 			<div className="px-4 py-4">
-				<p className="head text-[20px] font-bold">
+				<p className="head text-2xl font-bold">
 					{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
 				</p>
-				<p className="mt-1 truncate text-[14px]" title={address || property.title}>
+				<p className="mt-1 truncate text-base" title={address || property.title}>
 					{address || property.title}
 				</p>
-				{details.length > 0 && <p className="mt-0.5 truncate text-[14px]">{details.join(" • ")}</p>}
+				{details.length > 0 && <p className="mt-0.5 truncate text-base">{details.join(" • ")}</p>}
 				{property.archivedAt && (
-					<p className="mt-1.5 text-[12px] text-body">
+					<p className="mt-1.5 text-xs text-body">
 						<TimeAgo label="Wygasło" date={property.archivedAt} />
 					</p>
 				)}
@@ -248,7 +248,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 	const badge = property.archivedAt ? "Archiwalna" : isNew(property) ? "Nowość" : null;
 
 	return (
-		<article className="relative flex flex-col overflow-hidden rounded-xl bg-white transition-shadow hover:shadow-md sm:flex-row">
+		<article className="relative flex flex-col overflow-hidden rounded-xl bg-white transition-shadow duration-300 hover:shadow-card sm:flex-row">
 			<div className="relative aspect-[4/3] shrink-0 bg-mist sm:w-[340px]">
 				{property.mainImageUrl ? (
 					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
@@ -275,7 +275,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 							{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
 						</span>
 						{property.pricePerM2 !== null && (
-							<span className="text-[13px] text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
+							<span className="text-sm text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
 						<PriceChangeText amount={property.priceChangeAmount} percent={property.priceChangePercent} />
 					</p>
@@ -284,39 +284,39 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 						target="_blank"
 						rel="noopener noreferrer"
 						title={`Otwórz ogłoszenie w serwisie ${property.sourcePortal}`}
-						className="head relative z-10 mt-1.5 flex shrink-0 items-center gap-1 rounded bg-mist px-2 py-0.5 text-[12px] font-semibold transition-colors hover:bg-line"
+						className="head relative z-10 mt-1.5 flex shrink-0 items-center gap-1 rounded bg-mist px-2 py-0.5 text-xs font-semibold transition-colors hover:bg-line"
 					>
 						{property.sourcePortal}
-						<Icon icon={SquareArrowOutUpRight} className="text-[16px]" />
+						<Icon icon={SquareArrowOutUpRight} className="text-lg" />
 					</a>
 				</div>
-				<h3 className="mt-1.5 line-clamp-2 text-[18px] leading-snug font-medium">
+				<h3 className="mt-1.5 line-clamp-2 text-lg leading-snug font-medium">
 					<Link href={propertyUrl(property.id)} className="after:absolute after:inset-0">
 						{property.title}
 					</Link>
 				</h3>
-				{address && <p className="mt-2 truncate text-[14px]">{address}</p>}
-				<div className="head mt-4 flex flex-wrap gap-x-7 gap-y-1 text-[15px] font-semibold">
+				{address && <p className="mt-2 truncate text-base">{address}</p>}
+				<div className="head mt-4 flex flex-wrap gap-x-7 gap-y-1 text-md font-semibold">
 					{property.rooms !== null && (
 						<span className="flex items-center gap-1.5">
-							<Icon icon={BedDouble} className="text-[20px] text-muted" />
+							<Icon icon={BedDouble} className="text-2xl text-muted" />
 							{roomsText(property.rooms)}
 						</span>
 					)}
 					{property.areaM2 !== null && (
 						<span className="flex items-center gap-1.5">
-							<Icon icon={Scaling} className="text-[20px] text-muted" />
+							<Icon icon={Scaling} className="text-2xl text-muted" />
 							{areaFormat.format(property.areaM2)} m²
 						</span>
 					)}
 					{property.floor && (
 						<span className="flex items-center gap-1.5">
-							<Icon icon={Layers} className="text-[20px] text-muted" />
+							<Icon icon={Layers} className="text-2xl text-muted" />
 							{floorText(property.floor)}
 						</span>
 					)}
 				</div>
-				<div className="mt-auto flex items-center justify-between gap-3 border-t border-line py-3 text-[13px] text-muted">
+				<div className="mt-auto flex items-center justify-between gap-3 border-t border-line py-3 text-sm text-muted">
 					<div>
 						{property.sellerType && <p>{sellerLabels[property.sellerType]}</p>}
 						<p className="flex flex-wrap gap-x-4 text-body">

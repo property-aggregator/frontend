@@ -46,7 +46,7 @@ export function ConsentsForm({ returnTo }: { returnTo: string }) {
 			</label>
 
 			{state.error && (
-				<p role="alert" className="text-[14px] font-semibold text-ink">
+				<p role="alert" className="text-base font-semibold text-ink">
 					{state.error}
 				</p>
 			)}

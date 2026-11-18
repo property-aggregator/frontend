@@ -51,12 +51,12 @@ export function FavoriteButton({ propertyId, initialFavorite, className }: Favor
 				title={favorite ? "Usuń z ulubionych" : "Dodaj do ulubionych"}
 				className="grid h-11 w-11 cursor-pointer place-items-center text-ink transition-colors hover:text-pastel-red disabled:cursor-not-allowed disabled:opacity-50"
 			>
-				<Icon icon={Heart} className={cn("text-[28px]", favorite && "fill-current text-pastel-red")} />
+				<Icon icon={Heart} className={cn("text-4xl", favorite && "fill-current text-pastel-red")} />
 			</button>
 			{error && (
 				<p
 					role="status"
-					className="absolute right-0 bottom-full mb-2 w-max max-w-[240px] rounded-md bg-ink px-3 py-2 text-[12px] leading-snug text-white"
+					className="absolute right-0 bottom-full mb-2 w-max max-w-[240px] rounded-md bg-ink px-3 py-2 text-xs leading-snug text-white"
 				>
 					{error}
 				</p>

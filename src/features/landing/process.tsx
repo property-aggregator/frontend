@@ -26,12 +26,12 @@ export function Process() {
 						<br />
 						Kupuj taniej.
 					</h2>
-					<p className="mt-6 max-w-[460px] text-[15px] text-white/90">
+					<p className="mt-6 max-w-[460px] text-md text-white/90">
 						Od publikacji ogłoszenia do powiadomienia na Twoim telefonie mija mniej niż pół minuty. Oto, co
 						dzieje się po drodze.
 					</p>
 					<a href={routes.signupPage} className="btn btn-ghost mt-8">
-						Wypróbuj za 0 zł <Icon icon={ArrowRight} className="text-[18px]" />
+						Wypróbuj za 0 zł <Icon icon={ArrowRight} className="text-xl" />
 					</a>
 				</div>
 
@@ -76,11 +76,11 @@ function PhoneMockup() {
 					<span className="h-3.5 w-12 rounded-full bg-[#111]" />
 					<span>5G</span>
 				</div>
-				<div className="head px-3 py-1.5 text-[12px] font-medium">Alerty</div>
+				<div className="head px-3 py-1.5 text-xs font-medium">Alerty</div>
 				<div className="space-y-1.5 px-2.5">
 					<div className="flex items-center gap-1.5 bg-white p-2">
 						<span className="grid h-6 w-6 place-items-center bg-tint text-brand">
-							<Icon icon={TrendingDown} className="text-[14px]" />
+							<Icon icon={TrendingDown} className="text-base" />
 						</span>
 						<div className="text-[8px] leading-tight">
 							<b className="head text-[9px] font-medium">−85 000 zł · Wola</b>
@@ -92,12 +92,12 @@ function PhoneMockup() {
 						<div className="h-[90px] w-full bg-line" />
 						<div className="p-2">
 							<div className="head text-[10px] font-medium">3 pokoje, Puławska</div>
-							<b className="head text-[12px] font-medium text-brand">649 000 zł</b>
+							<b className="head text-xs font-medium text-brand">649 000 zł</b>
 						</div>
 					</div>
 					<div className="flex items-center gap-1.5 bg-white p-2">
 						<span className="grid h-6 w-6 place-items-center bg-ink text-white">
-							<Icon icon={HousePlus} className="text-[14px]" />
+							<Icon icon={HousePlus} className="text-base" />
 						</span>
 						<div className="text-[8px] leading-tight">
 							<b className="head text-[9px] font-medium">Nowa · Ochota</b>

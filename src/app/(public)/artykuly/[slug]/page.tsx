@@ -81,7 +81,7 @@ export default async function ArticlePage({ params }: PageProps<"/artykuly/[slug
 				dangerouslySetInnerHTML={{ __html: JSON.stringify(articleJsonLd(article)).replace(/</g, "\\u003c") }}
 			/>
 			<article>
-				<time className="text-[13px] text-muted" dateTime={article.publishedAt}>
+				<time className="text-sm text-muted" dateTime={article.publishedAt}>
 					{dateFormat.format(new Date(article.publishedAt))}
 				</time>
 				<h1 className="title mt-3">{article.title}</h1>
@@ -96,7 +96,7 @@ export default async function ArticlePage({ params }: PageProps<"/artykuly/[slug
 					/>
 					<ImageCredit source={article.imageSource} />
 				</figure>
-				<div className="mt-8 space-y-4 text-[15px]">{article.content}</div>
+				<div className="mt-8 space-y-4 text-md">{article.content}</div>
 			</article>
 		</main>
 	);

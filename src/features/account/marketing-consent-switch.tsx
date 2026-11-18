@@ -28,7 +28,7 @@ export function MarketingConsentSwitch({ initialGranted }: { initialGranted: boo
 		<div>
 			<div className="flex items-start justify-between gap-6">
 				<div>
-					<p id="marketing-consent-label" className="head text-[15px] font-semibold">
+					<p id="marketing-consent-label" className="head text-md font-semibold">
 						Wiadomości marketingowe
 					</p>
 					<p className="mt-1">
@@ -56,7 +56,7 @@ export function MarketingConsentSwitch({ initialGranted }: { initialGranted: boo
 					/>
 				</button>
 			</div>
-			<p className={cn("mt-3 text-[13px]", error ? "font-semibold text-ink" : "text-muted")} role="status">
+			<p className={cn("mt-3 text-sm", error ? "font-semibold text-ink" : "text-muted")} role="status">
 				{error ?? (granted ? "Zgoda udzielona." : "Zgoda nieudzielona.")}
 			</p>
 		</div>

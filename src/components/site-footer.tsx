@@ -17,7 +17,7 @@ export function SiteFooter() {
 					</p>
 				</div>
 				<div>
-					<h4 className="text-[15px] font-medium text-white">Serwis</h4>
+					<h4 className="text-md font-medium text-white">Serwis</h4>
 					<div className="mt-4 grid gap-1.5">
 						<Link className="hover:text-white" href="/#oferty">
 							Oferty
@@ -34,7 +34,7 @@ export function SiteFooter() {
 					</div>
 				</div>
 				<div>
-					<h4 className="text-[15px] font-medium text-white">Kontakt</h4>
+					<h4 className="text-md font-medium text-white">Kontakt</h4>
 					<div className="mt-4 grid gap-1.5">
 						<a className="hover:text-white" href={`mailto:${site.email}`}>
 							{site.email}
@@ -48,7 +48,7 @@ export function SiteFooter() {
 					</div>
 				</div>
 			</div>
-			<div className="bg-black/20 py-5 text-center text-[12px]">© 2026 {site.domain} · Zdjęcia: Unsplash</div>
+			<div className="bg-black/20 py-5 text-center text-xs">© 2026 {site.domain} · Zdjęcia: Unsplash</div>
 		</footer>
 	);
 }

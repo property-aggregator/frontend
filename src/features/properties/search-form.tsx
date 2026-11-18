@@ -84,7 +84,7 @@ export function HeroSearchForm() {
 				{(labelId) => <Select labelId={labelId} name="sort" options={sortLabels} value={defaultFilters.sort} />}
 			</Field>
 			<button type="submit" className="btn btn-slate self-end md:col-span-2">
-				<Icon icon={Search} className="text-[18px]" />
+				<Icon icon={Search} className="text-xl" />
 				Szukaj
 			</button>
 		</form>
@@ -184,7 +184,7 @@ export function SortSelect({ filters }: { filters: SearchFilters }) {
 	const labelId = useId();
 
 	return (
-		<div className="flex shrink-0 items-center gap-2 text-[13px]">
+		<div className="flex shrink-0 items-center gap-2 text-sm">
 			<span id={labelId} className="hidden text-body lg:inline">
 				Sortuj:
 			</span>
@@ -200,8 +200,8 @@ export function SortSelect({ filters }: { filters: SearchFilters }) {
 				}}
 				trigger={(selectedLabel, open) => (
 					<>
-						<span className="flex items-center gap-1.5 text-[15px] lg:hidden">
-							<Icon icon={ArrowUpDown} className="text-[18px]" />
+						<span className="flex items-center gap-1.5 text-md lg:hidden">
+							<Icon icon={ArrowUpDown} className="text-xl" />
 							{selectedLabel}
 						</span>
 						<span className="hidden items-center gap-2 lg:flex">
@@ -214,6 +214,9 @@ export function SortSelect({ filters }: { filters: SearchFilters }) {
 		</div>
 	);
 }
+
+const suggestionsPanel =
+	"scroll-thin absolute top-full left-0 z-30 mt-1.5 max-h-80 w-full overflow-auto rounded border border-line bg-white shadow-lg";
 
 // Shared by the forms for the whole visit: going back a letter or retyping a query shows its suggestions at once.
 const suggestionCache = new Map<string, LocationSuggestion[]>();
@@ -236,6 +239,7 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 	const [checked, setChecked] = useState(selectedDistricts);
 	const [suggestions, setSuggestions] = useState<LocationSuggestion[]>([]);
 	const [open, setOpen] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const [active, setActive] = useState(-1);
 	const pending = useRef<{ timeout?: ReturnType<typeof setTimeout>; controller?: AbortController }>({});
 
@@ -246,16 +250,21 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 		...suggestion.districts.map((district) => ({ suggestion, district })),
 	]);
 	const expanded = open && rows.length > 0;
+	// Until the first suggestions arrive, a placeholder shows that they are on the way; later ones replace the list.
+	const placeholder =
+		open && rows.length === 0 && (loading || (!picked && text.trim().length >= LOCATION_QUERY_MIN_LENGTH));
 
 	function cancelPending() {
 		clearTimeout(pending.current.timeout);
 		pending.current.controller?.abort();
+		setLoading(false);
 	}
 
 	function showSuggestions(items: LocationSuggestion[]) {
 		setSuggestions(items);
 		setActive(-1);
-		setOpen(items.length > 0);
+		setLoading(false);
+		setOpen(true);
 	}
 
 	async function loadSuggestions(query: string, signal: AbortSignal) {
@@ -269,6 +278,7 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 		} catch {
 			if (!signal.aborted) {
 				setSuggestions([]);
+				setLoading(false);
 			}
 		}
 	}
@@ -291,6 +301,8 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 			return;
 		}
 		const controller = new AbortController();
+		setLoading(true);
+		setOpen(true);
 		pending.current = { controller, timeout: setTimeout(() => loadSuggestions(query, controller.signal), 120) };
 	}
 
@@ -354,7 +366,7 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 				{checked.map((id) => (
 					<input key={id} type="hidden" name="district" value={id} />
 				))}
-				<Icon icon={MapPin} className="absolute top-1/2 left-3.5 -translate-y-1/2 text-[18px] text-muted" />
+				<Icon icon={MapPin} className="absolute top-1/2 left-3.5 -translate-y-1/2 text-xl text-muted" />
 				<input
 					value={text}
 					onChange={(event) => onChange(event.target.value)}
@@ -376,13 +388,37 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 					aria-labelledby={labelId}
 					className="field truncate pl-10"
 				/>
+				{placeholder && (
+					<div role="status" className={cn(suggestionsPanel, "py-1")}>
+						{loading ? (
+							<>
+								<span className="sr-only">Wyszukiwanie lokalizacji…</span>
+								{Array.from({ length: 3 }, (_, index) => (
+									<span
+										key={index}
+										className="flex items-center gap-3 px-3.5 py-2"
+										aria-hidden="true"
+									>
+										<span className="size-[18px] shrink-0 animate-pulse rounded bg-mist" />
+										<span className="flex-1 space-y-1.5">
+											<span className="block h-3.5 w-2/5 animate-pulse rounded bg-mist" />
+											<span className="block h-3 w-1/4 animate-pulse rounded bg-mist" />
+										</span>
+									</span>
+								))}
+							</>
+						) : (
+							<span className="block px-3.5 py-2 text-muted">Nie znaleziono takiej lokalizacji.</span>
+						)}
+					</div>
+				)}
 				{expanded && (
 					<ul
 						id={listId}
 						role="listbox"
 						aria-multiselectable="true"
 						aria-labelledby={labelId}
-						className="scroll-thin absolute top-full left-0 z-30 mt-1.5 max-h-80 w-full overflow-auto rounded border border-line bg-white shadow-lg"
+						className={suggestionsPanel}
 					>
 						{rows.map((row, index) => {
 							const { suggestion, district } = row;
@@ -414,7 +450,7 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 										)}
 									>
 										{(selected || partly) && (
-											<Icon icon={partly ? Minus : Check} className="text-[14px]" />
+											<Icon icon={partly ? Minus : Check} className="text-base" />
 										)}
 									</span>
 									<span className="min-w-0 flex-1">
@@ -422,12 +458,12 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 											{district ? district.name : suggestion.label}
 										</span>
 										{!district && (
-											<span className="block text-[12px] text-muted">
+											<span className="block text-xs text-muted">
 												{locationTypeLabels[suggestion.type]}
 											</span>
 										)}
 									</span>
-									<span className="shrink-0 text-[12px] text-muted tabular-nums">
+									<span className="shrink-0 text-xs text-muted tabular-nums">
 										{location.offerCount.toLocaleString("pl-PL")}
 									</span>
 								</li>
@@ -472,7 +508,7 @@ function Field({ label, className, children }: FieldProps) {
 
 	return (
 		<div className={cn("grid content-start gap-1.5", className)}>
-			<span id={labelId} className="head text-[13px] font-medium">
+			<span id={labelId} className="head text-sm font-medium">
 				{label}
 			</span>
 			{children(labelId)}
@@ -502,7 +538,7 @@ type RangeProps = { label: string; name: string; min?: number; max?: number; ste
 function Range({ label, name, min, max, step, className }: RangeProps) {
 	return (
 		<fieldset className={cn("grid content-start gap-1.5", className)}>
-			<legend className="head mb-1.5 text-[13px] font-medium">{label}</legend>
+			<legend className="head mb-1.5 text-sm font-medium">{label}</legend>
 			<div className="grid grid-cols-2 gap-3">
 				<input
 					type="number"

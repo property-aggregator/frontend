@@ -24,7 +24,7 @@ export default function PropertiesHomePage() {
 			</section>
 			<section className="py-14">
 				<div className="mx-auto max-w-[1360px] px-6">
-					<h2 className="title text-[28px]">Najnowsze oferty</h2>
+					<h2 className="title text-3xl">Najnowsze oferty</h2>
 					<LatestProperties className="mt-8" />
 				</div>
 			</section>
