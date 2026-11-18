@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, LogOut, Menu, UserRound, X } from "lucide-react";
+import { Heart, LogOut, Menu, Search, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ComponentProps, Suspense, useState } from "react";
@@ -16,6 +16,7 @@ const navItems = [
 ];
 
 const iconLinks = [
+	{ href: routes.findByUrl, label: "Znajdź ofertę po linku", icon: Search },
 	{ href: routes.favorites, label: "Ulubione", icon: Heart },
 	{ href: routes.account, label: "Konto", icon: UserRound },
 ];

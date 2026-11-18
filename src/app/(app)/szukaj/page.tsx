@@ -81,7 +81,7 @@ async function Filters({ filters, query }: { filters: SearchFilters; query: stri
 }
 
 function FiltersSkeleton() {
-	return <div className="h-11 animate-pulse rounded-full bg-white lg:h-[640px] lg:rounded-xl" />;
+	return <div className="h-11 animate-pulse rounded-[7px] bg-white lg:h-[640px] lg:rounded-xl" />;
 }
 
 function SearchLayout({ aside, children }: { aside: React.ReactNode; children?: React.ReactNode }) {

@@ -82,6 +82,80 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/properties/deals": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Deals
+         * @description Active properties marked as deals. Locations, paging and sorting work as in GET /api/properties. 403 deals_not_in_plan when entitlements.deals from GET /api/me is false.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    PropertyType?: components["schemas"]["PropertyType"];
+                    TransactionType?: components["schemas"]["TransactionType"];
+                    LocationIds?: string[];
+                    RadiusKm?: number;
+                    Sort?: components["schemas"]["PropertySort"];
+                    Page?: number;
+                    PageSize?: number;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PagedResponseOfPropertyResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/properties/latest": {
         parameters: {
             query?: never;
@@ -91,7 +165,7 @@ export interface paths {
         };
         /**
          * Latest properties
-         * @description Returns the 6 newest active properties. Public: no sign-in required.
+         * @description 12 newest active properties. No sign-in required; send the token anyway to get isDeal and dealDiscountPercent for a plan with deals.
          */
         get: {
             parameters: {
@@ -185,6 +259,83 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/properties/by-url": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Property id by its portal URL
+         * @description For opening the property's page; its data comes from GET /api/properties/{id}.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    url?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PropertyIdResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/properties/{id}/transactions": {
         parameters: {
             query?: never;
@@ -194,7 +345,7 @@ export interface paths {
         };
         /**
          * Similar transactions
-         * @description Returns up to 100 sale transactions from the price register similar to the property, those of its market type first. `scope` is `nearby` (nearest transactions of a similar area) when the property is located to its street or district, otherwise `city` (transactions in its city of a similar area and price). Properties for rent get an empty list.
+         * @description Up to 100. `scope`: `nearby` when located to a street or district, otherwise `city`. Empty for rentals.
          */
         get: {
             parameters: {
@@ -262,7 +413,7 @@ export interface paths {
         };
         /**
          * Potential duplicates
-         * @description Returns up to 20 active offers that are probably the same property, e.g. posted on another portal, the most similar first.
+         * @description Up to 20 active offers, the most similar first.
          */
         get: {
             parameters: {
@@ -330,7 +481,7 @@ export interface paths {
         };
         /**
          * Similar archived properties
-         * @description Returns up to 20 archived offers of a similar area and price near the property, or in its city when only the city is known, the most similar first. Properties without an area or a price get an empty list.
+         * @description Up to 20, the most similar first. Empty without an area or a price.
          */
         get: {
             parameters: {
@@ -398,7 +549,7 @@ export interface paths {
         };
         /**
          * Price history
-         * @description Returns every price of the property, oldest first. `changeAmount` and `changePercent` compare an entry with the previous one; they are null for the first price and when the price appears or disappears.
+         * @description Oldest first. `changeAmount` and `changePercent` are relative to the previous entry; null for the first price and when the price appears or disappears.
          */
         get: {
             parameters: {
@@ -602,6 +753,117 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/me/notification-settings": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Contacts the notifications are sent to
+         * @description Both fields are null until the settings are saved for the first time.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["NotificationSettingsResponse"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        /**
+         * Replace the notification contacts
+         * @description Full replacement: a null or empty field clears that contact. Phone in E.164 format, e.g. +48123456789.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["UpdateNotificationSettingsCommand"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["NotificationSettingsResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/favorites": {
         parameters: {
             query?: never;
@@ -664,7 +926,7 @@ export interface paths {
         };
         /**
          * Ids of favorite properties
-         * @description A lightweight way to mark favorites in lists; at most the favorites limit of ids, newest first.
+         * @description Newest first.
          */
         get: {
             parameters: {
@@ -722,7 +984,7 @@ export interface paths {
         get?: never;
         /**
          * Add a property to the favorites
-         * @description Idempotent: adding a property that is already a favorite also returns 204. Errors: 404 property_not_found when the property does not exist; 409 favorites_limit_reached when the user already has the maximum number of favorites (favoritesLimit in GET /api/me).
+         * @description Idempotent. 409 favorites_limit_reached at entitlements.favoritesLimit from GET /api/me.
          */
         put: {
             parameters: {
@@ -783,7 +1045,7 @@ export interface paths {
         post?: never;
         /**
          * Remove a property from the favorites
-         * @description Idempotent: returns 204 also when the property was not a favorite.
+         * @description Idempotent.
          */
         delete: {
             parameters: {
@@ -837,7 +1099,7 @@ export interface paths {
         };
         /**
          * Locations by id
-         * @description Up to 26 locations, e.g. the locationIds of a search. Unknown ids are left out.
+         * @description Up to 26 ids. Unknown ids are left out.
          */
         get: {
             parameters: {
@@ -905,13 +1167,14 @@ export interface paths {
         };
         /**
          * Location suggestions
-         * @description Voivodeships, counties, municipalities, localities and districts matching the query. Localities come with their districts. Pass the returned ids as locationIds to /api/properties.
+         * @description Localities come with their districts. Ids go to locationIds of /api/properties. Localities and districts with few offers are left out unless includeWithoutOffers is true, as for search alerts awaiting offers.
          */
         get: {
             parameters: {
                 query: {
                     Query: string;
                     Limit?: number;
+                    IncludeWithoutOffers?: boolean;
                 };
                 header?: never;
                 path?: never;
@@ -974,11 +1237,13 @@ export interface paths {
         };
         /**
          * Districts of a locality
-         * @description Sorted by name. Empty when the id is not a locality or the locality has no districts.
+         * @description Sorted by name. Empty when the id is not a locality. Districts with few offers are left out unless includeWithoutOffers is true.
          */
         get: {
             parameters: {
-                query?: never;
+                query?: {
+                    includeWithoutOffers?: boolean;
+                };
                 header?: never;
                 path: {
                     id: string;
@@ -1024,6 +1289,516 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/search-alerts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SearchAlertResponse"][];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        /**
+         * Create a search alert
+         * @description The alert is created active. localityId and districtId come from /api/locations/suggest and /api/locations/{id}/districts called with includeWithoutOffers=true, so places that have no offers yet can be watched too; 400 invalid_search_alert_location when the locality is not an active locality or the district is not in it. 403 search_alerts_not_in_plan when entitlements.activeAlertsLimit from GET /api/me is 0; 409 search_alerts_limit_reached when one more active alert would exceed that limit.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SearchAlertRequest"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SearchAlertResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Conflict */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/search-alerts/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Replace a search alert
+         * @description Full replacement of the name, criteria and delivery; isActive is set apart. localityId and districtId come from /api/locations/suggest and /api/locations/{id}/districts called with includeWithoutOffers=true, so places that have no offers yet can be watched too; 400 invalid_search_alert_location when the locality is not an active locality or the district is not in it.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SearchAlertRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SearchAlertResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["HttpValidationProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        /**
+         * Delete a search alert
+         * @description Its notifications stay in the history.
+         */
+        delete: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/search-alerts/{id}/active": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Turn a search alert on or off
+         * @description Idempotent. 403 search_alerts_not_in_plan when entitlements.activeAlertsLimit from GET /api/me is 0; 409 search_alerts_limit_reached when one more active alert would exceed that limit.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["SetSearchAlertActiveRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["SearchAlertResponse"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Conflict */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * The user's notifications
+         * @description Newest first, 20 at a time. To load older ones, pass nextCursor as before; nextCursor is null on the last page.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    Before?: string;
+                };
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["NotificationsResponse"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications/unread-count": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Number of unread notifications
+         * @description For the badge on the notifications icon; poll it, e.g. every minute.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["UnreadCountResponse"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/notifications/{id}/read": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        /**
+         * Mark a notification as read
+         * @description Idempotent.
+         */
+        put: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description No Content */
+                204: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content?: never;
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1038,8 +1813,8 @@ export interface components {
             termsAccepted: boolean;
             requiredTermsVersion: string;
             marketingConsent: boolean;
-            /** Format: int32 */
-            favoritesLimit: number;
+            plan: components["schemas"]["UserPlan"];
+            entitlements: components["schemas"]["PlanEntitlementsResponse"];
         };
         HttpValidationProblemDetails: {
             type?: null | string;
@@ -1050,13 +1825,13 @@ export interface components {
             instance?: null | string;
             /** @description Field name (camelCase) mapped to the error codes found for that field. */
             errors?: {
-                [key: string]: ("out_of_range" | "too_short" | "too_long" | "invalid_value" | "max_less_than_min" | "radius_requires_location" | "terms_must_be_accepted")[];
+                [key: string]: ("required" | "out_of_range" | "too_short" | "too_long" | "invalid_value" | "max_less_than_min" | "radius_requires_location" | "terms_must_be_accepted" | "quiet_hours_incomplete")[];
             };
             /**
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.
              * @enum {string}
              */
-            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted";
+            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted" | "search_alert_not_found" | "notification_not_found" | "deals_not_in_plan" | "search_alerts_limit_reached" | "search_alerts_not_in_plan" | "invalid_search_alert_location";
             /** @description Correlation id of the request; quote it when reporting a problem. */
             traceId: string;
         };
@@ -1083,6 +1858,52 @@ export interface components {
         LocationType: "voivodeship" | "county" | "municipality" | "locality" | "district";
         /** @enum {unknown} */
         MarketType: "secondary" | "primary";
+        /** @enum {unknown} */
+        NotificationFrequency: "instant" | "hourly" | "daily";
+        NotificationPropertyResponse: {
+            /** Format: uuid */
+            id: string;
+            title: string;
+            /** Format: double */
+            price: null | number;
+            /** Format: double */
+            areaM2: null | number;
+            province: null | string;
+            city: null | string;
+            district: null | string;
+            street: null | string;
+            mainImageUrl: null | string;
+        };
+        NotificationResponse: {
+            /** Format: uuid */
+            id: string;
+            type: components["schemas"]["NotificationType"];
+            isRead: boolean;
+            /** Format: date-time */
+            createdAt: string;
+            property: components["schemas"]["NotificationPropertyResponse"];
+            searchAlert: null | components["schemas"]["NotificationSearchAlertResponse"];
+            /** Format: double */
+            priceChangeAmount: null | number;
+            /** Format: double */
+            priceChangePercent: null | number;
+        };
+        NotificationSearchAlertResponse: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+        };
+        NotificationSettingsResponse: {
+            email: null | string;
+            phone: null | string;
+        };
+        NotificationsResponse: {
+            items: components["schemas"]["NotificationResponse"][];
+            /** Format: uuid */
+            nextCursor: null | string;
+        };
+        /** @enum {unknown} */
+        NotificationType: "searchAlertMatch" | "favoritePriceChange" | "favoriteArchived" | "favoriteRestored";
         PagedResponseOfPropertyResponse: {
             items: components["schemas"]["PropertyResponse"][];
             /** Format: int32 */
@@ -1093,6 +1914,18 @@ export interface components {
             totalCount: number;
             /** Format: int32 */
             totalPages?: number;
+        };
+        PlanEntitlementsResponse: {
+            /** Format: int32 */
+            favoritesLimit: number;
+            /** Format: int32 */
+            activeAlertsLimit: number;
+            notificationHistory: boolean;
+            deals: boolean;
+            /** Format: int32 */
+            monthlyEmailLimit: number;
+            /** Format: int32 */
+            monthlySmsLimit: number;
         };
         PriceChangeResponse: {
             /** Format: double */
@@ -1115,9 +1948,13 @@ export interface components {
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.
              * @enum {string}
              */
-            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted";
+            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted" | "search_alert_not_found" | "notification_not_found" | "deals_not_in_plan" | "search_alerts_limit_reached" | "search_alerts_not_in_plan" | "invalid_search_alert_location";
             /** @description Correlation id of the request; quote it when reporting a problem. */
             traceId: string;
+        };
+        PropertyIdResponse: {
+            /** Format: uuid */
+            id: string;
         };
         PropertyResponse: {
             /** Format: uuid */
@@ -1139,6 +1976,9 @@ export interface components {
             priceChangeAmount: null | number;
             /** Format: double */
             priceChangePercent: null | number;
+            isDeal: null | boolean;
+            /** Format: double */
+            dealDiscountPercent: null | number;
             /** Format: int32 */
             rooms: null | number;
             floor: null | string;
@@ -1168,10 +2008,72 @@ export interface components {
         };
         /** @enum {unknown} */
         PropertyType: "apartment" | "house" | "plot";
+        SearchAlertRequest: {
+            name: string;
+            propertyType: null | components["schemas"]["PropertyType"];
+            transactionType: null | components["schemas"]["TransactionType"];
+            marketType: null | components["schemas"]["MarketType"];
+            /** Format: double */
+            priceMin: null | number;
+            /** Format: double */
+            priceMax: null | number;
+            /** Format: double */
+            areaMin: null | number;
+            /** Format: double */
+            areaMax: null | number;
+            /** Format: int32 */
+            roomsMin: null | number;
+            /** Format: int32 */
+            roomsMax: null | number;
+            /** Format: uuid */
+            localityId: string;
+            /** Format: uuid */
+            districtId: null | string;
+            emailEnabled: boolean;
+            smsEnabled: boolean;
+            notificationFrequency: components["schemas"]["NotificationFrequency"];
+            /** Format: time */
+            quietHoursStart: null | string;
+            /** Format: time */
+            quietHoursEnd: null | string;
+        };
+        SearchAlertResponse: {
+            /** Format: uuid */
+            id: string;
+            name: string;
+            isActive: boolean;
+            propertyType: null | components["schemas"]["PropertyType"];
+            transactionType: null | components["schemas"]["TransactionType"];
+            marketType: null | components["schemas"]["MarketType"];
+            /** Format: double */
+            priceMin: null | number;
+            /** Format: double */
+            priceMax: null | number;
+            /** Format: double */
+            areaMin: null | number;
+            /** Format: double */
+            areaMax: null | number;
+            /** Format: int32 */
+            roomsMin: null | number;
+            /** Format: int32 */
+            roomsMax: null | number;
+            locality: components["schemas"]["LocationResponse"];
+            district: null | components["schemas"]["LocationResponse"];
+            emailEnabled: boolean;
+            smsEnabled: boolean;
+            notificationFrequency: components["schemas"]["NotificationFrequency"];
+            /** Format: time */
+            quietHoursStart: null | string;
+            /** Format: time */
+            quietHoursEnd: null | string;
+        };
         /** @enum {unknown} */
         SellerType: "agency" | "private" | "developer" | null;
         SetMarketingConsentCommand: {
             granted: boolean;
+        };
+        SetSearchAlertActiveRequest: {
+            isActive: boolean;
         };
         TransactionResponse: {
             transactionId: string;
@@ -1200,6 +2102,16 @@ export interface components {
         TransactionSearchScope: "nearby" | "city";
         /** @enum {unknown} */
         TransactionType: "sale" | "rent";
+        UnreadCountResponse: {
+            /** Format: int32 */
+            count: number;
+        };
+        UpdateNotificationSettingsCommand: {
+            email: null | string;
+            phone: null | string;
+        };
+        /** @enum {unknown} */
+        UserPlan: "free" | "plus" | "pro";
     };
     responses: never;
     parameters: never;

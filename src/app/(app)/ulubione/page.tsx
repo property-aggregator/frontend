@@ -48,7 +48,7 @@ async function Favorites() {
 				<h1 className="title text-2xl lg:text-3xl">Ulubione oferty</h1>
 				{favorites && (
 					<p className="mt-1 text-sm text-muted">
-						Zapisano {favorites.length} z {user.favoritesLimit} możliwych
+						Zapisano {favorites.length} z {user.entitlements.favoritesLimit} możliwych
 					</p>
 				)}
 			</div>
