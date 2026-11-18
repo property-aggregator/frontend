@@ -53,6 +53,17 @@ export async function getProperty(id: string): Promise<Property | null> {
 	return unwrap(result);
 }
 
+/** Returns null when no property has this url. */
+export async function findPropertyIdByUrl(url: string): Promise<string | null> {
+	const api = await authedApi();
+	const result = await api.GET("/api/properties/by-url", { params: { query: { url } } });
+	if (result.response.status === 404) {
+		return null;
+	}
+
+	return unwrap(result).id;
+}
+
 export async function getPropertyTransactions(id: string): Promise<PropertyTransactions> {
 	const api = await authedApi();
 	return unwrap(await api.GET("/api/properties/{id}/transactions", { params: { path: { id } } }));
