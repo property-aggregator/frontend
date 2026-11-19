@@ -1799,6 +1799,142 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/plans": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Plans with their entitlements and prices
+         * @description Every plan, the free one too, for comparing them. offers are one-off purchases, not subscriptions, with prices in PLN gross; the free plan has none. An offer id goes to /api/plans/offers/{id}/quote.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PlanResponse"][];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/plans/offers/{id}/quote": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Price and period of a purchase
+         * @description The price after the optional promoCode and the period the plan would be in effect. The same plan is extended from its current expiry; a higher one starts at once and replaces the lower plan. 404 plan_offer_not_found, 400 invalid_promo_code when the code is unknown or expired, 409 plan_lower_than_current when a higher plan is still in effect. Up to 10 quotes with a promoCode per minute; then 429 too_many_requests with Retry-After.
+         */
+        get: {
+            parameters: {
+                query?: {
+                    promoCode?: string;
+                };
+                header?: never;
+                path: {
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["PlanQuoteResponse"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Missing, invalid or expired access token. */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description The terms have not been accepted. */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Conflict */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+                /** @description Too Many Requests */
+                429: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/problem+json": components["schemas"]["ProblemDetails"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1814,6 +1950,8 @@ export interface components {
             requiredTermsVersion: string;
             marketingConsent: boolean;
             plan: components["schemas"]["UserPlan"];
+            /** Format: date-time */
+            planExpiresAt: null | string;
             entitlements: components["schemas"]["PlanEntitlementsResponse"];
         };
         HttpValidationProblemDetails: {
@@ -1831,7 +1969,7 @@ export interface components {
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.
              * @enum {string}
              */
-            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted" | "search_alert_not_found" | "notification_not_found" | "deals_not_in_plan" | "search_alerts_limit_reached" | "search_alerts_not_in_plan" | "invalid_search_alert_location";
+            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "too_many_requests" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted" | "search_alert_not_found" | "notification_not_found" | "deals_not_in_plan" | "search_alerts_limit_reached" | "search_alerts_not_in_plan" | "invalid_search_alert_location" | "plan_offer_not_found" | "invalid_promo_code" | "plan_lower_than_current";
             /** @description Correlation id of the request; quote it when reporting a problem. */
             traceId: string;
         };
@@ -1927,6 +2065,38 @@ export interface components {
             /** Format: int32 */
             monthlySmsLimit: number;
         };
+        PlanOfferResponse: {
+            /** Format: uuid */
+            id: string;
+            /** Format: int32 */
+            durationMonths: number;
+            /** Format: double */
+            price: number;
+        };
+        PlanQuoteResponse: {
+            /** Format: uuid */
+            offerId: string;
+            plan: components["schemas"]["UserPlan"];
+            /** Format: int32 */
+            durationMonths: number;
+            /** Format: double */
+            listPrice: number;
+            /** Format: int32 */
+            discountPercent: number;
+            /** Format: double */
+            discountAmount: number;
+            /** Format: double */
+            amountToPay: number;
+            /** Format: date-time */
+            startsAt: string;
+            /** Format: date-time */
+            expiresAt: string;
+        };
+        PlanResponse: {
+            plan: components["schemas"]["UserPlan"];
+            entitlements: components["schemas"]["PlanEntitlementsResponse"];
+            offers: components["schemas"]["PlanOfferResponse"][];
+        };
         PriceChangeResponse: {
             /** Format: double */
             price: null | number;
@@ -1948,7 +2118,7 @@ export interface components {
              * @description Stable machine-readable error code. Clients translate this; title and detail are for developers.
              * @enum {string}
              */
-            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted" | "search_alert_not_found" | "notification_not_found" | "deals_not_in_plan" | "search_alerts_limit_reached" | "search_alerts_not_in_plan" | "invalid_search_alert_location";
+            code: "bad_request" | "unauthorized" | "forbidden" | "not_found" | "conflict" | "internal_error" | "validation_failed" | "service_unavailable" | "too_many_requests" | "property_not_found" | "favorites_limit_reached" | "terms_not_accepted" | "search_alert_not_found" | "notification_not_found" | "deals_not_in_plan" | "search_alerts_limit_reached" | "search_alerts_not_in_plan" | "invalid_search_alert_location" | "plan_offer_not_found" | "invalid_promo_code" | "plan_lower_than_current";
             /** @description Correlation id of the request; quote it when reporting a problem. */
             traceId: string;
         };
