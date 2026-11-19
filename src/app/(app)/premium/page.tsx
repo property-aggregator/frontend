@@ -8,9 +8,9 @@ export const metadata: Metadata = { title: "Premium", robots: { index: false } }
 
 export default function PremiumPage() {
 	return (
-		<main>
-			<div className="mx-auto max-w-[1170px] px-6 py-10">
-				<div className="rounded-xl bg-white p-8 md:p-10">
+		<main data-full-bleed>
+			<div className="mx-auto max-w-[1170px] sm:px-6 sm:py-10">
+				<div className="bg-white px-6 py-8 sm:rounded-xl sm:p-8 md:p-10">
 					<div className="text-center">
 						<h1 className="title text-3xl">Wybierz plan</h1>
 						<p className="mx-auto mt-3 max-w-[520px]">

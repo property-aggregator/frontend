@@ -50,7 +50,7 @@ const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 export default function PropertyPage({ params }: PageProps<"/oferty/[id]">) {
 	return (
 		<main>
-			<div className="mx-auto max-w-[1360px] px-6 py-10">
+			<div className="mx-auto max-w-[1360px] px-3 py-10 sm:px-6">
 				<BackToSearchLink className="head mb-6 inline-flex items-center gap-1 text-base font-semibold hover:text-slate">
 					<Icon icon={ChevronLeft} className="text-xl" />
 					Wróć do wyszukiwarki

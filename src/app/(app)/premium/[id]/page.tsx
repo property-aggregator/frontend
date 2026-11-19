@@ -20,16 +20,16 @@ type QuotePageProps = {
 
 export default function QuotePage(props: QuotePageProps) {
 	return (
-		<main>
-			<div className="mx-auto max-w-[640px] px-6 py-10">
+		<main data-full-bleed>
+			<div className="mx-auto max-w-[640px] pt-6 sm:px-6 sm:py-10">
 				<Link
 					href={routes.premium}
-					className="head mb-6 inline-flex items-center gap-1 text-base font-semibold hover:text-slate"
+					className="head mb-6 ml-6 inline-flex items-center gap-1 text-base font-semibold hover:text-slate sm:ml-0"
 				>
 					<Icon icon={ChevronLeft} className="text-xl" />
 					Wróć do planów
 				</Link>
-				<div className="rounded-xl bg-white p-8 md:p-10">
+				<div className="bg-white px-6 py-8 sm:rounded-xl sm:p-8 md:p-10">
 					<Suspense fallback={<div className="h-[420px] animate-pulse rounded-lg bg-mist" />}>
 						<QuoteView {...props} />
 					</Suspense>

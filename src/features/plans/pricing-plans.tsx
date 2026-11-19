@@ -29,7 +29,7 @@ const planMeta: Record<
 		cta: "Załóż konto",
 		tile: "bg-pastel-blue",
 		button: "bg-pastel-blue-deep text-ink hover:bg-[color-mix(in_srgb,var(--color-pastel-blue-deep)_92%,#000)]",
-		accent: { ring: "ring-slate", badge: "bg-slate text-white" },
+		accent: { ring: "ring-pastel-blue-deep", badge: "bg-pastel-blue-deep text-ink" },
 		featured: false,
 	},
 	plus: {
