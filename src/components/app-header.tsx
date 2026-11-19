@@ -7,6 +7,7 @@ import { type ComponentProps, Suspense, useState } from "react";
 import { Icon } from "@/components/icon";
 import { BrandName, LogoMark } from "@/components/logo";
 import { FavoritesCountBadge } from "@/features/favorites/favorites-count";
+import { PremiumButton } from "@/features/plans/premium-button";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
@@ -57,6 +58,7 @@ export function AppHeader() {
 					))}
 				</nav>
 				<div className="flex items-center gap-2">
+					<PremiumButton onClick={() => setMenuOpen(false)} />
 					{iconLinks.map(({ href, label, icon }) => (
 						<NavLink
 							key={href}

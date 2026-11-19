@@ -1,7 +1,7 @@
 import { io } from "next/cache";
 import { Suspense } from "react";
 import { getPlans, type Plan } from "@/features/plans/api";
-import { PricingPlans } from "./pricing-plans";
+import { PricingPlans } from "@/features/plans/pricing-plans";
 
 async function loadPlans(): Promise<Plan[] | null> {
 	try {
@@ -43,5 +43,5 @@ async function PlansList() {
 		);
 	}
 
-	return <PricingPlans plans={plans} />;
+	return <PricingPlans plans={plans} reveal />;
 }

@@ -1,71 +1,56 @@
 "use client";
 
 import { Check } from "lucide-react";
+import Link from "next/link";
 import { useState } from "react";
 import { Icon } from "@/components/icon";
-import type { Plan, PlanEntitlements, UserPlan } from "@/features/plans/api";
-import { routes } from "@/lib/routes";
+import type { Plan, PlanEntitlements, PlanOffer, UserPlan } from "@/features/plans/api";
+import { dateFormat, months, planNames, plural, priceFormat } from "@/features/plans/format";
+import { premiumOfferUrl, routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
 const planMeta: Record<
 	UserPlan,
 	{
-		name: string;
 		/** Used in "Wszystko z planu …". */
 		ofName: string;
 		description: string;
 		cta: string;
 		tile: string;
 		button: string;
+		/** Ring and badge of the highlighted card. */
+		accent: { ring: string; badge: string };
 		featured: boolean;
 	}
 > = {
 	free: {
-		name: "Darmowy",
 		ofName: "darmowego",
 		description: "Na start: przeglądaj oferty z całej Polski i zapisuj ulubione bez opłat.",
 		cta: "Załóż konto",
 		tile: "bg-pastel-blue",
 		button: "bg-pastel-blue-deep text-ink hover:bg-[color-mix(in_srgb,var(--color-pastel-blue-deep)_92%,#000)]",
+		accent: { ring: "ring-slate", badge: "bg-slate text-white" },
 		featured: false,
 	},
 	plus: {
-		name: "Plus",
 		ofName: "Plus",
 		description: "Dla osób, które szukają mieszkania dla siebie i chcą dostawać alerty o nowych ofertach.",
 		cta: "Wybierz Plus",
 		tile: "bg-pastel-violet",
 		button: "btn-slate",
+		accent: { ring: "ring-slate", badge: "bg-slate text-white" },
 		featured: true,
 	},
 	pro: {
-		name: "Pro",
 		ofName: "Pro",
 		description: "Dla inwestorów, którzy chcą dzwonić pierwsi i kupować poniżej rynku.",
 		cta: "Wybierz Pro",
 		tile: "bg-pastel-peach",
 		button: "bg-pastel-peach-deep text-ink hover:bg-[color-mix(in_srgb,var(--color-pastel-peach-deep)_92%,#000)]",
+		accent: { ring: "ring-pastel-peach-deep", badge: "bg-pastel-peach-deep text-ink" },
 		featured: false,
 	},
 };
-
-const priceFormat = new Intl.NumberFormat("pl-PL", {
-	style: "currency",
-	currency: "PLN",
-	minimumFractionDigits: 0,
-	maximumFractionDigits: 2,
-});
-
-function plural(n: number, one: string, few: string, many: string): string {
-	if (n === 1) return one;
-	const lastTwo = n % 100;
-	const last = n % 10;
-	return last >= 2 && last <= 4 && (lastTwo < 12 || lastTwo > 14) ? few : many;
-}
-
-function months(n: number): string {
-	return `${n} ${plural(n, "miesiąc", "miesiące", "miesięcy")}`;
-}
 
 type Feature = { key: string; label: string; value: number };
 
@@ -106,11 +91,21 @@ function addedFeatures(plan: Plan, previous: Plan | undefined): Feature[] {
 	return features(plan.entitlements).filter((f) => f.value > (before.get(f.key) ?? 0));
 }
 
-export function PricingPlans({ plans }: { plans: Plan[] }) {
+type PricingPlansProps = {
+	plans: Plan[];
+	/** The signed-in user's plan; without it every button leads to sign-up. */
+	current?: UserPlan;
+	currentExpiresAt?: string | null;
+	/** Fade the cards in on scroll; needs RevealOnScroll on the page. */
+	reveal?: boolean;
+};
+
+export function PricingPlans({ plans, current, currentExpiresAt, reveal = false }: PricingPlansProps) {
 	const durations = [...new Set(plans.flatMap((plan) => plan.offers.map((offer) => offer.durationMonths)))].sort(
 		(a, b) => a - b,
 	);
 	const [duration, setDuration] = useState(durations[0] ?? 1);
+	const currentRank = plans.findIndex((plan) => plan.plan === current);
 
 	return (
 		<>
@@ -120,28 +115,45 @@ export function PricingPlans({ plans }: { plans: Plan[] }) {
 				{plans.map((plan, index) => {
 					const meta = planMeta[plan.plan];
 					const previous = plans[index - 1];
+					const offer = plan.offers.find((o) => o.durationMonths === duration);
+					const isCurrent = plan.plan === current;
 					return (
 						<div
 							key={plan.plan}
 							className={cn(
-								"reveal relative flex flex-col rounded-xl p-8",
+								"relative flex flex-col rounded-xl p-8",
+								reveal && "reveal",
 								meta.tile,
-								meta.featured && "ring-2 ring-slate",
+								(isCurrent || (!current && meta.featured)) && ["ring-2", meta.accent.ring],
 							)}
 						>
-							{meta.featured && (
-								<span className="head absolute -top-3 left-8 rounded-full bg-slate px-3 py-1 text-2xs font-semibold tracking-wider text-white uppercase">
-									Najczęściej wybierany
+							{(isCurrent || (!current && meta.featured)) && (
+								<span
+									className={cn(
+										"head absolute -top-3 left-8 rounded-full px-3 py-1 text-2xs font-semibold tracking-wider uppercase",
+										meta.accent.badge,
+									)}
+								>
+									{isCurrent ? "Twój plan" : "Najczęściej wybierany"}
 								</span>
 							)}
-							<h3 className="text-[22px] font-bold">{meta.name}</h3>
+							<h3 className="text-[22px] font-bold">{planNames[plan.plan]}</h3>
 							<p className="mt-2 min-h-[72px]">{meta.description}</p>
 
-							<PlanPrice plan={plan} duration={duration} />
+							<PlanPrice plan={plan} offer={offer} duration={duration} />
 
-							<a href={routes.signup} className={cn("btn mt-6 w-full", meta.button)}>
-								{meta.cta}
-							</a>
+							<PlanButton
+								plan={plan}
+								offer={offer}
+								current={current}
+								below={currentRank > index}
+								className={cn("btn mt-6 w-full", meta.button)}
+							/>
+							{isCurrent && currentExpiresAt && (
+								<p className="mt-2 text-center text-sm text-muted">
+									Ważny do {dateFormat.format(new Date(currentExpiresAt))}
+								</p>
+							)}
 
 							<div className="mt-8 border-t border-ink/10 pt-6">
 								{previous && (
@@ -166,7 +178,46 @@ export function PricingPlans({ plans }: { plans: Plan[] }) {
 	);
 }
 
-function PlanPrice({ plan, duration }: { plan: Plan; duration: number }) {
+function PlanButton({
+	plan,
+	offer,
+	current,
+	below,
+	className,
+}: {
+	plan: Plan;
+	offer: PlanOffer | undefined;
+	current: UserPlan | undefined;
+	below: boolean;
+	className: string;
+}) {
+	if (!current) {
+		// Plain <a>: sign-up is an Auth0 route handler, so Link must not prefetch it.
+		return (
+			<a href={routes.signup} className={className}>
+				{planMeta[plan.plan].cta}
+			</a>
+		);
+	}
+
+	const disabled = (label: string) => (
+		<span aria-disabled="true" className={cn(className, "pointer-events-none opacity-60")}>
+			{label}
+		</span>
+	);
+
+	if (plan.plan === current && plan.offers.length === 0) return disabled("Twój obecny plan");
+	if (below || plan.offers.length === 0) return disabled("Zawarty w Twoim planie");
+	if (!offer) return disabled("Niedostępny");
+
+	return (
+		<Link href={premiumOfferUrl(offer.id)} className={className}>
+			{plan.plan === current ? `Przedłuż ${planNames[plan.plan]}` : planMeta[plan.plan].cta}
+		</Link>
+	);
+}
+
+function PlanPrice({ plan, offer, duration }: { plan: Plan; offer: PlanOffer | undefined; duration: number }) {
 	if (plan.offers.length === 0) {
 		return (
 			<>
@@ -178,7 +229,6 @@ function PlanPrice({ plan, duration }: { plan: Plan; duration: number }) {
 		);
 	}
 
-	const offer = plan.offers.find((o) => o.durationMonths === duration);
 	if (!offer) {
 		return <div className="mt-6 text-sm text-muted">Niedostępny na {months(duration)}</div>;
 	}
