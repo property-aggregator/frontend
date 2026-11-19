@@ -7,6 +7,7 @@ import { type ComponentProps, Suspense, useState } from "react";
 import { Icon } from "@/components/icon";
 import { BrandName, LogoMark } from "@/components/logo";
 import { FavoritesCountBadge } from "@/features/favorites/favorites-count";
+import { PremiumButton } from "@/features/plans/premium-button";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 
@@ -15,11 +16,14 @@ const navItems = [
 	{ href: routes.search, label: "Szukaj" },
 ];
 
+// On phones only the favorites icon stays in the bar; the rest moves into the menu.
 const iconLinks = [
-	{ href: routes.findByUrl, label: "Znajdź ofertę po linku", icon: Search },
-	{ href: routes.favorites, label: "Ulubione", icon: Heart },
-	{ href: routes.account, label: "Konto", icon: UserRound },
+	{ href: routes.findByUrl, label: "Znajdź ofertę po linku", icon: Search, inMobileMenu: true },
+	{ href: routes.favorites, label: "Ulubione", icon: Heart, inMobileMenu: false },
+	{ href: routes.account, label: "Konto", icon: UserRound, inMobileMenu: true },
 ];
+
+const mobileMenuItems = [...navItems, ...iconLinks.filter((link) => link.inMobileMenu)];
 
 type NavLinkProps = ComponentProps<typeof Link> & { href: string; current: "true" | "page" };
 
@@ -57,12 +61,13 @@ export function AppHeader() {
 					))}
 				</nav>
 				<div className="flex items-center gap-2">
-					{iconLinks.map(({ href, label, icon }) => (
+					<PremiumButton onClick={() => setMenuOpen(false)} />
+					{iconLinks.map(({ href, label, icon, inMobileMenu }) => (
 						<NavLink
 							key={href}
 							href={href}
 							onClick={() => setMenuOpen(false)}
-							className="btn btn-sm btn-soft relative px-3"
+							className={cn("btn btn-sm btn-soft relative px-3", inMobileMenu && "hidden md:inline-flex")}
 							aria-label={label}
 							title={label}
 							current="page"
@@ -90,9 +95,9 @@ export function AppHeader() {
 			</div>
 			<div
 				id="app-mobile-menu"
-				className={cn(menuOpen ? "flex" : "hidden", "flex-col border-t border-line px-6 py-2 md:hidden")}
+				className={cn(menuOpen ? "flex" : "hidden", "flex-col border-t border-ink/[0.06] px-6 py-2 md:hidden")}
 			>
-				{navItems.map(({ href, label }) => (
+				{mobileMenuItems.map(({ href, label }) => (
 					<NavLink
 						key={href}
 						href={href}

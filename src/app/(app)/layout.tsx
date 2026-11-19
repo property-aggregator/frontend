@@ -19,7 +19,8 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 			<NavigationTracker />
 			<div className="flex min-h-screen flex-col bg-mist">
 				<AppHeader />
-				<div className="flex-1">{children}</div>
+				{/* Pages marked data-full-bleed are white edge to edge on phones. */}
+				<div className="flex-1 max-sm:has-[[data-full-bleed]]:bg-white">{children}</div>
 				<SiteFooter />
 			</div>
 		</FavoritesCountProvider>

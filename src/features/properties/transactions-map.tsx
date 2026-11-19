@@ -1,7 +1,7 @@
 "use client";
 
 import type { Map as MapLibreMap } from "maplibre-gl";
-import { useEffect, useRef, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { preconnect } from "react-dom";
 import { useOverscrollBounce } from "@/components/carousel";
 import type { Transaction } from "@/features/properties/api";
@@ -204,7 +204,11 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 			>
 				{transactions.map((transaction) => {
 					const size = [
-						transaction.areaM2 === null ? null : `${areaFormat.format(transaction.areaM2)} m²`,
+						transaction.areaM2 === null ? null : (
+							<span key="area" className="font-semibold text-ink">
+								{areaFormat.format(transaction.areaM2)} m²
+							</span>
+						),
 						transaction.rooms === null ? null : roomsText(roomsFromChambers(transaction.rooms)),
 					].filter(Boolean);
 					const building = [
@@ -252,7 +256,12 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 								</span>
 								{(size.length > 0 || building.length > 0) && (
 									<span className="block text-sm">
-										{size.join(" • ")}
+										{size.map((part, index) => (
+											<Fragment key={index}>
+												{index > 0 && " • "}
+												{part}
+											</Fragment>
+										))}
 										{size.length > 0 && building.length > 0 && (
 											<span className="max-sm:hidden"> • </span>
 										)}

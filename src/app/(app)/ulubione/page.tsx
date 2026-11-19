@@ -13,7 +13,7 @@ export const metadata: Metadata = { title: "Ulubione", robots: { index: false } 
 export default function FavoritesPage() {
 	return (
 		<main>
-			<div className="mx-auto max-w-[1000px] px-6 py-10">
+			<div className="mx-auto max-w-[1000px] px-3 py-10 sm:px-6">
 				<Suspense
 					fallback={
 						<>

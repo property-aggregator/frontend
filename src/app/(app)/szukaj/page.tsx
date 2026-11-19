@@ -33,7 +33,7 @@ type SearchPageProps = { searchParams: Promise<Record<string, string | string[] 
 export default function SearchPage({ searchParams }: SearchPageProps) {
 	return (
 		<main>
-			<div className="mx-auto max-w-[1360px] px-6 py-10">
+			<div className="mx-auto max-w-[1360px] px-3 py-10 sm:px-6">
 				<Suspense fallback={<SearchLayout aside={<FiltersSkeleton />} />}>
 					<SearchView searchParams={searchParams} />
 				</Suspense>

@@ -9,6 +9,7 @@ export const routes = {
 	findByUrl: "/znajdz-oferte",
 	favorites: "/ulubione",
 	account: "/konto",
+	premium: "/premium",
 	loginPage: "/logowanie",
 	signupPage: "/rejestracja",
 	login: "/auth/login",
@@ -29,6 +30,10 @@ export function isPublicPath(pathname: string): boolean {
 
 export function propertyUrl(id: string): string {
 	return `${routes.properties}/${id}`;
+}
+
+export function premiumOfferUrl(offerId: string): string {
+	return `${routes.premium}/${offerId}`;
 }
 
 export function loginUrl(returnTo?: string): string {

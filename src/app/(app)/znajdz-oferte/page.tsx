@@ -5,9 +5,9 @@ export const metadata: Metadata = { title: "Znajdź ofertę po linku", robots: {
 
 export default function FindByUrlPage() {
 	return (
-		<main>
-			<div className="mx-auto max-w-[1000px] px-6 py-10">
-				<div className="rounded-xl bg-white p-8 md:p-10">
+		<main data-full-bleed>
+			<div className="mx-auto max-w-[1000px] sm:px-6 sm:py-10">
+				<div className="bg-white px-6 py-8 sm:rounded-xl sm:p-8 md:p-10">
 					<h1 className="title text-3xl">Znajdź ofertę po linku</h1>
 					<p className="mt-3">
 						Wklej link do ogłoszenia z dowolnego portalu, a pokażemy je razem z historią cen, transakcjami z
