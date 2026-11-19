@@ -25,7 +25,7 @@ export default function HomePage() {
 				<Features />
 				<Comparison />
 				<LatestOffers />
-				<Stats />
+				{/*<Stats />*/}
 				<MapSection />
 				<Process />
 				<Pricing />
