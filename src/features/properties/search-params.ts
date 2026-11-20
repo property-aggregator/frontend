@@ -1,6 +1,6 @@
 import { z } from "zod";
 import type { components } from "@/lib/api/schema";
-import type { PropertySearchQuery } from "./api";
+import type { DealsQuery, PropertySearchQuery } from "./api";
 
 type Schemas = components["schemas"];
 
@@ -85,6 +85,22 @@ export function parseSearchFilters(params: Record<string, string | string[] | un
 	return searchFiltersSchema.parse(params);
 }
 
+const dealFiltersSchema = searchFiltersSchema.pick({
+	locationId: true,
+	district: true,
+	radius: true,
+	transaction: true,
+	type: true,
+	sort: true,
+	page: true,
+});
+
+export type DealFilters = z.infer<typeof dealFiltersSchema>;
+
+export function parseDealFilters(params: Record<string, string | string[] | undefined>): DealFilters {
+	return dealFiltersSchema.parse(params);
+}
+
 // The API binds enum query values case-sensitively to their C# names ("PriceAscending"),
 // although its OpenAPI document lists them in camelCase; "priceAscending" gets a 400.
 function enumValue<T extends string>(value: T | undefined): T | undefined {
@@ -112,15 +128,27 @@ export function toApiQuery(filters: SearchFilters): PropertySearchQuery {
 	};
 }
 
+export function toDealsApiQuery(filters: DealFilters): DealsQuery {
+	return {
+		LocationIds: locationIds(filters),
+		RadiusKm: filters.locationId ? filters.radius : undefined,
+		TransactionType: enumValue(filters.transaction),
+		PropertyType: enumValue(filters.type),
+		Sort: enumValue(filters.sort),
+		Page: filters.page,
+		PageSize: PAGE_SIZE,
+	};
+}
+
 // The API matches any of the ids, so the locality itself would cancel out its districts.
-function locationIds({ locationId, district }: SearchFilters): string[] | undefined {
+function locationIds({ locationId, district }: Pick<SearchFilters, "locationId" | "district">): string[] | undefined {
 	if (district.length > 0) {
 		return district;
 	}
 	return locationId ? [locationId] : undefined;
 }
 
-export function toSearchParams(filters: SearchFilters): URLSearchParams {
+export function toSearchParams(filters: Partial<SearchFilters>): URLSearchParams {
 	const params = new URLSearchParams();
 	for (const [key, value] of Object.entries(filters)) {
 		for (const item of [value].flat()) {

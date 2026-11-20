@@ -59,7 +59,7 @@ async function Favorites() {
 			) : favorites.length === 0 ? (
 				<p className="rounded-xl bg-white p-8 text-center">
 					Nie masz jeszcze ulubionych ofert. Kliknij serduszko przy ofercie w{" "}
-					<Link href={routes.search} className="font-semibold text-ink underline">
+					<Link href={routes.search} className="font-semibold text-ink hover:text-slate">
 						wyszukiwarce
 					</Link>
 					, aby ją tu zapisać.

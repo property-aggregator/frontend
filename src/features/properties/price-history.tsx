@@ -1,5 +1,6 @@
 import type { PriceChange } from "@/features/properties/api";
-import { PriceChangeText, priceFormat } from "@/features/properties/property-card";
+import { PriceChangeText } from "@/features/properties/price-change-pill";
+import { priceFormat } from "@/features/properties/property-card";
 import { cn } from "@/lib/utils";
 
 const dateFormat = new Intl.DateTimeFormat("pl-PL", { dateStyle: "medium", timeZone: "Europe/Warsaw" });

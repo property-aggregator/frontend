@@ -23,10 +23,11 @@ import {
 	statusLabels,
 	toSearchParams,
 	transactionLabels,
+	type DealFilters,
 	type SearchFilters,
 } from "./search-params";
 
-function useSubmitSearch() {
+function useSubmitSearch(path: string = routes.search) {
 	const router = useRouter();
 
 	// Without JS the form still works as a plain GET; this only drops the empty fields from the URL.
@@ -38,7 +39,7 @@ function useSubmitSearch() {
 				params.append(key, value.trim());
 			}
 		}
-		router.push(`${routes.search}?${params}`);
+		router.push(`${path}?${params}`);
 	};
 }
 
@@ -179,7 +180,68 @@ export function FiltersForm({ filters, location }: FiltersFormProps) {
 	);
 }
 
-export function SortSelect({ filters }: { filters: SearchFilters }) {
+type DealsFiltersFormProps = { filters: DealFilters; location?: LocationSuggestion };
+
+/** Above the deals on phones, a sidebar on large screens: the deals endpoint filters only by location, transaction and type. */
+export function DealsFiltersForm({ filters, location }: DealsFiltersFormProps) {
+	const onSubmit = useSubmitSearch(routes.deals);
+
+	return (
+		<form
+			action={routes.deals}
+			onSubmit={onSubmit}
+			className="grid gap-x-3 gap-y-4 rounded-xl bg-white p-5 sm:grid-cols-2"
+		>
+			{filters.sort && <input type="hidden" name="sort" value={filters.sort} />}
+			<h2 className="head hidden text-2xl font-semibold sm:col-span-2 lg:block">Filtry</h2>
+			<Field label="Lokalizacja" className="sm:col-span-2">
+				{(labelId) => (
+					<LocationInput
+						labelId={labelId}
+						selection={location}
+						selectedDistricts={filters.district}
+						radius={filters.radius}
+						showCounts={false}
+					/>
+				)}
+			</Field>
+			<Field label="Transakcja">
+				{(labelId) => (
+					<Select
+						labelId={labelId}
+						name="transaction"
+						options={transactionLabels}
+						placeholder="Dowolna"
+						value={filters.transaction}
+					/>
+				)}
+			</Field>
+			<Field label="Rodzaj">
+				{(labelId) => (
+					<Select
+						labelId={labelId}
+						name="type"
+						options={propertyTypeLabels}
+						placeholder="Dowolny"
+						value={filters.type}
+					/>
+				)}
+			</Field>
+			<div className="mt-1 flex gap-2 sm:col-span-2">
+				<button type="submit" className="btn btn-sm btn-slate flex-1">
+					Zastosuj
+				</button>
+				<Link href={routes.deals} className="btn btn-sm btn-soft">
+					Wyczyść
+				</Link>
+			</div>
+		</form>
+	);
+}
+
+type SortSelectProps = { path?: string; filters: Partial<SearchFilters> & Pick<SearchFilters, "sort"> };
+
+export function SortSelect({ path = routes.search, filters }: SortSelectProps) {
 	const router = useRouter();
 	const labelId = useId();
 
@@ -196,7 +258,7 @@ export function SortSelect({ filters }: { filters: SearchFilters }) {
 				defaultValue={filters.sort}
 				onChange={(value) => {
 					const sort = value as SearchFilters["sort"];
-					router.push(`${routes.search}?${toSearchParams({ ...filters, sort, page: undefined })}`);
+					router.push(`${path}?${toSearchParams({ ...filters, sort, page: undefined })}`);
 				}}
 				trigger={(selectedLabel, open) => (
 					<>
@@ -226,12 +288,14 @@ type LocationInputProps = {
 	selection?: LocationSuggestion;
 	selectedDistricts?: string[];
 	radius?: number;
+	/** The counts are of all active offers, so views of a subset hide them. */
+	showCounts?: boolean;
 };
 
 type Row = { suggestion: LocationSuggestion; district?: SearchLocation };
 
 /** Only a picked suggestion is searched for; text typed without picking one is ignored. */
-function LocationInput({ labelId, selection, selectedDistricts = [], radius }: LocationInputProps) {
+function LocationInput({ labelId, selection, selectedDistricts = [], radius, showCounts = true }: LocationInputProps) {
 	const listId = useId();
 	const radiusLabelId = useId();
 	const [text, setText] = useState(selection ? describe(selection, selectedDistricts) : "");
@@ -463,9 +527,11 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius }: L
 											</span>
 										)}
 									</span>
-									<span className="shrink-0 text-xs text-muted tabular-nums">
-										{location.offerCount.toLocaleString("pl-PL")}
-									</span>
+									{showCounts && (
+										<span className="shrink-0 text-xs text-muted tabular-nums">
+											{location.offerCount.toLocaleString("pl-PL")}
+										</span>
+									)}
 								</li>
 							);
 						})}

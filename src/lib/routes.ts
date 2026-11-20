@@ -6,6 +6,7 @@ export const routes = {
 	consents: "/zgody",
 	properties: "/oferty",
 	search: "/szukaj",
+	deals: "/okazje",
 	findByUrl: "/znajdz-oferte",
 	favorites: "/ulubione",
 	account: "/konto",

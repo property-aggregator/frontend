@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
+import { BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
@@ -6,6 +6,8 @@ import { FavoriteButton } from "@/features/favorites/favorite-button";
 import type { Property } from "@/features/properties/api";
 import { propertyUrl } from "@/lib/routes";
 import { cn } from "@/lib/utils";
+import { DealPill } from "./deal-pill";
+import { PriceChangeText } from "./price-change-pill";
 
 export const priceFormat = new Intl.NumberFormat("pl-PL", {
 	style: "currency",
@@ -13,49 +15,17 @@ export const priceFormat = new Intl.NumberFormat("pl-PL", {
 	maximumFractionDigits: 0,
 });
 
-const changeAmountFormat = new Intl.NumberFormat("pl-PL", {
-	style: "currency",
-	currency: "PLN",
-	maximumFractionDigits: 0,
-	signDisplay: "exceptZero",
-});
-const changePercentFormat = new Intl.NumberFormat("pl-PL", {
-	style: "percent",
-	maximumFractionDigits: 2,
-	signDisplay: "exceptZero",
-});
+/** The API sends isDeal and dealDiscountPercent (0–100) only for plans with deals. */
+function dealPercent(property: Property): number | null {
+	return property.isDeal && property.dealDiscountPercent !== null
+		? Math.round(Math.abs(property.dealDiscountPercent))
+		: null;
+}
 
-/** `percent` is 0–100 as sent by the API. `stacked` puts the percent under the amount on phones. */
-export function PriceChangeText({
-	amount,
-	percent,
-	stacked,
-	className,
-}: {
-	amount: number | null;
-	percent: number | null;
-	stacked?: boolean;
-	className?: string;
-}) {
-	if (amount === null || amount === 0) {
-		return null;
-	}
-
-	return (
-		<span
-			className={cn(
-				"inline-flex items-baseline gap-1 text-sm font-semibold",
-				amount < 0 ? "text-price-down" : "text-price-up",
-				className,
-			)}
-		>
-			<Icon icon={amount < 0 ? ArrowDown : ArrowUp} className="shrink-0 self-center text-lg" />
-			<span className={cn("flex gap-1", stacked && "max-sm:flex-col max-sm:gap-0")}>
-				<span>{changeAmountFormat.format(amount)}</span>
-				{percent !== null && <span>({changePercentFormat.format(percent / 100)})</span>}
-			</span>
-		</span>
-	);
+/** Needs a parent without overflow-hidden. */
+export function DealBadge({ property }: { property: Property }) {
+	const percent = dealPercent(property);
+	return percent === null ? null : <DealPill percent={percent} />;
 }
 
 export function fullAddress(property: Property): string {
@@ -65,63 +35,72 @@ export function fullAddress(property: Property): string {
 export function PropertyCard({ property, className }: { property: Property; className?: string }) {
 	const location = fullAddress(property);
 
+	// The deal badge has a button, so it stays out of the link.
 	return (
-		<Link
-			href={propertyUrl(property.id)}
+		<div
 			className={cn(
-				"flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow duration-300 hover:shadow-card",
+				"relative flex h-full flex-col rounded-xl bg-white transition-shadow duration-300 hover:shadow-card",
 				className,
 			)}
 		>
-			<div className="relative aspect-[4/3] overflow-hidden bg-mist">
-				{property.mainImageUrl ? (
-					// Photos come from many portals, so their hosts can't be listed in next.config.ts.
-					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
-				) : (
-					<div className="grid h-full place-items-center text-line">
-						<Icon icon={House} className="text-[64px]" />
-					</div>
-				)}
-			</div>
-			<div className="px-5 pt-4 pb-3">
-				<p className="flex flex-wrap items-baseline gap-x-2.5">
-					<span className="head text-[22px] font-bold">
-						{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
-					</span>
-					{property.pricePerM2 !== null && (
-						<span className="text-sm text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
-					)}
-				</p>
-				<h4 className="mt-1 truncate text-lg font-medium">{property.title}</h4>
-				<div className="flex h-5 items-center gap-1 text-sm">
-					{location && (
-						<>
-							<Icon icon={MapPin} className="text-lg text-muted" />
-							<span className="truncate" title={location}>
-								{location}
-							</span>
-						</>
+			<DealBadge property={property} />
+			<Link href={propertyUrl(property.id)} className="flex flex-1 flex-col">
+				<div className="relative aspect-[4/3] overflow-hidden rounded-t-xl bg-mist">
+					{property.mainImageUrl ? (
+						// Photos come from many portals, so their hosts can't be listed in next.config.ts.
+						<Image
+							className="object-cover"
+							src={property.mainImageUrl}
+							alt={property.title}
+							fill
+							unoptimized
+						/>
+					) : (
+						<div className="absolute inset-0 grid place-items-center border-b border-line bg-white text-line">
+							<Icon icon={House} className="text-[64px]" />
+						</div>
 					)}
 				</div>
-				<p className="mt-1.5 text-xs text-body">
-					<TimeAgo label="Dodano" date={property.firstSeenAt} />
-				</p>
-			</div>
-			<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-sm">
-				{property.areaM2 !== null && (
-					<span className="flex items-center gap-1">
-						<Icon icon={Scaling} className="text-xl" />
-						{property.areaM2} m²
-					</span>
-				)}
-				{property.rooms !== null && (
-					<span className="flex items-center gap-1">
-						<Icon icon={BedDouble} className="text-xl" />
-						{property.rooms} pok.
-					</span>
-				)}
-			</div>
-		</Link>
+				<div className="px-5 pt-4 pb-3">
+					<p className="flex flex-wrap items-baseline gap-x-2.5">
+						<span className="head text-[22px] font-bold">
+							{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
+						</span>
+						{property.pricePerM2 !== null && (
+							<span className="text-sm text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
+						)}
+					</p>
+					<h4 className="mt-1 truncate text-lg font-medium">{property.title}</h4>
+					<div className="flex h-5 items-center gap-1 text-sm">
+						{location && (
+							<>
+								<Icon icon={MapPin} className="text-lg text-muted" />
+								<span className="truncate font-semibold text-ink" title={location}>
+									{location}
+								</span>
+							</>
+						)}
+					</div>
+					<p className="mt-1.5 text-xs text-ink">
+						<TimeAgo label="Dodano" date={property.firstSeenAt} />
+					</p>
+				</div>
+				<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-sm text-ink">
+					{property.areaM2 !== null && (
+						<span className="flex items-center gap-1">
+							<Icon icon={Scaling} className="text-xl text-muted" />
+							{property.areaM2} m²
+						</span>
+					)}
+					{property.rooms !== null && (
+						<span className="flex items-center gap-1">
+							<Icon icon={BedDouble} className="text-xl text-muted" />
+							{property.rooms} pok.
+						</span>
+					)}
+				</div>
+			</Link>
+		</div>
 	);
 }
 
@@ -134,46 +113,52 @@ export function PropertyTile({ property, showPortal }: { property: Property; sho
 	const address = fullAddress(property);
 
 	return (
-		<Link
-			href={propertyUrl(property.id)}
-			className="flex h-full flex-col overflow-hidden rounded-xl bg-white transition-shadow duration-300 hover:shadow-card"
-		>
-			<div className="relative aspect-[16/9] bg-mist">
-				{property.mainImageUrl ? (
-					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
-				) : (
-					<div className="grid h-full place-items-center text-line">
-						<Icon icon={House} className="text-[48px]" />
-					</div>
-				)}
-				<div className="absolute top-3 left-3 flex gap-2">
-					{showPortal && (
-						<span className="head rounded bg-white px-2 py-0.5 text-xs font-semibold">
-							{property.sourcePortal}
-						</span>
+		<div className="relative flex h-full flex-col rounded-xl bg-white transition-shadow duration-300 hover:shadow-card">
+			<DealBadge property={property} />
+			<Link href={propertyUrl(property.id)} className="flex flex-1 flex-col">
+				<div className="relative aspect-[16/9] overflow-hidden rounded-t-xl bg-mist">
+					{property.mainImageUrl ? (
+						<Image
+							className="object-cover"
+							src={property.mainImageUrl}
+							alt={property.title}
+							fill
+							unoptimized
+						/>
+					) : (
+						<div className="absolute inset-0 grid place-items-center border-b border-line bg-white text-line">
+							<Icon icon={House} className="text-[48px]" />
+						</div>
 					)}
+					<div className="absolute top-3 left-3 flex gap-2">
+						{showPortal && (
+							<span className="head rounded bg-white px-2 py-0.5 text-xs font-semibold">
+								{property.sourcePortal}
+							</span>
+						)}
+						{property.archivedAt && (
+							<span className="head rounded bg-white px-2 py-1 text-[10px] font-bold tracking-wider uppercase">
+								Archiwalna
+							</span>
+						)}
+					</div>
+				</div>
+				<div className="px-4 py-4">
+					<p className="head text-2xl font-bold">
+						{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
+					</p>
+					<p className="mt-1 truncate text-base font-semibold text-ink" title={address || property.title}>
+						{address || property.title}
+					</p>
+					{details.length > 0 && <p className="mt-0.5 truncate text-base">{details.join(" • ")}</p>}
 					{property.archivedAt && (
-						<span className="head rounded bg-white px-2 py-1 text-[10px] font-bold tracking-wider uppercase">
-							Archiwalna
-						</span>
+						<p className="mt-1.5 text-xs text-ink">
+							<TimeAgo label="Wygasło" date={property.archivedAt} />
+						</p>
 					)}
 				</div>
-			</div>
-			<div className="px-4 py-4">
-				<p className="head text-2xl font-bold">
-					{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
-				</p>
-				<p className="mt-1 truncate text-base" title={address || property.title}>
-					{address || property.title}
-				</p>
-				{details.length > 0 && <p className="mt-0.5 truncate text-base">{details.join(" • ")}</p>}
-				{property.archivedAt && (
-					<p className="mt-1.5 text-xs text-body">
-						<TimeAgo label="Wygasło" date={property.archivedAt} />
-					</p>
-				)}
-			</div>
-		</Link>
+			</Link>
+		</div>
 	);
 }
 
@@ -248,12 +233,20 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 	const badge = property.archivedAt ? "Archiwalna" : isNew(property) ? "Nowość" : null;
 
 	return (
-		<article className="relative flex flex-col overflow-hidden rounded-xl bg-white transition-shadow duration-300 hover:shadow-card sm:flex-row">
-			<div className="relative aspect-[4/3] shrink-0 bg-mist sm:w-[340px]">
+		<article
+			className={cn(
+				// min-w-0: as a grid item it would otherwise grow to fit its untruncated texts.
+				"relative flex min-w-0 flex-col rounded-xl bg-white transition-shadow duration-300 hover:shadow-card sm:flex-row",
+				// Room for the deal badge, which sticks out above the card.
+				dealPercent(property) !== null && "mt-3",
+			)}
+		>
+			<DealBadge property={property} />
+			<div className="relative aspect-[4/3] shrink-0 overflow-hidden rounded-t-xl bg-mist sm:w-[340px] sm:rounded-l-xl sm:rounded-tr-none">
 				{property.mainImageUrl ? (
 					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
 				) : (
-					<div className="grid h-full place-items-center text-line">
+					<div className="absolute inset-0 grid place-items-center border-line bg-white text-line max-sm:border-b sm:border-r">
 						<Icon icon={House} className="text-[64px]" />
 					</div>
 				)}
@@ -295,7 +288,12 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 						{property.title}
 					</Link>
 				</h3>
-				{address && <p className="mt-2 truncate text-base">{address}</p>}
+				{address && (
+					<p className="mt-2 flex items-center gap-1 text-base font-semibold text-ink">
+						<Icon icon={MapPin} className="text-xl text-muted" />
+						<span className="truncate">{address}</span>
+					</p>
+				)}
 				<div className="head mt-4 flex flex-wrap gap-x-7 gap-y-1 text-md font-semibold">
 					{property.rooms !== null && (
 						<span className="flex items-center gap-1.5">
@@ -319,7 +317,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 				<div className="mt-auto flex items-center justify-between gap-3 border-t border-line py-3 text-sm text-muted">
 					<div>
 						{property.sellerType && <p>{sellerLabels[property.sellerType]}</p>}
-						<p className="flex flex-wrap gap-x-4 text-body">
+						<p className="flex flex-wrap gap-x-4 text-ink">
 							<TimeAgo label="Dodano" date={property.firstSeenAt} />
 							{property.archivedAt ? (
 								<TimeAgo label="Wygasło" date={property.archivedAt} />

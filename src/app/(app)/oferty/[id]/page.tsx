@@ -29,15 +29,16 @@ import {
 } from "@/features/properties/api";
 import {
 	areaFormat,
+	DealBadge,
 	floorText,
 	fullAddress,
 	isNew,
-	PriceChangeText,
 	priceFormat,
 	PropertyTile,
 	roomsText,
 	sellerLabels,
 } from "@/features/properties/property-card";
+import { PriceChangeText } from "@/features/properties/price-change-pill";
 import { PriceHistory } from "@/features/properties/price-history";
 import { marketLabels } from "@/features/properties/search-params";
 import { TransactionsMap } from "@/features/properties/transactions-map";
@@ -128,8 +129,9 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 	];
 
 	return (
-		<div className="grid overflow-hidden rounded-xl bg-white md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] xl:grid-cols-[480px_minmax(0,1fr)]">
-			<div className="relative aspect-[4/3] bg-mist md:aspect-auto md:min-h-[280px]">
+		<div className="relative grid rounded-xl bg-white md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] xl:grid-cols-[480px_minmax(0,1fr)]">
+			<DealBadge property={property} />
+			<div className="relative aspect-[4/3] overflow-hidden rounded-t-xl bg-mist md:aspect-auto md:min-h-[280px] md:rounded-l-xl md:rounded-tr-none">
 				{property.mainImageUrl ? (
 					<Image
 						className="object-cover"
@@ -140,7 +142,7 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 						preload
 					/>
 				) : (
-					<div className="grid h-full place-items-center text-line">
+					<div className="absolute inset-0 grid place-items-center border-line bg-white text-line max-md:border-b md:border-r">
 						<Icon icon={House} className="text-[120px]" />
 					</div>
 				)}
@@ -164,17 +166,13 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 						{property.pricePerM2 !== null && (
 							<span className="text-base text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
-						<PriceChangeText
-							amount={property.priceChangeAmount}
-							percent={property.priceChangePercent}
-							className="text-base"
-						/>
+						<PriceChangeText amount={property.priceChangeAmount} percent={property.priceChangePercent} />
 					</p>
 					<SourceLink property={property} className="shrink-0 max-md:hidden" />
 				</div>
 				<h1 className="mt-1 line-clamp-2 text-lg leading-snug font-semibold">{property.title}</h1>
 				{address && (
-					<p className="mt-1.5 flex items-start gap-1 text-base">
+					<p className="mt-1.5 flex items-start gap-1 text-base font-semibold text-ink">
 						<Icon icon={MapPin} className="mt-0.5 text-xl text-muted" />
 						{address}
 					</p>

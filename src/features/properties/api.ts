@@ -7,6 +7,7 @@ import type { components, paths } from "@/lib/api/schema";
 export type Property = components["schemas"]["PropertyResponse"];
 export type PagedProperties = components["schemas"]["PagedResponseOfPropertyResponse"];
 export type PropertySearchQuery = NonNullable<paths["/api/properties"]["get"]["parameters"]["query"]>;
+export type DealsQuery = NonNullable<paths["/api/properties/deals"]["get"]["parameters"]["query"]>;
 export type SearchLocation = components["schemas"]["LocationResponse"];
 export type LocationSuggestion = components["schemas"]["LocationSuggestionResponse"];
 export type PropertyTransactions = components["schemas"]["PropertyTransactionsResponse"];
@@ -22,9 +23,21 @@ export async function getLatestProperties(): Promise<Property[]> {
 	return unwrap(await publicApi.GET("/api/properties/latest"));
 }
 
+/** As getLatestProperties, but with isDeal and dealDiscountPercent for a plan with deals; not cached, as it is per user. */
+export async function getLatestPropertiesForUser(): Promise<Property[]> {
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/properties/latest"));
+}
+
 export async function searchProperties(query: PropertySearchQuery): Promise<PagedProperties> {
 	const api = await authedApi();
 	return unwrap(await api.GET("/api/properties", { params: { query } }));
+}
+
+/** Throws ApiError with code deals_not_in_plan (403) when the plan has no deals. */
+export async function searchDeals(query: DealsQuery): Promise<PagedProperties> {
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/properties/deals", { params: { query } }));
 }
 
 export async function suggestLocations(query: string): Promise<LocationSuggestion[]> {

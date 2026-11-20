@@ -21,11 +21,11 @@ export default function AccountPage() {
 					</div>
 					<p className="mt-5 border-t border-line pt-5 text-sm text-muted">
 						Zaakceptowany{" "}
-						<Link href={routes.terms} className="font-semibold text-ink underline">
+						<Link href={routes.terms} className="font-semibold text-ink hover:text-slate">
 							Regulamin
 						</Link>{" "}
 						jest wymagany do korzystania z serwisu. Szczegóły przetwarzania danych znajdziesz w{" "}
-						<Link href={routes.privacy} className="font-semibold text-ink underline">
+						<Link href={routes.privacy} className="font-semibold text-ink hover:text-slate">
 							Polityce prywatności
 						</Link>
 						.
