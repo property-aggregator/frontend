@@ -151,7 +151,10 @@ export function PricingPlans({ plans, current, currentExpiresAt, reveal = false 
 							/>
 							{isCurrent && currentExpiresAt && (
 								<p className="mt-2 text-center text-sm text-muted">
-									Ważny do {dateFormat.format(new Date(currentExpiresAt))}
+									Ważny do{" "}
+									<time dateTime={currentExpiresAt} className="font-semibold text-ink">
+										{dateFormat.format(new Date(currentExpiresAt))}
+									</time>
 								</p>
 							)}
 

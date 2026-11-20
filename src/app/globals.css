@@ -21,9 +21,9 @@
 	--color-pastel-peach-deep: #efdacf;
 	--color-pastel-plum: #faf2fa;
 	--color-pastel-red: #e17676;
-	/* Darker than brand and pastel-red, so small text passes WCAG AA (4.5:1) on white. */
-	--color-price-down: #2e845b;
-	--color-price-up: #d54040;
+	/* Brand and pastel-red mixed 35% with white: the backgrounds of deal, price drop and price rise pills. */
+	--color-pastel-green: #bbe4d1;
+	--color-pastel-rose: #f5cfcf;
 
 	--shadow-card: 0 8px 24px rgb(23 38 46 / 0.08);
 

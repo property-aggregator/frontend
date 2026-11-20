@@ -33,12 +33,12 @@ import {
 	floorText,
 	fullAddress,
 	isNew,
-	PriceChangeText,
 	priceFormat,
 	PropertyTile,
 	roomsText,
 	sellerLabels,
 } from "@/features/properties/property-card";
+import { PriceChangeText } from "@/features/properties/price-change-pill";
 import { PriceHistory } from "@/features/properties/price-history";
 import { marketLabels } from "@/features/properties/search-params";
 import { TransactionsMap } from "@/features/properties/transactions-map";
@@ -166,17 +166,13 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 						{property.pricePerM2 !== null && (
 							<span className="text-base text-muted">{priceFormat.format(property.pricePerM2)}/m²</span>
 						)}
-						<PriceChangeText
-							amount={property.priceChangeAmount}
-							percent={property.priceChangePercent}
-							className="text-base"
-						/>
+						<PriceChangeText amount={property.priceChangeAmount} percent={property.priceChangePercent} />
 					</p>
 					<SourceLink property={property} className="shrink-0 max-md:hidden" />
 				</div>
 				<h1 className="mt-1 line-clamp-2 text-lg leading-snug font-semibold">{property.title}</h1>
 				{address && (
-					<p className="mt-1.5 flex items-start gap-1 text-base">
+					<p className="mt-1.5 flex items-start gap-1 text-base font-semibold text-ink">
 						<Icon icon={MapPin} className="mt-0.5 text-xl text-muted" />
 						{address}
 					</p>

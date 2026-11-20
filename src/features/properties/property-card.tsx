@@ -1,4 +1,4 @@
-import { ArrowDown, ArrowUp, BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
+import { BedDouble, House, Layers, MapPin, Scaling, SquareArrowOutUpRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Icon } from "@/components/icon";
@@ -7,57 +7,13 @@ import type { Property } from "@/features/properties/api";
 import { propertyUrl } from "@/lib/routes";
 import { cn } from "@/lib/utils";
 import { DealPill } from "./deal-pill";
+import { PriceChangeText } from "./price-change-pill";
 
 export const priceFormat = new Intl.NumberFormat("pl-PL", {
 	style: "currency",
 	currency: "PLN",
 	maximumFractionDigits: 0,
 });
-
-const changeAmountFormat = new Intl.NumberFormat("pl-PL", {
-	style: "currency",
-	currency: "PLN",
-	maximumFractionDigits: 0,
-	signDisplay: "exceptZero",
-});
-const changePercentFormat = new Intl.NumberFormat("pl-PL", {
-	style: "percent",
-	maximumFractionDigits: 2,
-	signDisplay: "exceptZero",
-});
-
-/** `percent` is 0–100 as sent by the API. `stacked` puts the percent under the amount on phones. */
-export function PriceChangeText({
-	amount,
-	percent,
-	stacked,
-	className,
-}: {
-	amount: number | null;
-	percent: number | null;
-	stacked?: boolean;
-	className?: string;
-}) {
-	if (amount === null || amount === 0) {
-		return null;
-	}
-
-	return (
-		<span
-			className={cn(
-				"inline-flex items-baseline gap-1 text-sm font-semibold",
-				amount < 0 ? "text-price-down" : "text-price-up",
-				className,
-			)}
-		>
-			<Icon icon={amount < 0 ? ArrowDown : ArrowUp} className="shrink-0 self-center text-lg" />
-			<span className={cn("flex gap-1", stacked && "max-sm:flex-col max-sm:gap-0")}>
-				<span>{changeAmountFormat.format(amount)}</span>
-				{percent !== null && <span>({changePercentFormat.format(percent / 100)})</span>}
-			</span>
-		</span>
-	);
-}
 
 /** The API sends isDeal and dealDiscountPercent (0–100) only for plans with deals. */
 function dealPercent(property: Property): number | null {
@@ -119,26 +75,26 @@ export function PropertyCard({ property, className }: { property: Property; clas
 						{location && (
 							<>
 								<Icon icon={MapPin} className="text-lg text-muted" />
-								<span className="truncate" title={location}>
+								<span className="truncate font-semibold text-ink" title={location}>
 									{location}
 								</span>
 							</>
 						)}
 					</div>
-					<p className="mt-1.5 text-xs text-body">
+					<p className="mt-1.5 text-xs text-ink">
 						<TimeAgo label="Dodano" date={property.firstSeenAt} />
 					</p>
 				</div>
-				<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-sm">
+				<div className="mt-auto flex h-11 items-center gap-6 border-t border-line px-5 text-sm text-ink">
 					{property.areaM2 !== null && (
 						<span className="flex items-center gap-1">
-							<Icon icon={Scaling} className="text-xl" />
+							<Icon icon={Scaling} className="text-xl text-muted" />
 							{property.areaM2} m²
 						</span>
 					)}
 					{property.rooms !== null && (
 						<span className="flex items-center gap-1">
-							<Icon icon={BedDouble} className="text-xl" />
+							<Icon icon={BedDouble} className="text-xl text-muted" />
 							{property.rooms} pok.
 						</span>
 					)}
@@ -191,12 +147,12 @@ export function PropertyTile({ property, showPortal }: { property: Property; sho
 					<p className="head text-2xl font-bold">
 						{property.price === null ? "Zapytaj o cenę" : priceFormat.format(property.price)}
 					</p>
-					<p className="mt-1 truncate text-base" title={address || property.title}>
+					<p className="mt-1 truncate text-base font-semibold text-ink" title={address || property.title}>
 						{address || property.title}
 					</p>
 					{details.length > 0 && <p className="mt-0.5 truncate text-base">{details.join(" • ")}</p>}
 					{property.archivedAt && (
-						<p className="mt-1.5 text-xs text-body">
+						<p className="mt-1.5 text-xs text-ink">
 							<TimeAgo label="Wygasło" date={property.archivedAt} />
 						</p>
 					)}
@@ -332,7 +288,12 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 						{property.title}
 					</Link>
 				</h3>
-				{address && <p className="mt-2 truncate text-base">{address}</p>}
+				{address && (
+					<p className="mt-2 flex items-center gap-1 text-base font-semibold text-ink">
+						<Icon icon={MapPin} className="text-xl text-muted" />
+						<span className="truncate">{address}</span>
+					</p>
+				)}
 				<div className="head mt-4 flex flex-wrap gap-x-7 gap-y-1 text-md font-semibold">
 					{property.rooms !== null && (
 						<span className="flex items-center gap-1.5">
@@ -356,7 +317,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 				<div className="mt-auto flex items-center justify-between gap-3 border-t border-line py-3 text-sm text-muted">
 					<div>
 						{property.sellerType && <p>{sellerLabels[property.sellerType]}</p>}
-						<p className="flex flex-wrap gap-x-4 text-body">
+						<p className="flex flex-wrap gap-x-4 text-ink">
 							<TimeAgo label="Dodano" date={property.firstSeenAt} />
 							{property.archivedAt ? (
 								<TimeAgo label="Wygasło" date={property.archivedAt} />
