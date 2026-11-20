@@ -78,7 +78,7 @@ export function PropertyCard({ property, className }: { property: Property; clas
 					// Photos come from many portals, so their hosts can't be listed in next.config.ts.
 					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
 				) : (
-					<div className="grid h-full place-items-center text-line">
+					<div className="absolute inset-0 grid place-items-center border-b border-line bg-white text-line">
 						<Icon icon={House} className="text-[64px]" />
 					</div>
 				)}
@@ -142,7 +142,7 @@ export function PropertyTile({ property, showPortal }: { property: Property; sho
 				{property.mainImageUrl ? (
 					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
 				) : (
-					<div className="grid h-full place-items-center text-line">
+					<div className="absolute inset-0 grid place-items-center border-b border-line bg-white text-line">
 						<Icon icon={House} className="text-[48px]" />
 					</div>
 				)}
@@ -253,7 +253,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 				{property.mainImageUrl ? (
 					<Image className="object-cover" src={property.mainImageUrl} alt={property.title} fill unoptimized />
 				) : (
-					<div className="grid h-full place-items-center text-line">
+					<div className="absolute inset-0 grid place-items-center border-line bg-white text-line max-sm:border-b sm:border-r">
 						<Icon icon={House} className="text-[64px]" />
 					</div>
 				)}

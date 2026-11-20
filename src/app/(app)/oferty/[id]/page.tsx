@@ -140,7 +140,7 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 						preload
 					/>
 				) : (
-					<div className="grid h-full place-items-center text-line">
+					<div className="absolute inset-0 grid place-items-center border-line bg-white text-line max-md:border-b md:border-r">
 						<Icon icon={House} className="text-[120px]" />
 					</div>
 				)}

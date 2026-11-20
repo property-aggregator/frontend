@@ -23,7 +23,7 @@ export default function ConsentsPage({ searchParams }: ConsentsPageProps) {
 				<Suspense fallback={<div className="mt-8 h-52 animate-pulse rounded-lg bg-mist" />}>
 					<Consents searchParams={searchParams} />
 				</Suspense>
-				<a href={routes.logout} className="mt-6 inline-block text-sm text-muted underline">
+				<a href={routes.logout} className="mt-6 inline-block text-sm text-muted hover:text-slate">
 					Wyloguj się
 				</a>
 			</div>

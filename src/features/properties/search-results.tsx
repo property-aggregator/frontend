@@ -105,7 +105,7 @@ export function SearchResults({
 					{result.totalCount > 0 ? (
 						<>
 							Ta strona wyników nie istnieje.{" "}
-							<Link href={pageHref(path, filters, 1)} className="font-semibold text-ink underline">
+							<Link href={pageHref(path, filters, 1)} className="font-semibold text-ink hover:text-slate">
 								Wróć na pierwszą stronę
 							</Link>
 						</>
