@@ -23,6 +23,12 @@ export async function getLatestProperties(): Promise<Property[]> {
 	return unwrap(await publicApi.GET("/api/properties/latest"));
 }
 
+/** As getLatestProperties, but with isDeal and dealDiscountPercent for a plan with deals; not cached, as it is per user. */
+export async function getLatestPropertiesForUser(): Promise<Property[]> {
+	const api = await authedApi();
+	return unwrap(await api.GET("/api/properties/latest"));
+}
+
 export async function searchProperties(query: PropertySearchQuery): Promise<PagedProperties> {
 	const api = await authedApi();
 	return unwrap(await api.GET("/api/properties", { params: { query } }));

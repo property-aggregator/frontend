@@ -29,6 +29,7 @@ import {
 } from "@/features/properties/api";
 import {
 	areaFormat,
+	DealBadge,
 	floorText,
 	fullAddress,
 	isNew,
@@ -128,8 +129,9 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 	];
 
 	return (
-		<div className="grid overflow-hidden rounded-xl bg-white md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] xl:grid-cols-[480px_minmax(0,1fr)]">
-			<div className="relative aspect-[4/3] bg-mist md:aspect-auto md:min-h-[280px]">
+		<div className="relative grid rounded-xl bg-white md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] xl:grid-cols-[480px_minmax(0,1fr)]">
+			<DealBadge property={property} />
+			<div className="relative aspect-[4/3] overflow-hidden rounded-t-xl bg-mist md:aspect-auto md:min-h-[280px] md:rounded-l-xl md:rounded-tr-none">
 				{property.mainImageUrl ? (
 					<Image
 						className="object-cover"
