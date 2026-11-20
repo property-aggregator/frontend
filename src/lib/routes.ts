@@ -7,6 +7,7 @@ export const routes = {
 	properties: "/oferty",
 	search: "/szukaj",
 	deals: "/okazje",
+	alerts: "/alerty",
 	findByUrl: "/znajdz-oferte",
 	favorites: "/ulubione",
 	account: "/konto",

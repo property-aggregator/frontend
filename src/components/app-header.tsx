@@ -15,6 +15,7 @@ const navItems = [
 	{ href: routes.properties, label: "Start" },
 	{ href: routes.search, label: "Szukaj" },
 	{ href: routes.deals, label: "Okazje" },
+	{ href: routes.alerts, label: "Alerty" },
 ];
 
 // On phones only the favorites icon stays in the bar; the rest moves into the menu.
