@@ -26,6 +26,7 @@ import {
 	type DealFilters,
 	type SearchFilters,
 } from "./search-params";
+import { SuggestionsStatus, suggestionsPanel } from "./suggestions-status";
 
 function useSubmitSearch(path: string = routes.search) {
 	const router = useRouter();
@@ -277,9 +278,6 @@ export function SortSelect({ path = routes.search, filters }: SortSelectProps) {
 	);
 }
 
-const suggestionsPanel =
-	"scroll-thin absolute top-full left-0 z-30 mt-1.5 max-h-80 w-full overflow-auto rounded border border-line bg-white shadow-lg";
-
 // Shared by the forms for the whole visit: going back a letter or retyping a query shows its suggestions at once.
 const suggestionCache = new Map<string, LocationSuggestion[]>();
 
@@ -452,30 +450,7 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius, sho
 					aria-labelledby={labelId}
 					className="field truncate pl-10"
 				/>
-				{placeholder && (
-					<div role="status" className={cn(suggestionsPanel, "py-1")}>
-						{loading ? (
-							<>
-								<span className="sr-only">Wyszukiwanie lokalizacji…</span>
-								{Array.from({ length: 3 }, (_, index) => (
-									<span
-										key={index}
-										className="flex items-center gap-3 px-3.5 py-2"
-										aria-hidden="true"
-									>
-										<span className="size-[18px] shrink-0 animate-pulse rounded bg-mist" />
-										<span className="flex-1 space-y-1.5">
-											<span className="block h-3.5 w-2/5 animate-pulse rounded bg-mist" />
-											<span className="block h-3 w-1/4 animate-pulse rounded bg-mist" />
-										</span>
-									</span>
-								))}
-							</>
-						) : (
-							<span className="block px-3.5 py-2 text-muted">Nie znaleziono takiej lokalizacji.</span>
-						)}
-					</div>
-				)}
+				{placeholder && <SuggestionsStatus loading={loading} emptyText="Nie znaleziono takiej lokalizacji." />}
 				{expanded && (
 					<ul
 						id={listId}

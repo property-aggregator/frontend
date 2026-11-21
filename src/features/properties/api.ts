@@ -40,9 +40,14 @@ export async function searchDeals(query: DealsQuery): Promise<PagedProperties> {
 	return unwrap(await api.GET("/api/properties/deals", { params: { query } }));
 }
 
-export async function suggestLocations(query: string): Promise<LocationSuggestion[]> {
+/** includeWithoutOffers: also places with few or no offers, which search alerts can watch. */
+export async function suggestLocations(query: string, includeWithoutOffers = false): Promise<LocationSuggestion[]> {
 	const api = await authedApi();
-	return unwrap(await api.GET("/api/locations/suggest", { params: { query: { Query: query, Limit: 8 } } }));
+	return unwrap(
+		await api.GET("/api/locations/suggest", {
+			params: { query: { Query: query, Limit: 8, IncludeWithoutOffers: includeWithoutOffers || undefined } },
+		}),
+	);
 }
 
 export async function getLocations(ids: string[]): Promise<SearchLocation[]> {
