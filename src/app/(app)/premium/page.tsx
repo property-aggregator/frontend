@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { connection } from "next/server";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/features/account/api";
 import { getPlans } from "@/features/plans/api";
@@ -27,6 +28,9 @@ export default function PremiumPage() {
 }
 
 async function Plans() {
+	// Depends on the signed-in user, so render per request; also keeps getPlans() from calling the API during next build.
+	await connection();
+
 	const [user, plans] = await Promise.all([getCurrentUser(), getPlans()]);
 
 	return <PricingPlans plans={plans} current={user.plan} currentExpiresAt={user.planExpiresAt} />;
