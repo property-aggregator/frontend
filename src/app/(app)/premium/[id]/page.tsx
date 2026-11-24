@@ -20,16 +20,16 @@ type QuotePageProps = {
 
 export default function QuotePage(props: QuotePageProps) {
 	return (
-		<main data-full-bleed>
+		<main>
 			<div className="mx-auto max-w-[640px] pt-6 sm:px-6 sm:py-10">
 				<Link
 					href={routes.premium}
-					className="head mb-6 ml-6 inline-flex items-center gap-1 text-base font-semibold hover:text-slate sm:ml-0"
+					className="head mb-6 ml-6 inline-flex items-center gap-1 text-base font-semibold hover:text-primary sm:ml-0"
 				>
 					<Icon icon={ChevronLeft} className="text-xl" />
 					Wróć do planów
 				</Link>
-				<div className="bg-white px-6 py-8 sm:rounded-xl sm:p-8 md:p-10">
+				<div className="bg-white px-6 py-8 sm:rounded-lg sm:border sm:border-line sm:p-8 md:p-10">
 					<Suspense fallback={<div className="h-[420px] animate-pulse rounded-lg bg-mist" />}>
 						<QuoteView {...props} />
 					</Suspense>
@@ -70,7 +70,7 @@ async function QuoteView({ params, searchParams }: QuotePageProps) {
 					<p className="mt-3">
 						Ten plan będzie można kupić, gdy wygaśnie Twój obecny. Możesz za to przedłużyć plan, który masz.
 					</p>
-					<Link href={routes.premium} className="btn btn-slate mt-6">
+					<Link href={routes.premium} className="btn btn-primary mt-6">
 						Zobacz plany
 					</Link>
 				</div>
@@ -146,7 +146,7 @@ function QuoteSummary({ quote, promoCode, promoError }: { quote: PlanQuote; prom
 			<button
 				type="button"
 				disabled
-				className="btn btn-slate mt-8 w-full disabled:cursor-not-allowed disabled:opacity-60"
+				className="btn btn-primary mt-8 w-full disabled:cursor-not-allowed disabled:opacity-60"
 			>
 				Przejdź do płatności
 			</button>

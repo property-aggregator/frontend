@@ -8,7 +8,6 @@ import { MapSection } from "@/features/landing/map-section";
 import { Pricing } from "@/features/landing/pricing";
 import { Process } from "@/features/landing/process";
 import { RevealOnScroll } from "@/features/landing/reveal-on-scroll";
-import { Stats } from "@/features/landing/stats";
 
 export const metadata: Metadata = {
 	description:
@@ -25,7 +24,6 @@ export default function HomePage() {
 				<Features />
 				<Comparison />
 				<LatestOffers />
-				{/*<Stats />*/}
 				<MapSection />
 				<Process />
 				<Pricing />

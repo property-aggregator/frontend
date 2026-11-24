@@ -151,7 +151,7 @@ export function Dropdown({
 					aria-activedescendant={`${listId}-${active}`}
 					onKeyDown={onListKeyDown}
 					className={cn(
-						"scroll-thin absolute z-30 mt-1.5 max-h-72 min-w-full overflow-auto rounded border border-line bg-white shadow-lg outline-none",
+						"scroll-thin absolute z-45 mt-1.5 max-h-72 min-w-full overflow-auto rounded border border-line bg-white shadow-lg outline-none",
 						align === "right" ? "right-0" : "left-0",
 					)}
 				>

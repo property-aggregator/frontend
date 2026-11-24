@@ -51,7 +51,7 @@ export function HeroSearchForm() {
 		<form
 			action={routes.search}
 			onSubmit={onSubmit}
-			className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 lg:rounded-xl lg:bg-white lg:p-6 lg:shadow-sm"
+			className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 lg:rounded-lg lg:border lg:border-ink/25 lg:bg-white lg:p-6"
 		>
 			<Field label="Lokalizacja" className="md:col-span-2">
 				{(labelId) => <LocationInput labelId={labelId} />}
@@ -85,7 +85,7 @@ export function HeroSearchForm() {
 			<Field label="Sortowanie">
 				{(labelId) => <Select labelId={labelId} name="sort" options={sortLabels} value={defaultFilters.sort} />}
 			</Field>
-			<button type="submit" className="btn btn-slate self-end md:col-span-2">
+			<button type="submit" className="btn btn-primary self-end md:col-span-2">
 				<Icon icon={Search} className="text-xl" />
 				Szukaj
 			</button>
@@ -170,7 +170,7 @@ export function FiltersForm({ filters, location }: FiltersFormProps) {
 				className="col-span-2"
 			/>
 			<div className="col-span-2 mt-1 flex gap-2">
-				<button type="submit" className="btn btn-sm btn-slate flex-1">
+				<button type="submit" className="btn btn-sm btn-primary flex-1">
 					Zastosuj
 				</button>
 				<Link href={routes.search} className="btn btn-sm btn-soft">
@@ -183,19 +183,14 @@ export function FiltersForm({ filters, location }: FiltersFormProps) {
 
 type DealsFiltersFormProps = { filters: DealFilters; location?: LocationSuggestion };
 
-/** Above the deals on phones, a sidebar on large screens: the deals endpoint filters only by location, transaction and type. */
+/** The deals endpoint filters only by location, transaction and type. Meant to sit in a FiltersPanel. */
 export function DealsFiltersForm({ filters, location }: DealsFiltersFormProps) {
 	const onSubmit = useSubmitSearch(routes.deals);
 
 	return (
-		<form
-			action={routes.deals}
-			onSubmit={onSubmit}
-			className="grid gap-x-3 gap-y-4 rounded-xl bg-white p-5 sm:grid-cols-2"
-		>
+		<form action={routes.deals} onSubmit={onSubmit} className="grid grid-cols-2 gap-x-3 gap-y-4">
 			{filters.sort && <input type="hidden" name="sort" value={filters.sort} />}
-			<h2 className="head hidden text-2xl font-semibold sm:col-span-2 lg:block">Filtry</h2>
-			<Field label="Lokalizacja" className="sm:col-span-2">
+			<Field label="Lokalizacja" className="col-span-2">
 				{(labelId) => (
 					<LocationInput
 						labelId={labelId}
@@ -228,8 +223,8 @@ export function DealsFiltersForm({ filters, location }: DealsFiltersFormProps) {
 					/>
 				)}
 			</Field>
-			<div className="mt-1 flex gap-2 sm:col-span-2">
-				<button type="submit" className="btn btn-sm btn-slate flex-1">
+			<div className="col-span-2 mt-1 flex gap-2">
+				<button type="submit" className="btn btn-sm btn-primary flex-1">
 					Zastosuj
 				</button>
 				<Link href={routes.deals} className="btn btn-sm btn-soft">
@@ -484,7 +479,7 @@ function LocationInput({ labelId, selection, selectedDistricts = [], radius, sho
 										className={cn(
 											"grid h-[18px] w-[18px] shrink-0 place-items-center rounded border",
 											selected || partly
-												? "border-slate bg-slate text-white"
+												? "border-primary bg-primary text-white"
 												: "border-line bg-white",
 										)}
 									>

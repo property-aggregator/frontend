@@ -13,8 +13,8 @@ type ConsentsPageProps = { searchParams: Promise<{ returnTo?: string | string[] 
 
 export default function ConsentsPage({ searchParams }: ConsentsPageProps) {
 	return (
-		<main className="grid min-h-screen place-items-center bg-mist px-6 py-12">
-			<div className="w-full max-w-[520px] rounded-xl bg-white p-8 md:p-10">
+		<main className="grid min-h-screen place-items-center px-6 py-12">
+			<div className="w-full max-w-[520px] rounded-lg border border-line bg-white p-8 md:p-10">
 				<LogoMark />
 				<h1 className="title mt-6 text-4xl">Zanim zaczniesz</h1>
 				<p className="mt-3">
@@ -23,7 +23,7 @@ export default function ConsentsPage({ searchParams }: ConsentsPageProps) {
 				<Suspense fallback={<div className="mt-8 h-52 animate-pulse rounded-lg bg-mist" />}>
 					<Consents searchParams={searchParams} />
 				</Suspense>
-				<a href={routes.logout} className="mt-6 inline-block text-sm text-muted hover:text-slate">
+				<a href={routes.logout} className="mt-6 inline-block text-sm text-muted hover:text-primary">
 					Wyloguj się
 				</a>
 			</div>

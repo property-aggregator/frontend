@@ -17,10 +17,9 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 	return (
 		<FavoritesCountProvider countPromise={loadFavoritesCount()}>
 			<NavigationTracker />
-			<div className="flex min-h-screen flex-col bg-mist">
+			<div className="flex min-h-screen flex-col">
 				<AppHeader />
-				{/* Pages marked data-full-bleed are white edge to edge on phones. */}
-				<div className="flex-1 max-sm:has-[[data-full-bleed]]:bg-white">{children}</div>
+				<div className="flex-1">{children}</div>
 				<SiteFooter />
 			</div>
 		</FavoritesCountProvider>

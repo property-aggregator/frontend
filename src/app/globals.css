@@ -1,31 +1,51 @@
 @import "tailwindcss";
 
+@keyframes marquee {
+	from {
+		transform: translate3d(0, 0, 0);
+	}
+	to {
+		transform: translate3d(-50%, 0, 0);
+	}
+}
+
 @theme inline {
 	--font-sans: var(--font-figtree), Arial, sans-serif;
 	--font-head: var(--font-figtree), Arial, sans-serif;
 }
 
 @theme {
-	--color-brand: #3fb37c;
 	--color-ink: #17262e;
-	--color-body: #4a4a4a;
-	--color-muted: #627077;
-	--color-mist: #edf2f5;
-	--color-tint: #ebfaf2;
-	--color-line: #d6dee0;
-	--color-slate: #576696;
-	--color-pastel-blue: #f0f5fa;
-	--color-pastel-blue-deep: #dde7f2;
-	--color-pastel-violet: #f2f2fc;
-	--color-pastel-peach: #f7ede8;
-	--color-pastel-peach-deep: #efdacf;
-	--color-pastel-plum: #faf2fa;
-	--color-pastel-red: #e17676;
-	/* Brand and pastel-red mixed 35% with white: the backgrounds of deal, price drop and price rise pills. */
-	--color-pastel-green: #bbe4d1;
-	--color-pastel-rose: #f5cfcf;
+	--color-body: #3d4852;
+	--color-muted: #5b6770;
+	--color-mist: #f2f4f7;
+	--color-tint: #e6f6ee;
+	--color-line: #dfe3e8;
+	/* Buttons, links and switches; white text on it is about 13:1. */
+	--color-primary: #3b465e;
+	/* Behind primary text, e.g. the "Nowość" badge. */
+	--color-primary-soft: #e7e6ee;
+	--color-pastel-blue: #b2caea;
+	--color-pastel-blue-deep: #6d90c9;
+	--color-pastel-violet: #c6beec;
+	--color-pastel-violet-deep: #baaef5;
+	--color-pastel-peach: #ecbea2;
+	--color-pastel-peach-deep: #e09466;
+	--color-pastel-plum: #d6b1e8;
+	/* The heart of the favourites. */
+	--color-pastel-red: #ea373e;
+	/* Pill backgrounds, each with text of its own hue on top: price-down, price-up and deal. */
+	--color-pastel-green: #b5eec9;
+	--color-pastel-rose: #fbc0c0;
+	--color-pastel-amber: #fed29e;
+	/* Text on those backgrounds and on white; each passes WCAG AA (about 5:1). */
+	--color-price-down: #084c25;
+	--color-price-up: #8f1111;
+	--color-deal: #782d05;
 
 	--shadow-card: 0 8px 24px rgb(23 38 46 / 0.08);
+	/* The shadow of the offer cards. */
+	--shadow-soft: 0 0 12px rgb(23 38 46 / 0.12);
 
 	/* Font size only: line height is inherited, as with the arbitrary text-[…px] values these replace. */
 	--text-*: initial;
@@ -108,19 +128,19 @@
 		font-size: 15px;
 	}
 
-	.btn-primary {
+	.btn-dark {
 		background: var(--color-ink);
 		color: #fff;
 	}
 
-	.btn-slate {
-		background: var(--color-slate);
+	.btn-primary {
+		background: var(--color-primary);
 		color: #fff;
 	}
 
 	.btn-soft {
-		background: var(--color-mist);
 		color: var(--color-ink);
+		border: 2px solid var(--color-line);
 	}
 
 	.btn-light {
@@ -145,12 +165,13 @@
 
 	/* Touch screens keep :hover after a tap until something else is tapped, so it applies only with a mouse. */
 	@media (hover: hover) {
-		.btn-primary:hover {
-			background: var(--color-slate);
+		.btn-dark:hover {
+			background: var(--color-primary);
 		}
 
-		.btn-slate:hover {
-			background: color-mix(in srgb, var(--color-slate) 85%, #000);
+		/* Lighter, as darker would not show on so dark a colour. */
+		.btn-primary:hover {
+			background: color-mix(in srgb, var(--color-primary) 85%, #fff);
 		}
 
 		.btn-soft:hover {
@@ -167,7 +188,7 @@
 		}
 
 		.nav-link:hover {
-			color: var(--color-slate);
+			color: var(--color-primary);
 		}
 	}
 
@@ -201,8 +222,8 @@
 
 	.field:focus,
 	.field[aria-expanded="true"] {
-		border-color: var(--color-slate);
-		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-slate) 20%, transparent);
+		border-color: var(--color-primary);
+		box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 20%, transparent);
 	}
 
 	.scroll-thin::-webkit-scrollbar {

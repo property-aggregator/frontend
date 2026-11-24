@@ -47,7 +47,7 @@ export function ConfirmDialog({
 				event.preventDefault();
 				onCancel();
 			}}
-			className="m-auto w-[calc(100%-32px)] max-w-[400px] rounded-xl bg-white p-6 text-body shadow-card backdrop:bg-ink/40"
+			className="m-auto w-[calc(100%-32px)] max-w-[400px] rounded-lg bg-white p-6 text-body shadow-card backdrop:bg-ink/40"
 		>
 			<h2 id={titleId} className="head text-xl font-semibold">
 				{title}
@@ -62,7 +62,7 @@ export function ConfirmDialog({
 					type="button"
 					onClick={onConfirm}
 					disabled={pending}
-					className="btn btn-sm btn-slate flex-1 disabled:opacity-50"
+					className="btn btn-sm btn-primary flex-1 disabled:opacity-50"
 				>
 					{confirmLabel}
 				</button>

@@ -21,7 +21,7 @@ export function DealPill({ percent }: { percent: number }) {
 				type="button"
 				{...triggerProps}
 				aria-controls={id}
-				className="head flex h-7 cursor-pointer items-center gap-1 rounded-full bg-pastel-green pr-2 pl-3 text-sm font-semibold whitespace-nowrap text-ink"
+				className="head flex h-7 cursor-pointer items-center gap-1 rounded-full bg-pastel-amber pr-2 pl-3 text-sm font-semibold whitespace-nowrap text-deal"
 			>
 				Potencjalna okazja −{percent}%
 				<Icon icon={Info} className="text-lg" />

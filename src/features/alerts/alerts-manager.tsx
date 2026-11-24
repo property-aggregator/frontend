@@ -47,17 +47,17 @@ export function AlertsManager({ initialAlerts, activeAlertsLimit, smsAvailable }
 			{editing === "new" ? (
 				<AlertForm smsAvailable={smsAvailable} onSaved={onSaved} onCancel={() => setEditing(null)} />
 			) : activeAlertsLimit === 0 ? (
-				<p className="rounded-xl border border-dashed border-line p-6 text-center">
+				<p className="rounded-lg border border-dashed border-line p-6 text-center">
 					Alerty są dostępne w planach Premium.{" "}
-					<Link href={routes.premium} className="font-semibold text-ink hover:text-slate">
+					<Link href={routes.premium} className="font-semibold text-ink hover:text-primary">
 						Zobacz plany
 					</Link>
 				</p>
 			) : limitReached ? (
-				<p className="rounded-xl border border-dashed border-line p-6 text-center">
+				<p className="rounded-lg border border-dashed border-line p-6 text-center">
 					Masz już {activeAlertsLimit} z {activeAlertsLimit} aktywnych alertów. Wyłącz któryś, aby dodać nowy,
 					albo{" "}
-					<Link href={routes.premium} className="font-semibold text-ink hover:text-slate">
+					<Link href={routes.premium} className="font-semibold text-ink hover:text-primary">
 						wybierz wyższy plan
 					</Link>
 					.
@@ -66,7 +66,7 @@ export function AlertsManager({ initialAlerts, activeAlertsLimit, smsAvailable }
 				<button
 					type="button"
 					onClick={() => setEditing("new")}
-					className="head flex cursor-pointer items-center justify-center gap-2 rounded-xl border border-dashed border-slate p-6 font-semibold text-slate transition-colors hover:bg-white"
+					className="head flex cursor-pointer items-center justify-center gap-2 rounded-lg border border-dashed border-primary p-6 font-semibold text-primary transition-colors hover:bg-mist"
 				>
 					<Icon icon={Plus} className="text-xl" />
 					Dodaj alert
@@ -81,7 +81,7 @@ export function AlertsManager({ initialAlerts, activeAlertsLimit, smsAvailable }
 				</p>
 			)}
 			{alerts.length === 0 && editing !== "new" && (
-				<p className="rounded-xl bg-white p-8 text-center">
+				<p className="rounded-lg border border-line bg-white p-8 text-center">
 					Nie masz jeszcze alertów. Dodaj pierwszy, a powiadomimy Cię o nowych ofertach spełniających Twoje
 					kryteria.
 				</p>
@@ -173,9 +173,9 @@ function AlertCard({ alert, smsAvailable, onChange, onEdit, onRemoved }: AlertCa
 		run(() => saveAlert(alert.id, { ...toRequest(alert), [channel]: enabled }));
 
 	return (
-		<article className="rounded-xl bg-white p-5">
+		<article className="rounded-lg border border-line bg-white p-5">
 			<div className={cn("flex items-start gap-3", !alert.isActive && "opacity-60")}>
-				<Icon icon={BellRing} className="mt-0.5 text-2xl text-slate" />
+				<Icon icon={BellRing} className="mt-0.5 text-2xl text-primary" />
 				<div className="min-w-0">
 					<h3 className="text-lg leading-snug font-semibold">{alert.name}</h3>
 					<p className="mt-0.5 font-semibold text-ink">{alertHeadline(alert)}</p>

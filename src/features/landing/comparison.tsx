@@ -11,10 +11,8 @@ import {
 	X,
 	Zap,
 } from "lucide-react";
-import photo from "@/assets/landing/comparison.webp";
 import { Icon } from "@/components/icon";
 import { BrandName } from "@/components/logo";
-import { BackgroundPhoto } from "@/components/background-photo";
 
 type Item = { icon: LucideIcon; title: string; text: string };
 
@@ -37,7 +35,7 @@ const before: Item[] = [
 	{
 		icon: Copy,
 		title: "Zalew duplikatów",
-		text: "Ta sama nieruchomość od 12 agencji, każda z inną ceną.",
+		text: "Ta sama nieruchomość od kilku agencji, każda z inną ceną.",
 	},
 ];
 
@@ -45,11 +43,11 @@ const after: Item[] = [
 	{
 		icon: LayoutDashboard,
 		title: "Jeden pulpit bez duplikatów",
-		text: "Powtórzone ogłoszenia scalone w jedną kartę ze wszystkimi kontaktami.",
+		text: "Powtórzone ogłoszenia scalone w jedną kartę.",
 	},
 	{
 		icon: Zap,
-		title: "Alert SMS i e-mail poniżej 30 s",
+		title: "Błyskawiczny alert SMS i e-mail",
 		text: "O nowym lokalu lub spadku ceny wiesz pierwszy.",
 	},
 	{
@@ -60,7 +58,7 @@ const after: Item[] = [
 	{
 		icon: BadgeCheck,
 		title: "Automatyczne wykrywanie okazji",
-		text: "Stawka za m² porównana z cenami transakcyjnymi w dzielnicy.",
+		text: "Stawka za m² porównana z cenami transakcyjnymi w okolicy.",
 	},
 ];
 
@@ -71,13 +69,13 @@ export function Comparison() {
 				<div className="reveal text-center">
 					<h2 className="title">Koniec z odświeżaniem 20 kart</h2>
 					<p className="mx-auto mt-3 max-w-[620px]">
-						Zobacz różnicę między szukaniem na własną rękę a agregatorem, który pracuje za Ciebie 24/7.
+						Zobacz różnicę między szukaniem na własną rękę a aplikacją, która pracuje za Ciebie 24/7.
 					</p>
 				</div>
 				<div className="mt-12 grid gap-7 md:grid-cols-2">
-					<div className="reveal rounded-xl bg-white p-8 md:p-10">
+					<div className="reveal rounded-lg bg-white p-8 md:p-10">
 						<div className="flex items-center gap-4">
-							<span className="grid h-12 w-12 place-items-center rounded-xl bg-mist text-body">
+							<span className="grid h-12 w-12 place-items-center rounded-lg bg-mist text-body">
 								<Icon icon={X} />
 							</span>
 							<div>
@@ -97,10 +95,9 @@ export function Comparison() {
 							))}
 						</ul>
 					</div>
-					<div className="reveal relative overflow-hidden rounded-xl bg-ink p-8 text-white/75 md:p-10">
-						<BackgroundPhoto src={photo} darkness={0.92} sizes="(min-width: 768px) 560px, 100vw" />
-						<div className="relative flex items-center gap-4">
-							<span className="grid h-12 w-12 place-items-center rounded-xl bg-white text-ink">
+					<div className="reveal rounded-lg bg-primary p-8 text-white/75 md:p-10">
+						<div className="flex items-center gap-4">
+							<span className="grid h-12 w-12 place-items-center rounded-lg bg-white text-ink">
 								<Icon icon={Check} />
 							</span>
 							<div>
@@ -110,7 +107,7 @@ export function Comparison() {
 								<div className="text-sm text-white/60">Pełna kontrola rynku</div>
 							</div>
 						</div>
-						<ul className="relative mt-8 space-y-6">
+						<ul className="mt-8 space-y-6">
 							{after.map(({ icon, title, text }) => (
 								<li key={title} className="flex gap-4">
 									<Icon icon={icon} className="text-white" />

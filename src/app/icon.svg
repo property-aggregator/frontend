@@ -1,11 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" fill="none" stroke-linecap="round" stroke-linejoin="round">
-  <title>homvia</title>
+  <title>LokalSkan</title>
   <style>
     .house { stroke: #17262E; }
-    .lens { stroke: #576696; }
+    .lens { stroke: #312e48; }
     @media (prefers-color-scheme: dark) {
       .house { stroke: #FFFFFF; }
-      .lens { stroke: #A9B6E8; }
+      .lens { stroke: #C8C6D6; }
     }
   </style>
   <g transform="translate(0 -14)" stroke-width="22">

@@ -115,7 +115,7 @@ export function NotificationSettingsForm({ initial }: { initial: NotificationSet
 				</div>
 			</div>
 			<div className="flex items-center gap-3">
-				<button type="submit" disabled={pending} className="btn btn-sm btn-slate disabled:opacity-50">
+				<button type="submit" disabled={pending} className="btn btn-sm btn-primary disabled:opacity-50">
 					Zapisz
 				</button>
 				{status && (

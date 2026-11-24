@@ -25,7 +25,7 @@ export default function ArticlesPage() {
 						<h2 className="head mt-2 text-2xl font-bold">
 							<Link
 								href={articlePath(article.slug)}
-								className="text-ink transition-colors hover:text-slate"
+								className="text-ink transition-colors hover:text-primary"
 							>
 								{article.title}
 							</Link>

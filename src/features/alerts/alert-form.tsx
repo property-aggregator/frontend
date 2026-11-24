@@ -91,7 +91,7 @@ export function AlertForm({ alert, smsAvailable, onSaved, onCancel }: AlertFormP
 			role={fullScreen ? "dialog" : undefined}
 			aria-modal={fullScreen || undefined}
 			aria-labelledby={titleId}
-			className="grid content-start gap-x-3 gap-y-4 rounded-xl bg-white p-5 max-lg:fixed max-lg:inset-0 max-lg:z-[60] max-lg:overflow-y-auto max-lg:rounded-none max-lg:pb-0 sm:grid-cols-2 md:p-6"
+			className="grid content-start gap-x-3 gap-y-4 rounded-lg border border-line bg-white p-5 max-lg:fixed max-lg:inset-0 max-lg:z-[60] max-lg:overflow-y-auto max-lg:rounded-none max-lg:border-0 max-lg:pb-0 sm:grid-cols-2 md:p-6"
 		>
 			<div className="flex items-center justify-between gap-3 sm:col-span-2">
 				<h2 id={titleId} className="head text-xl font-semibold">
@@ -207,7 +207,7 @@ export function AlertForm({ alert, smsAvailable, onSaved, onCancel }: AlertFormP
 				</p>
 			)}
 			<div className="mt-1 flex gap-2 max-lg:sticky max-lg:bottom-0 max-lg:-mx-5 max-lg:border-t max-lg:border-line max-lg:bg-white max-lg:px-5 max-lg:py-3 sm:col-span-2 md:max-lg:-mx-6 md:max-lg:px-6">
-				<button type="submit" disabled={pending} className="btn btn-sm btn-slate flex-1 disabled:opacity-50">
+				<button type="submit" disabled={pending} className="btn btn-sm btn-primary flex-1 disabled:opacity-50">
 					{alert ? "Zapisz zmiany" : "Utwórz alert"}
 				</button>
 				<button type="button" onClick={onCancel} className="btn btn-sm btn-soft">
@@ -272,7 +272,7 @@ function ChannelSwitch({ label, checked, onChange, locked, missing }: ChannelSwi
 				<span id={labelId} className={cn("flex items-center gap-1.5", locked ? "text-muted" : "text-ink")}>
 					{label}
 					{locked && (
-						<Link href={routes.premium} className="text-sm font-semibold text-ink hover:text-slate">
+						<Link href={routes.premium} className="text-sm font-semibold text-ink hover:text-primary">
 							w Premium
 						</Link>
 					)}

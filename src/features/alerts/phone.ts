@@ -1,13 +1,13 @@
 /** Countries SMS can be sent to; Poland first, as the default. */
 export const phoneCountries = [
 	{ name: "Polska", prefix: "+48" },
-	{ name: "Ukraina", prefix: "+380" },
-	{ name: "Niemcy", prefix: "+49" },
-	{ name: "Czechy", prefix: "+420" },
-	{ name: "Słowacja", prefix: "+421" },
-	{ name: "Litwa", prefix: "+370" },
-	{ name: "Norwegia", prefix: "+47" },
-	{ name: "Irlandia", prefix: "+353" },
+	// { name: "Ukraina", prefix: "+380" },
+	// { name: "Niemcy", prefix: "+49" },
+	// { name: "Czechy", prefix: "+420" },
+	// { name: "Słowacja", prefix: "+421" },
+	// { name: "Litwa", prefix: "+370" },
+	// { name: "Norwegia", prefix: "+47" },
+	// { name: "Irlandia", prefix: "+353" },
 ] as const;
 
 export const DEFAULT_PHONE_PREFIX = phoneCountries[0].prefix;

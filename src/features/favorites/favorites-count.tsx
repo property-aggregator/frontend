@@ -53,7 +53,7 @@ function Badge() {
 	}
 
 	return (
-		<span className="absolute -top-1.5 -right-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-slate px-1.5 text-2xs leading-none font-semibold text-white">
+		<span className="absolute -top-1.5 -right-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1.5 text-2xs leading-none font-semibold text-white">
 			{count}
 		</span>
 	);

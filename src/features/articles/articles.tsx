@@ -23,7 +23,7 @@ export function ImageCredit({ source }: { source: string }) {
 	return (
 		<figcaption className="mt-2 text-sm text-muted">
 			Obraz z{" "}
-			<a href={source} className="transition-colors hover:text-slate" target="_blank" rel="noopener">
+			<a href={source} className="transition-colors hover:text-primary" target="_blank" rel="noopener">
 				magnific.com
 			</a>
 		</figcaption>

@@ -20,7 +20,7 @@ export function ConsentsForm({ returnTo }: { returnTo: string }) {
 						href={routes.terms}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="font-semibold text-ink hover:text-slate"
+						className="font-semibold text-ink hover:text-primary"
 					>
 						Regulamin
 					</Link>{" "}
@@ -29,7 +29,7 @@ export function ConsentsForm({ returnTo }: { returnTo: string }) {
 						href={routes.privacy}
 						target="_blank"
 						rel="noopener noreferrer"
-						className="font-semibold text-ink hover:text-slate"
+						className="font-semibold text-ink hover:text-primary"
 					>
 						Polityką prywatności
 					</Link>
@@ -54,7 +54,7 @@ export function ConsentsForm({ returnTo }: { returnTo: string }) {
 			<button
 				type="submit"
 				disabled={pending}
-				className="btn btn-primary w-full disabled:cursor-not-allowed disabled:opacity-60"
+				className="btn btn-dark w-full disabled:cursor-not-allowed disabled:opacity-60"
 			>
 				Zapisz i przejdź dalej
 			</button>

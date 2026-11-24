@@ -43,8 +43,8 @@ export function PriceChangeText({ amount, percent, stacked, className }: PriceCh
 				{...triggerProps}
 				aria-controls={id}
 				className={cn(
-					"head inline-flex h-7 cursor-pointer items-center gap-1 rounded-full px-2.5 text-sm font-semibold text-ink",
-					amount < 0 ? "bg-pastel-green" : "bg-pastel-rose",
+					"head inline-flex h-7 cursor-pointer items-center gap-1 rounded-full px-2.5 text-sm font-semibold",
+					amount < 0 ? "bg-pastel-green text-price-down" : "bg-pastel-rose text-price-up",
 					stacked && "max-sm:h-auto max-sm:rounded-xl max-sm:py-0.5",
 				)}
 			>

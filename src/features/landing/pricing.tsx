@@ -22,7 +22,7 @@ export function Pricing() {
 						Płacisz raz za wybrany okres, bez subskrypcji i automatycznego odnawiania. Ceny brutto.
 					</p>
 				</div>
-				<Suspense fallback={<div className="mt-8 h-[640px] animate-pulse rounded-xl bg-mist" />}>
+				<Suspense fallback={<div className="mt-8 h-[640px] animate-pulse rounded-lg bg-mist" />}>
 					<PlansList />
 				</Suspense>
 			</div>
@@ -37,7 +37,7 @@ async function PlansList() {
 
 	if (!plans || plans.length === 0) {
 		return (
-			<p className="mt-12 rounded-xl bg-mist p-8 text-center">
+			<p className="mt-12 rounded-lg bg-mist p-8 text-center">
 				Nie udało się pobrać cennika. Spróbuj ponownie za chwilę.
 			</p>
 		);

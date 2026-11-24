@@ -40,7 +40,7 @@ async function LatestList({ className, signedIn = false }: LatestPropertiesProps
 
 	if (!properties || properties.length === 0) {
 		return (
-			<p className={cn("rounded-xl bg-white p-8 text-center", className)}>
+			<p className={cn("rounded-lg border border-line bg-white p-8 text-center", className)}>
 				{properties
 					? "Nie ma jeszcze żadnych ofert."
 					: "Nie udało się pobrać ofert. Spróbuj ponownie za chwilę."}

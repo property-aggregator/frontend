@@ -17,7 +17,7 @@ export default function FavoritesPage() {
 				<Suspense
 					fallback={
 						<>
-							<div className="mb-6 h-9 w-64 animate-pulse rounded-lg bg-white" />
+							<div className="mb-6 h-9 w-64 animate-pulse rounded-lg bg-mist" />
 							<PropertyListSkeleton count={3} />
 						</>
 					}
@@ -53,13 +53,13 @@ async function Favorites() {
 				)}
 			</div>
 			{!favorites ? (
-				<p className="rounded-xl bg-white p-8 text-center">
+				<p className="rounded-lg border border-line bg-white p-8 text-center">
 					Nie udało się pobrać ulubionych ofert. Spróbuj ponownie za chwilę.
 				</p>
 			) : favorites.length === 0 ? (
-				<p className="rounded-xl bg-white p-8 text-center">
+				<p className="rounded-lg border border-line bg-white p-8 text-center">
 					Nie masz jeszcze ulubionych ofert. Kliknij serduszko przy ofercie w{" "}
-					<Link href={routes.search} className="font-semibold text-ink hover:text-slate">
+					<Link href={routes.search} className="font-semibold text-ink hover:text-primary">
 						wyszukiwarce
 					</Link>
 					, aby ją tu zapisać.
