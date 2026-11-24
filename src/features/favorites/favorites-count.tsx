@@ -1,6 +1,7 @@
 "use client";
 
 import { createContext, Suspense, use, useState } from "react";
+import { CountBadge } from "@/components/count-badge";
 
 type FavoritesCount = { countPromise: Promise<number | null>; delta: number; adjust: (change: number) => void };
 
@@ -47,14 +48,5 @@ function Badge() {
 		return null;
 	}
 
-	const count = Math.max(0, loaded + context.delta);
-	if (count === 0) {
-		return null;
-	}
-
-	return (
-		<span className="absolute -top-1.5 -right-1.5 grid h-5 min-w-5 place-items-center rounded-full bg-primary px-1.5 text-2xs leading-none font-semibold text-white">
-			{count}
-		</span>
-	);
+	return <CountBadge count={loaded + context.delta} />;
 }

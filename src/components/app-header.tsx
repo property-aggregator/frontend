@@ -1,12 +1,13 @@
 "use client";
 
-import { Heart, LogOut, Menu, Search, UserRound, X } from "lucide-react";
+import { Bell, Heart, LogOut, Menu, Search, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { type ComponentProps, Suspense, useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
 import { BrandName, LogoMark } from "@/components/logo";
 import { FavoritesCountBadge } from "@/features/favorites/favorites-count";
+import { UnreadNotificationsBadge } from "@/features/notifications/unread-count";
 import { PremiumButton } from "@/features/plans/premium-button";
 import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
@@ -18,9 +19,10 @@ const navItems = [
 	{ href: routes.alerts, label: "Alerty" },
 ];
 
-// On phones only the favorites icon stays in the bar; the rest moves into the menu.
+// On phones only the notifications and favorites icons stay in the bar; the rest moves into the menu.
 const iconLinks = [
 	{ href: routes.findByUrl, label: "Znajdź ofertę po linku", icon: Search, inMobileMenu: true },
+	{ href: routes.notifications, label: "Powiadomienia", icon: Bell, inMobileMenu: false },
 	{ href: routes.favorites, label: "Ulubione", icon: Heart, inMobileMenu: false },
 	{ href: routes.account, label: "Konto", icon: UserRound, inMobileMenu: true },
 ];
@@ -99,6 +101,7 @@ export function AppHeader() {
 						>
 							<Icon icon={icon} className="text-xl" />
 							{href === routes.favorites && <FavoritesCountBadge />}
+							{href === routes.notifications && <UnreadNotificationsBadge />}
 						</NavLink>
 					))}
 					{/* Plain <a>: logout is an Auth0 route handler, so Link must not prefetch it. */}
