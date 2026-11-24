@@ -28,7 +28,7 @@ export function DealBadge({ property }: { property: Property }) {
 	return percent === null ? null : <DealPill percent={percent} />;
 }
 
-export function fullAddress(property: Property): string {
+export function fullAddress(property: Pick<Property, "street" | "district" | "city" | "province">): string {
 	return [property.street, property.district, property.city, property.province].filter(Boolean).join(", ");
 }
 
