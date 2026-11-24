@@ -52,7 +52,7 @@ export async function loadFavoriteIds(): Promise<Set<string> | null> {
 export function ResultsSkeleton() {
 	return (
 		<>
-			<div className="mb-6 h-9 w-64 animate-pulse rounded-lg bg-white" />
+			<div className="mb-6 h-9 w-64 animate-pulse rounded-lg bg-mist" />
 			<PropertyListSkeleton />
 		</>
 	);
@@ -105,7 +105,10 @@ export function SearchResults({
 					{result.totalCount > 0 ? (
 						<>
 							Ta strona wyników nie istnieje.{" "}
-							<Link href={pageHref(path, filters, 1)} className="font-semibold text-ink hover:text-slate">
+							<Link
+								href={pageHref(path, filters, 1)}
+								className="font-semibold text-ink hover:text-primary"
+							>
 								Wróć na pierwszą stronę
 							</Link>
 						</>
@@ -137,7 +140,7 @@ export function SearchResults({
 }
 
 export function Notice({ children }: { children: React.ReactNode }) {
-	return <p className="rounded-xl bg-white p-8 text-center">{children}</p>;
+	return <p className="rounded-lg border border-line bg-white p-8 text-center">{children}</p>;
 }
 
 type PaginationProps = { path: string; filters: UrlFilters; page: number; totalPages: number };
@@ -181,7 +184,7 @@ type PageLinkProps = {
 function PageLink({ href, current, disabled, label, children }: PageLinkProps) {
 	const className = cn(
 		"head grid h-10 min-w-10 place-items-center rounded-md px-2 text-base font-semibold",
-		current ? "bg-slate text-white" : "bg-white",
+		current ? "bg-primary text-white" : "border border-line bg-white",
 		disabled ? "cursor-not-allowed opacity-40" : !current && "hover:bg-line",
 	);
 

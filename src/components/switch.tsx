@@ -44,7 +44,7 @@ export function Switch({
 				className={cn(
 					"relative shrink-0 cursor-pointer rounded-full transition-colors disabled:cursor-not-allowed disabled:opacity-50",
 					small ? "h-6 w-10" : "h-7 w-12",
-					checked ? "bg-slate" : "bg-line",
+					checked ? "bg-primary" : "bg-line",
 					className,
 				)}
 			>

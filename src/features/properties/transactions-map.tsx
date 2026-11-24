@@ -49,7 +49,7 @@ function transactionMarker(transaction: Transaction, onClick: () => void): HTMLE
 	marker.className = "group cursor-pointer p-1";
 	marker.setAttribute("aria-label", `Transakcja za ${priceFormat.format(transaction.price)}`);
 	marker.innerHTML = `
-		<span class="block size-3.5 rounded-full border-2 border-white bg-slate shadow-[0_1px_4px_rgb(23_38_46/0.4)] transition-transform group-hover:scale-125 group-data-[active=true]:scale-150 group-data-[active=true]:bg-ink"></span>
+		<span class="block size-3.5 rounded-full border-2 border-white bg-primary shadow-[0_1px_4px_rgb(23_38_46/0.4)] transition-transform group-hover:scale-125 group-data-[active=true]:scale-150 group-data-[active=true]:bg-ink"></span>
 		<span class="head absolute bottom-full left-1/2 mb-1 hidden -translate-x-1/2 rounded bg-ink px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-white group-data-[active=true]:block">${compactPriceFormat.format(transaction.price)} zł</span>
 	`;
 	marker.addEventListener("click", (event) => {
@@ -237,7 +237,7 @@ export function TransactionsMap({ transactions, latitude, longitude, showDistanc
 								onClick={() => selectFromList(transaction)}
 								aria-pressed={activeId === transaction.transactionId}
 								className={cn(
-									"block h-full w-full cursor-pointer rounded-xl px-5 py-3.5 text-left transition-[background-color,box-shadow] duration-300",
+									"block h-full w-full cursor-pointer rounded-lg px-5 py-3.5 text-left transition-[background-color,box-shadow] duration-300",
 									activeId === transaction.transactionId ? "bg-white ring-1 ring-ink/10" : "bg-mist",
 								)}
 							>

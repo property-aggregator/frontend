@@ -1,5 +1,5 @@
 export const site = {
-	name: "homvia",
-	domain: "homvia.pl",
-	email: "kontakt@homvia.pl",
+	name: "LokalSkan",
+	domain: "LokalSkan.pl",
+	email: "kontakt@lokalskan.pl",
 } as const;

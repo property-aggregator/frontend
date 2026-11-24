@@ -37,12 +37,7 @@ export function PropertyCard({ property, className }: { property: Property; clas
 
 	// The deal badge has a button, so it stays out of the link.
 	return (
-		<div
-			className={cn(
-				"relative flex h-full flex-col rounded-xl bg-white transition-shadow duration-300 hover:shadow-card",
-				className,
-			)}
-		>
+		<div className={cn("relative flex h-full flex-col rounded-xl bg-white shadow-soft", className)}>
 			<DealBadge property={property} />
 			<Link href={propertyUrl(property.id)} className="flex flex-1 flex-col">
 				<div className="relative aspect-[4/3] overflow-hidden rounded-t-xl bg-mist">
@@ -113,7 +108,7 @@ export function PropertyTile({ property, showPortal }: { property: Property; sho
 	const address = fullAddress(property);
 
 	return (
-		<div className="relative flex h-full flex-col rounded-xl bg-white transition-shadow duration-300 hover:shadow-card">
+		<div className="relative flex h-full flex-col rounded-xl bg-white shadow-soft">
 			<DealBadge property={property} />
 			<Link href={propertyUrl(property.id)} className="flex flex-1 flex-col">
 				<div className="relative aspect-[16/9] overflow-hidden rounded-t-xl bg-mist">
@@ -236,7 +231,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 		<article
 			className={cn(
 				// min-w-0: as a grid item it would otherwise grow to fit its untruncated texts.
-				"relative flex min-w-0 flex-col rounded-xl bg-white transition-shadow duration-300 hover:shadow-card sm:flex-row",
+				"relative flex min-w-0 flex-col rounded-xl bg-white shadow-soft sm:flex-row",
 				// Room for the deal badge, which sticks out above the card.
 				dealPercent(property) !== null && "mt-3",
 			)}
@@ -254,7 +249,7 @@ export function PropertyListItem({ property, favorite }: { property: Property; f
 					<span
 						className={cn(
 							"head absolute top-3 left-3 rounded px-2 py-1 text-[10px] font-bold tracking-wider uppercase",
-							property.archivedAt ? "bg-white text-ink" : "bg-pastel-violet text-slate",
+							property.archivedAt ? "bg-white text-ink" : "bg-primary-soft text-primary",
 						)}
 					>
 						{badge}
@@ -343,7 +338,7 @@ export function PropertyListSkeleton({ count = 4 }: { count?: number }) {
 	return (
 		<div className="grid gap-4" aria-hidden="true">
 			{Array.from({ length: count }, (_, index) => (
-				<div key={index} className="h-[257px] animate-pulse rounded-xl bg-white" />
+				<div key={index} className="h-[257px] animate-pulse rounded-xl bg-mist" />
 			))}
 		</div>
 	);

@@ -46,7 +46,7 @@ export function LegalDocumentPage({ document, version }: { document: LegalDocume
 			{index > 0 && (
 				<p className="mt-6 rounded-lg bg-mist p-4 text-base">
 					To archiwalna wersja dokumentu.{" "}
-					<Link href={document.path} className="font-semibold text-ink hover:text-slate">
+					<Link href={document.path} className="font-semibold text-ink hover:text-primary">
 						Zobacz aktualną wersję
 					</Link>
 				</p>
@@ -62,7 +62,7 @@ export function LegalDocumentPage({ document, version }: { document: LegalDocume
 							<li key={item.effectiveFrom}>
 								<Link
 									href={`${document.path}/${item.effectiveFrom}`}
-									className="text-ink hover:text-slate"
+									className="text-ink hover:text-primary"
 								>
 									<Validity document={document} index={i + 1} />
 								</Link>

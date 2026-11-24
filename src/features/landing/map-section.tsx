@@ -1,6 +1,5 @@
 import { Check } from "lucide-react";
 import { Icon } from "@/components/icon";
-import { routes } from "@/lib/routes";
 
 const benefits = ["Jeden pulpit bez duplikatów", "Pełna oś czasu zmian cen", "Okazje poniżej średniej RCN"];
 
@@ -22,11 +21,8 @@ export function MapSection() {
 							</li>
 						))}
 					</ul>
-					<a href={routes.signupPage} className="btn btn-slate mt-8">
-						Zapisz obszar i włącz alerty
-					</a>
 				</div>
-				<div className="relative min-h-[380px] overflow-hidden rounded-xl border border-line">
+				<div className="relative min-h-[380px] overflow-hidden rounded-lg border border-line">
 					<svg
 						className="absolute inset-0 h-full w-full"
 						viewBox="0 0 800 480"
@@ -48,14 +44,14 @@ export function MapSection() {
 						</g>
 						<path
 							d="M230,95 L450,120 L470,290 L300,330 L210,230Z"
-							fill="#576696"
+							fill="#312e48"
 							fillOpacity=".18"
-							stroke="#576696"
+							stroke="#312e48"
 							strokeWidth="2"
 							strokeDasharray="8 6"
 						/>
 					</svg>
-					<span className="head absolute top-[30%] left-[32%] rounded-sm bg-brand px-3 py-1 text-xs text-white">
+					<span className="head bg-brand absolute top-[30%] left-[32%] rounded-sm px-3 py-1 text-xs text-white">
 						649k · −19%
 					</span>
 					<span className="head absolute top-[52%] left-[46%] rounded-sm bg-ink px-3 py-1 text-xs text-white">

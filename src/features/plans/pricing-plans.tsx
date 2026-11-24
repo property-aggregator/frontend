@@ -16,10 +16,11 @@ const planMeta: Record<
 		ofName: string;
 		description: string;
 		cta: string;
-		tile: string;
+		/** The card is white; its colour is the border. */
+		border: string;
 		button: string;
-		/** Ring and badge of the highlighted card. */
-		accent: { ring: string; badge: string };
+		/** Of the highlighted card (the current or the featured plan): a stronger border, if any, and the badge. */
+		accent: { border?: string; badge: string };
 		featured: boolean;
 	}
 > = {
@@ -27,27 +28,27 @@ const planMeta: Record<
 		ofName: "darmowego",
 		description: "Na start: przeglądaj oferty z całej Polski i zapisuj ulubione bez opłat.",
 		cta: "Załóż konto",
-		tile: "bg-pastel-blue",
-		button: "bg-pastel-blue-deep text-ink hover:bg-[color-mix(in_srgb,var(--color-pastel-blue-deep)_92%,#000)]",
-		accent: { ring: "ring-pastel-blue-deep", badge: "bg-pastel-blue-deep text-ink" },
+		border: "border-pastel-blue-deep",
+		button: "bg-pastel-blue-deep text-white hover:bg-[color-mix(in_srgb,var(--color-pastel-blue-deep)_92%,#000)]",
+		accent: { badge: "bg-pastel-blue-deep text-white" },
 		featured: false,
 	},
 	plus: {
 		ofName: "Plus",
 		description: "Dla osób, które szukają mieszkania dla siebie i chcą dostawać alerty o nowych ofertach.",
 		cta: "Wybierz Plus",
-		tile: "bg-pastel-violet",
-		button: "btn-slate",
-		accent: { ring: "ring-slate", badge: "bg-slate text-white" },
+		border: "border-pastel-violet-deep",
+		button: "btn-primary",
+		accent: { border: "border-primary", badge: "bg-primary text-white" },
 		featured: true,
 	},
 	pro: {
 		ofName: "Pro",
 		description: "Dla inwestorów, którzy chcą dzwonić pierwsi i kupować poniżej rynku.",
 		cta: "Wybierz Pro",
-		tile: "bg-pastel-peach",
-		button: "bg-pastel-peach-deep text-ink hover:bg-[color-mix(in_srgb,var(--color-pastel-peach-deep)_92%,#000)]",
-		accent: { ring: "ring-pastel-peach-deep", badge: "bg-pastel-peach-deep text-ink" },
+		border: "border-pastel-peach-deep",
+		button: "bg-pastel-peach-deep text-white hover:bg-[color-mix(in_srgb,var(--color-pastel-peach-deep)_92%,#000)]",
+		accent: { badge: "bg-pastel-peach-deep text-white" },
 		featured: false,
 	},
 };
@@ -121,10 +122,10 @@ export function PricingPlans({ plans, current, currentExpiresAt, reveal = false 
 						<div
 							key={plan.plan}
 							className={cn(
-								"relative flex flex-col rounded-xl p-8",
+								"relative flex flex-col rounded-lg border-2 bg-white p-8 shadow-card",
 								reveal && "reveal",
-								meta.tile,
-								(isCurrent || (!current && meta.featured)) && ["ring-2", meta.accent.ring],
+								meta.border,
+								(isCurrent || (!current && meta.featured)) && meta.accent.border,
 							)}
 						>
 							{(isCurrent || (!current && meta.featured)) && (
@@ -167,7 +168,7 @@ export function PricingPlans({ plans, current, currentExpiresAt, reveal = false 
 								<ul className="space-y-2.5">
 									{addedFeatures(plan, previous).map((feature) => (
 										<li key={feature.key} className="flex gap-2.5">
-											<Icon icon={Check} className="text-2xl text-brand" />
+											<Icon icon={Check} className="text-brand text-2xl" />
 											<span className="text-ink">{feature.label}</span>
 										</li>
 									))}
@@ -236,19 +237,14 @@ function PlanPrice({ plan, offer, duration }: { plan: Plan; offer: PlanOffer | u
 		return <div className="mt-6 text-sm text-muted">Niedostępny na {months(duration)}</div>;
 	}
 
-	const single = plan.offers.find((o) => o.durationMonths === 1);
-	const saving = single && duration > 1 ? single.price * duration - offer.price : 0;
-
 	return (
 		<>
 			<div className="mt-6 flex items-end gap-1.5">
 				<span className="head text-[44px] leading-none font-bold">{priceFormat.format(offer.price)}</span>
-				<span className="pb-1 text-sm text-muted">/ {months(duration)}</span>
+				<span className="pb-1 text-sm text-muted">brutto / {months(duration)}</span>
 			</div>
 			<div className="mt-1 text-sm text-muted">
-				{duration > 1
-					? `${priceFormat.format(offer.price / duration)} miesięcznie${saving > 0 ? `, oszczędzasz ${priceFormat.format(saving)}` : ""}`
-					: "płatność jednorazowa"}
+				{duration > 1 ? `${priceFormat.format(offer.price / duration)} miesięcznie` : "płatność jednorazowa"}
 			</div>
 		</>
 	);
@@ -274,8 +270,10 @@ function DurationToggle({
 						aria-checked={value === option}
 						onClick={() => onChange(option)}
 						className={cn(
-							"head cursor-pointer rounded-full px-5 py-2 text-base font-semibold transition-colors",
-							value === option ? "bg-white text-ink" : "text-muted hover:text-ink",
+							"head cursor-pointer rounded-full border px-5 py-2 text-base font-semibold transition-colors",
+							value === option
+								? "border-ink/25 bg-white text-ink"
+								: "border-transparent text-muted hover:text-ink",
 						)}
 					>
 						{months(option)}

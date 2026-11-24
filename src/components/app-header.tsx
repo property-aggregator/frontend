@@ -3,7 +3,7 @@
 import { Heart, LogOut, Menu, Search, UserRound, X } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { type ComponentProps, Suspense, useState } from "react";
+import { type ComponentProps, Suspense, useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
 import { BrandName, LogoMark } from "@/components/logo";
 import { FavoritesCountBadge } from "@/features/favorites/favorites-count";
@@ -25,7 +25,11 @@ const iconLinks = [
 	{ href: routes.account, label: "Konto", icon: UserRound, inMobileMenu: true },
 ];
 
-const mobileMenuItems = [...navItems, ...iconLinks.filter((link) => link.inMobileMenu)];
+const mobileMenuItems = [
+	...navItems,
+	...iconLinks.filter((link) => link.inMobileMenu),
+	{ href: routes.premium, label: "Premium" },
+];
 
 type NavLinkProps = ComponentProps<typeof Link> & { href: string; current: "true" | "page" };
 
@@ -46,8 +50,27 @@ function CurrentAwareLink({ current, ...props }: NavLinkProps) {
 export function AppHeader() {
 	const [menuOpen, setMenuOpen] = useState(false);
 
+	// The open menu covers the screen: the page behind does not scroll, Escape or a wider window closes it.
+	useEffect(() => {
+		if (!menuOpen) {
+			return;
+		}
+		const overflow = document.body.style.overflow;
+		document.body.style.overflow = "hidden";
+		const close = () => setMenuOpen(false);
+		const closeOnEscape = (event: KeyboardEvent) => event.key === "Escape" && close();
+		const wide = window.matchMedia("(min-width: 48rem)");
+		wide.addEventListener("change", close);
+		document.addEventListener("keydown", closeOnEscape);
+		return () => {
+			document.body.style.overflow = overflow;
+			wide.removeEventListener("change", close);
+			document.removeEventListener("keydown", closeOnEscape);
+		};
+	}, [menuOpen]);
+
 	return (
-		<header className="sticky top-0 z-50 border-b border-ink/[0.06] bg-white">
+		<header className="sticky top-0 z-50 border-b border-ink/[0.12] bg-white">
 			<div className="mx-auto flex h-[76px] max-w-[1360px] items-center justify-between gap-4 px-6 sm:gap-6">
 				<Link href={routes.properties} className="flex items-center gap-2.5">
 					<LogoMark />
@@ -63,7 +86,7 @@ export function AppHeader() {
 					))}
 				</nav>
 				<div className="flex items-center gap-2">
-					<PremiumButton onClick={() => setMenuOpen(false)} />
+					<PremiumButton onClick={() => setMenuOpen(false)} className="max-md:hidden" />
 					{iconLinks.map(({ href, label, icon, inMobileMenu }) => (
 						<NavLink
 							key={href}
@@ -97,7 +120,11 @@ export function AppHeader() {
 			</div>
 			<div
 				id="app-mobile-menu"
-				className={cn(menuOpen ? "flex" : "hidden", "flex-col border-t border-ink/[0.06] px-6 py-2 md:hidden")}
+				className={cn(
+					menuOpen ? "flex" : "hidden",
+					// Under the header (76px and its line), down to the bottom of the screen.
+					"fixed inset-x-0 top-[77px] bottom-0 flex-col overflow-y-auto bg-white px-6 py-4 md:hidden",
+				)}
 			>
 				{mobileMenuItems.map(({ href, label }) => (
 					<NavLink
@@ -105,12 +132,12 @@ export function AppHeader() {
 						href={href}
 						onClick={() => setMenuOpen(false)}
 						current="page"
-						className="head py-2.5 text-sm text-ink uppercase"
+						className="head border-b border-line py-4 text-center text-base font-semibold text-ink uppercase"
 					>
 						{label}
 					</NavLink>
 				))}
-				<div className="py-2">
+				<div className="pt-6">
 					<a href={routes.logout} className="btn btn-sm btn-soft w-full">
 						<Icon icon={LogOut} className="text-xl" />
 						Wyloguj

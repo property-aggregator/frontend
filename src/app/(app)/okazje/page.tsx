@@ -4,6 +4,7 @@ import { unstable_rethrow } from "next/navigation";
 import { Suspense } from "react";
 import { getCurrentUser } from "@/features/account/api";
 import { searchDeals, type PagedProperties } from "@/features/properties/api";
+import { FiltersPanel } from "@/features/properties/filters-panel";
 import { DealsFiltersForm } from "@/features/properties/search-form";
 import {
 	parseDealFilters,
@@ -75,18 +76,24 @@ function DealsLayout({ aside, children }: { aside: React.ReactNode; children?: R
 /** Apart from the results, so loading the picked location does not hold up the search. */
 async function Filters({ filters, query }: { filters: DealFilters; query: string }) {
 	const location = await loadLocation(filters);
-	// Keyed by the query, so the uncontrolled fields reset after navigating, e.g. "Wyczyść".
-	return <DealsFiltersForm key={query} filters={filters} location={location} />;
+	const activeCount = [filters.locationId, filters.transaction, filters.type].filter(Boolean).length;
+
+	return (
+		// Keyed by the query, so the uncontrolled fields reset after navigating, e.g. "Wyczyść".
+		<FiltersPanel key={query} activeCount={activeCount}>
+			<DealsFiltersForm filters={filters} location={location} />
+		</FiltersPanel>
+	);
 }
 
 function FiltersSkeleton() {
-	return <div className="h-[268px] animate-pulse rounded-xl bg-white sm:h-[192px] lg:h-[240px]" />;
+	return <div className="h-11 animate-pulse rounded-[7px] bg-mist lg:h-[240px] lg:rounded-lg" />;
 }
 
 const notInPlan = (
 	<>
 		Okazje nie są dostępne w Twoim planie.{" "}
-		<Link href={routes.premium} className="font-semibold text-ink hover:text-slate">
+		<Link href={routes.premium} className="font-semibold text-ink hover:text-primary">
 			Zobacz plany Premium
 		</Link>
 	</>

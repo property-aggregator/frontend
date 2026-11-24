@@ -52,7 +52,7 @@ export default function PropertyPage({ params }: PageProps<"/oferty/[id]">) {
 	return (
 		<main>
 			<div className="mx-auto max-w-[1360px] px-3 py-10 sm:px-6">
-				<BackToSearchLink className="head mb-6 inline-flex items-center gap-1 text-base font-semibold hover:text-slate">
+				<BackToSearchLink className="head mb-6 inline-flex items-center gap-1 text-base font-semibold hover:text-primary">
 					<Icon icon={ChevronLeft} className="text-xl" />
 					Wróć do wyszukiwarki
 				</BackToSearchLink>
@@ -129,9 +129,9 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 	];
 
 	return (
-		<div className="relative grid rounded-xl bg-white md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] xl:grid-cols-[480px_minmax(0,1fr)]">
+		<div className="relative grid rounded-lg border border-line bg-white md:grid-cols-[minmax(0,3fr)_minmax(0,5fr)] xl:grid-cols-[480px_minmax(0,1fr)]">
 			<DealBadge property={property} />
-			<div className="relative aspect-[4/3] overflow-hidden rounded-t-xl bg-mist md:aspect-auto md:min-h-[280px] md:rounded-l-xl md:rounded-tr-none">
+			<div className="relative aspect-[4/3] overflow-hidden rounded-t-lg bg-mist md:aspect-auto md:min-h-[280px] md:rounded-l-lg md:rounded-tr-none">
 				{property.mainImageUrl ? (
 					<Image
 						className="object-cover"
@@ -150,7 +150,7 @@ function Details({ property, favorite }: { property: Property; favorite?: boolea
 					<span
 						className={cn(
 							"head absolute top-4 left-4 rounded px-2.5 py-1 text-2xs font-bold tracking-wider uppercase",
-							property.archivedAt ? "bg-white text-ink" : "bg-pastel-violet text-slate",
+							property.archivedAt ? "bg-white text-ink" : "bg-primary-soft text-primary",
 						)}
 					>
 						{badge}
@@ -209,7 +209,7 @@ function SourceLink({ property, className }: { property: Property; className?: s
 			href={property.sourceUrl}
 			target="_blank"
 			rel="noopener noreferrer"
-			className={cn("btn btn-sm btn-slate", className)}
+			className={cn("btn btn-sm btn-primary", className)}
 		>
 			Przejdź do ogłoszenia
 			<Icon icon={SquareArrowOutUpRight} className="text-xl" />
@@ -228,15 +228,15 @@ function Section({ title, subtitle, children }: { title: string; subtitle?: stri
 }
 
 function Notice({ children }: { children: React.ReactNode }) {
-	return <p className="rounded-xl bg-white p-8 text-center">{children}</p>;
+	return <p className="rounded-lg border border-line bg-white p-8 text-center">{children}</p>;
 }
 
 function BlockSkeleton({ height }: { height: string }) {
-	return <div className={cn("animate-pulse rounded-xl bg-white", height)} aria-hidden="true" />;
+	return <div className={cn("animate-pulse rounded-lg bg-mist", height)} aria-hidden="true" />;
 }
 
 function DetailsSkeleton() {
-	return <div className="h-[320px] animate-pulse rounded-xl bg-white" aria-hidden="true" />;
+	return <div className="h-[320px] animate-pulse rounded-lg bg-mist" aria-hidden="true" />;
 }
 
 async function load<T>(fetcher: () => Promise<T>, what: string): Promise<T | null> {
@@ -259,7 +259,7 @@ async function PriceHistorySection({ property }: { property: Property }) {
 	}
 
 	return (
-		<div className="rounded-xl bg-white p-5 sm:p-8">
+		<div className="rounded-lg border border-line bg-white p-5 sm:p-8">
 			<PriceHistory changes={changes} lastSeenAt={property.lastSeenAt} />
 		</div>
 	);
@@ -275,7 +275,7 @@ async function Transactions({ property }: { property: Property }) {
 	}
 
 	return (
-		<div className="overflow-hidden rounded-xl bg-white">
+		<div className="overflow-hidden rounded-lg border border-line bg-white">
 			<TransactionsMap
 				transactions={result.transactions}
 				latitude={property.latitude}

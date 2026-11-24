@@ -1,38 +1,31 @@
-import { ArrowRight, HousePlus, TrendingDown } from "lucide-react";
-import processPhoto from "@/assets/landing/process.webp";
+import { HousePlus, TrendingDown } from "lucide-react";
 import { Icon } from "@/components/icon";
-import { routes } from "@/lib/routes";
 import { cn } from "@/lib/utils";
-import { BackgroundPhoto } from "@/components/background-photo";
 
 const steps = [
 	"Ustawiasz kryteria: lokalizację, metraż i budżet.",
-	"Przeszukujemy ponad 300 portali co 15 sekund.",
+	"Przeszukujemy portale co kilka minut.",
 	"Scalamy duplikaty w jedną kartę oferty.",
-	"Porównujemy cenę z RCN i historią korekt.",
+	"Porównujemy cenę z transakcjami RCN.",
 	"Oznaczamy okazje poniżej średniej rynkowej.",
 	"Wysyłamy alert, a Ty dzwonisz jako pierwszy.",
 ];
 
 export function Process() {
 	return (
-		<section id="proces" className="relative overflow-hidden bg-ink py-20 text-white">
-			<BackgroundPhoto src={processPhoto} darkness={0.88} parallax />
-			<div className="relative mx-auto grid max-w-[1170px] items-center gap-12 px-6 lg:grid-cols-[1fr_auto_1.1fr]">
+		<section id="proces" className="bg-mist py-20">
+			<div className="mx-auto grid max-w-[1170px] items-center gap-12 px-6 lg:grid-cols-[1fr_auto_1.1fr]">
 				<div className="reveal">
-					<div className="title-sub text-white/80">Jak to działa</div>
-					<h2 className="mt-2 text-[38px] leading-[1.1] font-bold text-white md:text-[54px]">
+					<div className="title-sub">Jak to działa</div>
+					<h2 className="mt-2 text-[38px] leading-[1.1] font-bold md:text-[54px]">
 						Dzwoń pierwszy.
 						<br />
 						Kupuj taniej.
 					</h2>
-					<p className="mt-6 max-w-[460px] text-md text-white/90">
-						Od publikacji ogłoszenia do powiadomienia na Twoim telefonie mija mniej niż pół minuty. Oto, co
+					<p className="mt-6 max-w-[460px] text-md">
+						Od publikacji ogłoszenia do powiadomienia na Twoim telefonie mija kilka minut. Oto, co
 						dzieje się po drodze.
 					</p>
-					<a href={routes.signupPage} className="btn btn-ghost mt-8">
-						Wypróbuj za 0 zł <Icon icon={ArrowRight} className="text-xl" />
-					</a>
 				</div>
 
 				<PhoneMockup />
@@ -43,7 +36,7 @@ export function Process() {
 						return (
 							<li
 								key={step}
-								className={cn("flex items-center gap-5 py-4", !last && "border-b border-white/20")}
+								className={cn("flex items-center gap-5 py-4", !last && "border-b border-line")}
 							>
 								<span
 									className={cn(
@@ -67,7 +60,7 @@ export function Process() {
 function PhoneMockup() {
 	return (
 		<div
-			className="reveal mx-auto hidden h-[370px] w-[180px] rounded-[30px] bg-[#111] p-1.5 ring-1 ring-white/25 lg:block"
+			className="reveal mx-auto hidden h-[370px] w-[180px] rounded-[30px] bg-[#111] p-1.5 shadow-card lg:block"
 			aria-hidden="true"
 		>
 			<div className="h-full overflow-hidden rounded-[25px] bg-mist text-ink">
@@ -79,7 +72,7 @@ function PhoneMockup() {
 				<div className="head px-3 py-1.5 text-xs font-medium">Alerty</div>
 				<div className="space-y-1.5 px-2.5">
 					<div className="flex items-center gap-1.5 bg-white p-2">
-						<span className="grid h-6 w-6 place-items-center bg-tint text-brand">
+						<span className="text-brand grid h-6 w-6 place-items-center bg-tint">
 							<Icon icon={TrendingDown} className="text-base" />
 						</span>
 						<div className="text-[8px] leading-tight">
@@ -92,7 +85,7 @@ function PhoneMockup() {
 						<div className="h-[90px] w-full bg-line" />
 						<div className="p-2">
 							<div className="head text-[10px] font-medium">3 pokoje, Puławska</div>
-							<b className="head text-xs font-medium text-brand">649 000 zł</b>
+							<b className="head text-brand text-xs font-medium">649 000 zł</b>
 						</div>
 					</div>
 					<div className="flex items-center gap-1.5 bg-white p-2">

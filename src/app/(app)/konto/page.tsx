@@ -9,10 +9,9 @@ export const metadata: Metadata = { title: "Konto", robots: { index: false } };
 
 export default function AccountPage() {
 	return (
-		<main data-full-bleed>
+		<main>
 			<div className="mx-auto max-w-[1000px] pt-8 sm:px-6 sm:py-10">
-				<h1 className="title px-6 text-2xl sm:px-0 lg:text-3xl">Konto</h1>
-				<section className="mt-6 bg-white p-6 sm:rounded-xl md:p-8">
+				<section className="mt-6 bg-white p-6 sm:rounded-lg sm:border sm:border-line md:p-8">
 					<h2 className="head text-2xl font-semibold">Zgody</h2>
 					<div className="mt-5 border-t border-line pt-5">
 						<Suspense fallback={<div className="h-24 animate-pulse rounded-lg bg-mist" />}>
@@ -21,11 +20,11 @@ export default function AccountPage() {
 					</div>
 					<p className="mt-5 border-t border-line pt-5 text-sm text-muted">
 						Zaakceptowany{" "}
-						<Link href={routes.terms} className="font-semibold text-ink hover:text-slate">
+						<Link href={routes.terms} className="font-semibold text-ink hover:text-primary">
 							Regulamin
 						</Link>{" "}
 						jest wymagany do korzystania z serwisu. Szczegóły przetwarzania danych znajdziesz w{" "}
-						<Link href={routes.privacy} className="font-semibold text-ink hover:text-slate">
+						<Link href={routes.privacy} className="font-semibold text-ink hover:text-primary">
 							Polityce prywatności
 						</Link>
 						.

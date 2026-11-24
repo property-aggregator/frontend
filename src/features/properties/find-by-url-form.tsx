@@ -36,7 +36,7 @@ export function FindByUrlForm() {
 				<button
 					type="submit"
 					disabled={pending}
-					className="btn btn-slate shrink-0 disabled:cursor-not-allowed disabled:opacity-60"
+					className="btn btn-primary shrink-0 disabled:cursor-not-allowed disabled:opacity-60"
 				>
 					<Icon icon={Search} className="text-xl" />
 					Szukaj

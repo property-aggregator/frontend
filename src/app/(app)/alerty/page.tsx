@@ -65,7 +65,7 @@ async function AlertsView() {
 							smsAvailable={smsAvailable}
 						/>
 					) : (
-						<p className="rounded-xl bg-white p-8 text-center">
+						<p className="rounded-lg border border-line bg-white p-8 text-center">
 							Nie udało się pobrać alertów. Spróbuj ponownie za chwilę.
 						</p>
 					)}
@@ -73,7 +73,7 @@ async function AlertsView() {
 				{/* A sticky column on large screens, as the filters of the search. On phones its parts join the page's grid:
 				    the contacts, then the upsell, both above the alerts. */}
 				<aside className="contents lg:sticky lg:top-[100px] lg:grid lg:gap-5">
-					<section className="rounded-xl bg-white p-5 max-lg:order-first md:p-6">
+					<section className="rounded-lg border border-ink/25 bg-white p-5 max-lg:order-first md:p-6">
 						<h2 className="head text-xl font-semibold">Dane kontaktowe</h2>
 						<p className="mt-1 mb-5 text-sm text-muted">Na te dane wyślemy powiadomienia z alertów.</p>
 						{settings ? (
@@ -91,7 +91,7 @@ async function AlertsView() {
 
 function SmsUpsell({ className }: { className?: string }) {
 	return (
-		<section className={cn("rounded-xl bg-slate p-6 text-white", className)}>
+		<section className={cn("rounded-lg bg-ink p-6 text-white", className)}>
 			<p className="head flex items-center gap-1.5 text-2xs font-semibold tracking-wider text-white/80 uppercase">
 				<Icon icon={Star} className="text-base" />
 				Premium
@@ -100,7 +100,7 @@ function SmsUpsell({ className }: { className?: string }) {
 			<p className="mt-2 text-sm text-white/80">
 				Dowiaduj się o nowych ofertach od razu, SMS-em. W nieruchomościach liczy się czas.
 			</p>
-			<Link href={routes.premium} className="btn btn-sm btn-light mt-5 w-full">
+			<Link href={routes.premium} className="btn btn-sm btn-primary mt-5 w-full">
 				Zobacz plany
 			</Link>
 		</section>
@@ -110,10 +110,10 @@ function SmsUpsell({ className }: { className?: string }) {
 function AlertsSkeleton() {
 	return (
 		<div className="grid items-start gap-5 lg:grid-cols-[1fr_380px] lg:gap-6" aria-hidden="true">
-			<div className="h-[300px] animate-pulse rounded-xl bg-white lg:col-start-2 lg:row-start-1" />
+			<div className="h-[300px] animate-pulse rounded-lg bg-mist lg:col-start-2 lg:row-start-1" />
 			<div className="grid gap-4 lg:col-start-1 lg:row-start-1">
-				<div className="h-[152px] animate-pulse rounded-xl bg-white" />
-				<div className="h-[152px] animate-pulse rounded-xl bg-white" />
+				<div className="h-[152px] animate-pulse rounded-lg bg-mist" />
+				<div className="h-[152px] animate-pulse rounded-lg bg-mist" />
 			</div>
 		</div>
 	);

@@ -3,7 +3,7 @@ import { extendTailwindMerge } from "tailwind-merge";
 
 // Tokens from globals.css that Tailwind has no default for; otherwise cn() would not know which classes they replace.
 const twMerge = extendTailwindMerge({
-	extend: { classGroups: { "font-size": [{ text: ["2xs", "md"] }], shadow: [{ shadow: ["card"] }] } },
+	extend: { classGroups: { "font-size": [{ text: ["2xs", "md"] }], shadow: [{ shadow: ["card", "soft"] }] } },
 });
 
 export function cn(...inputs: ClassValue[]) {

@@ -285,7 +285,7 @@ export function CarouselSkeleton({ height }: { height: string }) {
 	return (
 		<div className="flex gap-5 overflow-hidden" aria-hidden="true">
 			{Array.from({ length: 4 }, (_, index) => (
-				<div key={index} className={cn(slideClassName, height, "animate-pulse rounded-xl bg-white")} />
+				<div key={index} className={cn(slideClassName, height, "animate-pulse rounded-xl bg-line/40")} />
 			))}
 		</div>
 	);
